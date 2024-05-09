@@ -1,0 +1,5 @@
+build/
+polyfill-glibc
+.ninja_deps
+.ninja_log
+

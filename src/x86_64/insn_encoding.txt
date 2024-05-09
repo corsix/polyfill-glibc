@@ -1,0 +1,234 @@
+// Syntax is insn_name {operand} {constraint} :: encoding
+// Possible operands:
+//   r8, r16, r32, r64 - GPR of that bit width.
+//   m8, m16, m32, m64 - Memory reference of that bit width, inferred as that width if no width specified.
+//   i8, i16, i32, i64 - Sign extended immediate of that bit width.
+//   rm8, rm16, rm32, rm64 - Either rN or mM.
+//   r - Unsized GPR; can be any of r8, r16, r32, r64.
+//   m - Unsized memory; can be any of m8, m16, m32, m64. Size optionally inferred from unsized GPR operands.
+//   i - Unsized immediate; can be any of i8, i16, i32, or i32 sign extended to 64 bits. Size inferred from other unsized operands.
+//   rm - Either r or m.
+//   NB: All unsized operands must have same size. If size is 8, final opcode byte is decremented by 1. If size is 16, o16 prefix added. If size is 64, rex.w prefix added.
+//   i8_1 - Like i8, but has to have value 1. Doesn't need encoding.
+//   r_eax - Like r, but has to be al/ax/eax/rax. Doesn't need encoding.
+//   r8_ecx - Like r8, but has to be cl. Doesn't need encoding.
+// Possible constraints:
+//   (no_8) - Unsized operands cannot have size 8.
+//   (special) lea - Registers used within memory operand can have size of destination operand, rather than needing to be 64 bit. Memory operand can be any size.
+//   (special) xor - When operands are identical, can narrow 64-bit to 32-bit.
+//   (special) test - Can narrow 1st operand when 2nd operand is an immediate.
+//   (special) and - Can narrow 1st operand from 64 bits to 32 bits when 2nd operand is an immediate.
+//   (special) mov - When 2nd operand is a suitable immediate, can narrow destination from 64-bit to 32-bit.
+// Possible encodings:
+//   NB: o16 prefix implicit.
+//   rex.w - REX prefix byte goes here, will have w bit set.
+//   NB: Other rex prefix bits implicit.
+//   hex byte - Emitted as-is (though last such byte can be modified by +r, or decremented by 1 for unsized operands that resolve to 8 bits).
+//   +r - Low 3 bits of register index added to previous byte (rex.b prefix added if index is 4 bits).
+//   /n - n becomes register field of modrm byte.
+//   NB: modrm(+sib) byte implicit if there are any register or memory operands (excluding any already consumed by +r, excluding r_eax or r8_ecx).
+//   NB: Immediate implicit if there is an immediate operand (excluding i8_1).
+//   rel_call - e8 rel32, or ff /2 if via GOT.
+//   rel_jmp - eb rel8, or e9 rel32, or ff /4 if via GOT.
+//   rel_jcc - rel8, or changes previous 7x byte to 0f 8x if rel32.
+//
+// If an instruction has multiple overloads, they should be listed in preference order.
+// If the overloads have different number of operands, they should be listed from most operands to least operands.
+
+push r64 :: 50 +r
+push m64 :: ff /6
+push i8  :: 6a
+push i32 :: 68
+
+pop r64 :: 58 +r
+pop m64 :: 8f /0
+
+mov r rm    :: 8b
+mov rm r    :: 89
+mov r32 i32 (special) :: b8 +r
+mov rm i    (special) :: c7 /0
+mov r64 i64 (special) :: rex.w b8 +r
+
+movups x xm128 :: 0f 10
+movups xm128 x :: 0f 11
+movaps x xm128 :: 0f 28
+movaps xm128 x :: 0f 29
+
+movss x m32 :: f3 0f 10
+movss m32 x :: f3 0f 11
+
+movd rm32 x :: 66 0f 7e
+movq rm64 x :: 66 rex.w 0f 7e
+
+xchg r rm :: 87
+xchg rm r :: 87
+
+cmpxchg rm r :: 0f b1
+
+call m    :: e8 rel_call
+call rm64 :: ff /2
+
+jmp m    :: e9 rel_jmp
+jmp rm64 :: ff /4
+
+jo  m :: 70 rel_jcc
+jb  m :: 72 rel_jcc
+jc  m :: 72 rel_jcc
+jae m :: 73 rel_jcc
+jnb m :: 73 rel_jcc
+jnc m :: 73 rel_jcc
+jz  m :: 74 rel_jcc
+jne m :: 75 rel_jcc
+jnz m :: 75 rel_jcc
+jbe m :: 76 rel_jcc
+ja  m :: 77 rel_jcc
+js  m :: 78 rel_jcc
+jns m :: 79 rel_jcc
+jnp m :: 7b rel_jcc
+jl  m :: 7c rel_jcc
+jle m :: 7e rel_jcc
+jg  m :: 7f rel_jcc
+
+cmovz  r rm (no_8) :: 0f 44
+cmovnz r rm (no_8) :: 0f 45
+cmova  r rm (no_8) :: 0f 47
+cmovs  r rm (no_8) :: 0f 48
+
+setb  rm8 :: 0f 92 /0 // Could just as well be any other /i, as the processor ignores this field for setcc.
+setnb rm8 :: 0f 93 /0
+sete  rm8 :: 0f 94 /0
+setz  rm8 :: 0f 94 /0
+setne rm8 :: 0f 95 /0
+setnz rm8 :: 0f 95 /0
+setbe rm8 :: 0f 96 /0
+seta  rm8 :: 0f 97 /0
+setle rm8 :: 0f 9e /0
+
+lea r m (no_8) (special) :: 8d
+
+add r rm :: 03
+add rm r :: 01
+add rm i8 (no_8) :: 83 /0
+add r_eax i :: 05
+add rm i :: 81 /0
+
+or r rm :: 0b
+or rm r :: 09
+or rm i8 (no_8) :: 83 /1
+or r_eax i :: 0d
+or rm i :: 81 /1
+
+adc r rm :: 13
+adc rm r :: 11
+adc rm i8 (no_8) :: 83 /2
+adc r_eax i :: 15
+adc rm i :: 81 /2
+
+sbb r rm :: 1b
+sbb rm r :: 19
+sbb rm i8 (no_8) :: 83 /3
+sbb r_eax i :: 1d
+sbb rm i :: 81 /3
+
+and r rm :: 23
+and rm r :: 21
+and rm i8 (no_8) (special) :: 83 /4
+and r_eax i (special) :: 25
+and rm i (special) :: 81 /4
+
+test r_eax i (special) :: a9
+test rm i (special) :: f7 /0
+test rm r (special) :: 85
+
+sub r rm :: 2b
+sub rm r :: 29
+sub rm i8 (no_8) :: 83 /5
+sub r_eax i :: 2d
+sub rm i :: 81 /5
+
+xor r rm (special) :: 33
+xor rm r :: 31
+xor rm i8 (no_8) :: 83 /6
+xor r_eax i :: 35
+xor rm i :: 81 /6
+
+cmp r rm :: 3b
+cmp rm r :: 39
+cmp rm i8 (no_8) :: 83 /7
+cmp r_eax i :: 3d
+cmp rm i :: 81 /7
+
+rol rm r8_ecx :: d3 /0
+rol rm i8_1 :: d1 /0
+rol rm i8 :: c1 /0
+
+ror rm r8_ecx :: d3 /1
+ror rm i8_1 :: d1 /1
+ror rm i8 :: c1 /1
+
+shl rm r8_ecx :: d3 /4
+shl rm i8_1 :: d1 /4
+shl rm i8 :: c1 /4
+
+shr rm r8_ecx :: d3 /5
+shr rm i8_1 :: d1 /5
+shr rm i8 :: c1 /5
+
+sar rm r8_ecx :: d3 /7
+sar rm i8_1 :: d1 /7
+sar rm i8 :: c1 /7
+
+rex_w   :: 48
+ret     :: c3
+leave   :: c9
+int3    :: cc
+movsb   :: a4
+movsq   :: rex.w a5
+stosb   :: aa
+stosq   :: rex.w ab
+lodsb   :: ac
+lodsq   :: rex.w ad
+scasb   :: ae
+scasq   :: rex.w af
+lock    :: f0
+repne   :: f2
+rep     :: f3
+cld     :: fc
+std     :: fd
+syscall :: 0f 05
+cpuid   :: 0f a2
+rdpkru  :: 0f 01 ee
+wrpkru  :: 0f 01 ef
+endbr64 :: f3 0f 1e fa
+
+movsx r32 rm8  :: 0f be
+movsx r32 rm16 :: 0f bf
+movsx r64 rm8  :: rex.w 0f be
+movsx r64 rm16 :: rex.w 0f bf
+movsx r64 rm32 :: rex.w 63
+cdqe :: rex.w 98
+cdq  :: 99
+cqo  :: rex.w 99
+
+movzx r32 rm8  :: 0f b6
+movzx r32 rm16 :: 0f b7
+movzx r64 rm8  :: rex.w 0f b6
+movzx r64 rm16 :: rex.w 0f b7
+
+not rm :: f7 /2
+neg rm :: f7 /3
+imul r rm i8 (no_8) :: 6b
+imul r rm i (no_8)  :: 69
+imul r rm (no_8)    :: 0f af
+imul rm             :: f7 /5
+mul rm              :: f7 /4
+div rm              :: f7 /6
+bt  rm r  (no_8) :: 0f a3
+bt  rm i8 (no_8) :: 0f ba /4
+bts rm i8 (no_8) :: 0f ba /5
+btr rm r  (no_8) :: 0f b3
+btr rm i8 (no_8) :: 0f ba /6
+btc rm i8 (no_8) :: 0f ba /7
+bsf r rm (no_8)  :: 0f bc
+bsr r rm (no_8)  :: 0f bd
+popcnt r rm (no_8) :: f3 0f b8

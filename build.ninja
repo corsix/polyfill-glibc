@@ -1,0 +1,95 @@
+cc_opt = -O2 -s
+# cc_opt = -g -O0 -fsanitize=address
+link_opt = 
+
+rule cc
+  depfile = $out.d
+  command = gcc -MD -MF $out.d -Wall -Wextra -Wshadow -fvisibility=hidden -fno-math-errno -ffp-contract=off -fno-trapping-math -fno-semantic-interposition -fmax-errors=5 -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -std=c11 $cc_opt -c -o $out $in
+rule link
+  command = gcc $cc_opt -o $out $in $link_opt
+rule run
+  command = $in $out
+rule create_polyfill_so
+  command = ./$in empty:$arch --add-hash --add-gnu-hash --create-polyfill-so --target-glibc=$target_glibc --output $out
+rule run_polyfill_glibc_txt
+  command = ./polyfill-glibc >$out $in $link_opt
+rule run_polyfill_glibc
+  command = ./polyfill-glibc --output $out $in $link_opt
+
+build polyfill-glibc: link build/main.o build/renamer.o build/polyfiller.o build/x86_64/polyfiller.o build/erw.o build/v2f.o build/tokenise.o build/sht.o build/uuht.o build/arena.o build/reloc_kind.o build/common.o
+default polyfill-glibc
+build build/x86_64/polyfills.so: create_polyfill_so polyfill-glibc
+  arch = x86_64
+  target_glibc = 2.3.2
+build build/x86_64/polyfiller.o: cc src/x86_64/polyfiller.c | build/x86_64/assembled_gen.h
+build build/x86_64/assembled_gen.h: run build/x86_64/assembler src/x86_64/_init.s src/x86_64/c11_thread.s src/x86_64/fatal.s src/x86_64/glibc_2_6.s src/x86_64/glibc_2_7.s src/x86_64/glibc_2_15.s src/x86_64/glibc_2_16.s src/x86_64/glibc_2_18.s src/x86_64/glibc_2_25.s src/x86_64/glibc_2_26.s src/x86_64/glibc_2_30.s src/x86_64/glibc_2_31.s src/x86_64/glibc_2_34.s src/x86_64/glibc_2_36.s src/x86_64/glibc_2_38.s src/x86_64/posix_spawn.s src/x86_64/qsort.s src/x86_64/stdbit.s src/x86_64/syscalls.s src/x86_64/syscalls_ac.s
+build build/x86_64/assembler: link build/x86_64/assembler.o build/tokenise.o build/sht.o build/uuht.o build/common.o
+build build/x86_64/assembler.o: cc src/x86_64/assembler.c | build/x86_64/assembler_gen.h
+build build/x86_64/assembler_gen.h: run build/x86_64/build_assembler src/x86_64/insn_encoding.txt
+build build/x86_64/build_assembler: link build/x86_64/build_assembler.o build/tokenise.o build/sht.o
+build build/x86_64/build_assembler.o: cc src/x86_64/build_assembler.c
+build build/x86_64/renames.h: run build/parse_renames src/x86_64/renames.txt
+build build/polyfiller.o: cc src/polyfiller.c
+build build/main.o: cc src/main.c
+build build/renamer.o: cc src/renamer.c | build/x86_64/renames.h
+build build/parse_renames: link build/parse_renames.o build/tokenise.o build/sht.o build/common.o
+build build/parse_renames.o: cc src/parse_renames.c
+build build/erw.o: cc src/erw.c
+build build/v2f.o: cc src/v2f.c
+build build/tokenise.o: cc src/tokenise.c
+build build/sht.o: cc src/sht.c
+build build/uuht.o: cc src/uuht.c
+build build/arena.o: cc src/arena.c
+build build/reloc_kind.o: cc src/reloc_kind.c
+build build/common.o: cc src/common.c
+
+build build/x86_64/test/arc4random.txt: run build/x86_64/test/arc4random build/x86_64/polyfills.so
+build build/x86_64/test/arc4random: link build/x86_64/test/arc4random.o build/test/syscall_filter.o
+  link_opt = -ldl
+build build/x86_64/test/arc4random.o: cc test/x86_64/arc4random.c
+
+build build/x86_64/test/glibc_2_38.txt: run build/x86_64/test/glibc_2_38 build/x86_64/polyfills.so
+build build/x86_64/test/glibc_2_38: link build/x86_64/test/glibc_2_38.o
+  link_opt = -ldl
+build build/x86_64/test/glibc_2_38.o: cc test/x86_64/glibc_2_38.c
+
+build build/x86_64/test/nan.txt: run build/x86_64/test/nan build/x86_64/polyfills.so
+build build/x86_64/test/nan: link build/x86_64/test/nan.o
+  link_opt = -ldl
+build build/x86_64/test/nan.o: cc test/x86_64/nan.c
+
+build build/x86_64/test/qsort_r.txt: run build/x86_64/test/qsort_r build/x86_64/polyfills.so
+build build/x86_64/test/qsort_r: link build/x86_64/test/qsort_r.o
+  link_opt = -ldl
+build build/x86_64/test/qsort_r.o: cc test/x86_64/qsort_r.c
+
+build build/x86_64/test/stdbit.txt: run build/x86_64/test/stdbit build/x86_64/polyfills.so
+build build/x86_64/test/stdbit: link build/x86_64/test/stdbit.o
+  link_opt = -ldl
+build build/x86_64/test/stdbit.o: cc test/x86_64/stdbit.c
+
+build build/x86_64/test/totalorder.txt: run build/x86_64/test/totalorder build/x86_64/polyfills.so
+build build/x86_64/test/totalorder: link build/x86_64/test/totalorder.o
+  link_opt = -ldl
+build build/x86_64/test/totalorder.o: cc test/x86_64/totalorder.c
+
+build build/x86_64/test/twalk_r.txt: run build/x86_64/test/twalk_r build/x86_64/polyfills.so
+build build/x86_64/test/twalk_r: link build/x86_64/test/twalk_r.o
+  link_opt = -ldl
+build build/x86_64/test/twalk_r.o: cc test/x86_64/twalk_r.c
+
+build test/x86_64: phony build/x86_64/test/arc4random.txt build/x86_64/test/glibc_2_38.txt build/x86_64/test/qsort_r.txt build/x86_64/test/stdbit.txt build/x86_64/test/totalorder.txt build/x86_64/test/twalk_r.txt
+
+build build/test/getauxval.txt: run build/test/getauxval_pf build/test/getauxval_imp.txt build/test/getauxval_imp_pf.txt
+build build/test/getauxval_imp_pf.txt: run_polyfill_glibc_txt build/test/getauxval_pf | polyfill-glibc
+  link_opt = --print-imports
+build build/test/getauxval_pf: run_polyfill_glibc build/test/getauxval | polyfill-glibc
+  link_opt = --target_glibc=2.15
+build build/test/getauxval_imp.txt: run_polyfill_glibc_txt build/test/getauxval | polyfill-glibc
+  link_opt = --print-imports
+build build/test/getauxval: link build/test/getauxval.o build/common.o
+build build/test/getauxval.o: cc test/getauxval.c
+
+build build/test/syscall_filter.o: cc test/syscall_filter.c
+
+build test: phony test/x86_64 build/test/getauxval.txt
