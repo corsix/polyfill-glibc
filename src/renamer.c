@@ -320,6 +320,12 @@ static void bespoke_registry_free(bespoke_registry_t* rr) {
   free(rr);
 }
 
+void renamer_add_nodelete(renamer_t* self) {
+  if (!self->options->create_polyfill_so) {
+    erw_dhdrs_add_remove_flags(self->erw, DT_FLAGS_1, DF_1_NODELETE, 0);
+  }
+}
+
 bool renamer_add_one_rename(renamer_t* self, const char* old_name, const char* new_name) {
   self->added_renames = true;
   uintptr_t rr;

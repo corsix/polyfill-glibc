@@ -120,7 +120,11 @@ static void add_sym_and_deps(polyfiller_t* self, uint32_t token, uint32_t why) {
     parse_extern_sym(&rsym, head);
     const char* name0 = rsym.name;
     if (name0 == NULL) {
-      renamer_add_one_rename(self->renamer, rsym.lib, rsym.version);
+      if (*rsym.lib == '\0' && strcmp(rsym.version, "+nodelete") == 0) {
+        renamer_add_nodelete(self->renamer);
+      } else {
+        renamer_add_one_rename(self->renamer, rsym.lib, rsym.version);
+      }
     } else if (renamer_apply_to_name(self->renamer, &rsym)) {
       if (rsym.lib && strcmp(rsym.lib, "polyfill") == 0) {
         uint32_t val = rh_lookup(rsym.name);

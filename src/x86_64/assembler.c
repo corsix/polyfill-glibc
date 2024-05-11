@@ -1556,10 +1556,6 @@ static void resolve_labels_for_func(parse_ctx_t* ctx, asm_sym_t* sym, resolve_st
             // ok
           } else if ((k = uuht_contains(&ctx->sym_names, reloc_val))) {
             ++n_runtime_reloc;
-            uint32_t flags = ctx->syms[k >> 32].flags;
-            if (flags & ASM_SYM_FLAG_EXTERN) {
-              goto bad_extern_reloc;
-            }
           } else {
             goto undef_reloc;
           }
@@ -1582,7 +1578,7 @@ static void resolve_labels_for_func(parse_ctx_t* ctx, asm_sym_t* sym, resolve_st
             ++n_runtime_reloc;
             if (ctx->syms[k >> 32].flags & ASM_SYM_FLAG_EXTERN) {
               off += 1;
-              if (head == CMD_reloc + RELOC_jcc) { bad_extern_reloc:
+              if (head == CMD_reloc + RELOC_jcc) {
                 FATAL("%s contains bad reference to extern label %s", sht_u_key(&ctx->toks.idents, sym->name), sht_u_key(&ctx->toks.idents, reloc_val));
               }
             }

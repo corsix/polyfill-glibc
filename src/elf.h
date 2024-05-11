@@ -247,7 +247,8 @@ struct Elf64_Dyn {
 #define DF_TEXTREL  0x00000004
 #define DF_BIND_NOW 0x00000008
 
-#define DF_1_NOW    0x00000001
+#define DF_1_NOW      0x00000001
+#define DF_1_NODELETE 0x00000008
 
 struct Elf_Verdef {
   uint16_t vd_version;

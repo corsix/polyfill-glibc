@@ -18,6 +18,7 @@ struct erw_state_t;
 
 typedef struct renamer_t renamer_t;
 renamer_t* renamer_init(renamer_options_t* options);
+void renamer_add_nodelete(renamer_t* self);
 bool renamer_add_one_rename(renamer_t* self, const char* old_name, const char* new_name);
 void renamer_add_target_version_renames(renamer_t* self, const char* target_ver);
 void renamer_apply_to(renamer_t* self, struct erw_state_t* erw);

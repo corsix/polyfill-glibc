@@ -375,7 +375,7 @@ accept4@GLIBC_2.10 polyfill::accept4_2_10
 // TODO putsgent@GLIBC_2.10
 // TODO pwritev@GLIBC_2.10
 // TODO pwritev64@GLIBC_2.10
-// TODO quick_exit@GLIBC_2.10
+quick_exit@GLIBC_2.10 polyfill::quick_exit_2_10
 // TODO register_printf_modifier@GLIBC_2.10
 // TODO register_printf_specifier@GLIBC_2.10
 // TODO register_printf_type@GLIBC_2.10
@@ -444,9 +444,9 @@ clock_settime@GLIBC_2.17 librt.so.1::clock_settime@GLIBC_2.2.5
 secure_getenv@GLIBC_2.17 __secure_getenv@GLIBC_2.2.5
 
 // GLIBC_2.18
-// TODO function __cxa_thread_atexit_impl@GLIBC_2.18
-// TODO function pthread_getattr_default_np@GLIBC_2.18
-// TODO function pthread_setattr_default_np@GLIBC_2.18
+__cxa_thread_atexit_impl@GLIBC_2.18 polyfill::__cxa_thread_atexit_impl_2_18
+// TODO pthread_getattr_default_np@GLIBC_2.18
+// TODO pthread_setattr_default_np@GLIBC_2.18
 // libm
 __issignaling@GLIBC_2.18 polyfill::__issignaling
 __issignalingf@GLIBC_2.18 polyfill::__issignalingf
@@ -459,7 +459,14 @@ __issignalingl@GLIBC_2.18 polyfill::__issignalingl
 // TODO
 
 // GLIBC_2.24
-// TODO
+quick_exit@GLIBC_2.24 polyfill::quick_exit_2_24
+// libm
+// TODO nextdown@GLIBC_2.24
+// TODO nextdownf@GLIBC_2.24
+// TODO nextdownl@GLIBC_2.24
+// TODO nextup@GLIBC_2.24
+// TODO nextupf@GLIBC_2.24
+// TODO nextupl@GLIBC_2.24
 
 // GLIBC_2.25
 explicit_bzero@GLIBC_2.25 bzero@GLIBC_2.2.5

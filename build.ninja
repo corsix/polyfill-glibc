@@ -22,7 +22,7 @@ build build/x86_64/polyfills.so: create_polyfill_so polyfill-glibc
   arch = x86_64
   target_glibc = 2.3.2
 build build/x86_64/polyfiller.o: cc src/x86_64/polyfiller.c | build/x86_64/assembled_gen.h
-build build/x86_64/assembled_gen.h: run build/x86_64/assembler src/x86_64/_init.s src/x86_64/c11_thread.s src/x86_64/fatal.s src/x86_64/glibc_2_6.s src/x86_64/glibc_2_7.s src/x86_64/glibc_2_15.s src/x86_64/glibc_2_16.s src/x86_64/glibc_2_18.s src/x86_64/glibc_2_25.s src/x86_64/glibc_2_26.s src/x86_64/glibc_2_30.s src/x86_64/glibc_2_31.s src/x86_64/glibc_2_34.s src/x86_64/glibc_2_36.s src/x86_64/glibc_2_38.s src/x86_64/posix_spawn.s src/x86_64/qsort.s src/x86_64/stdbit.s src/x86_64/syscalls.s src/x86_64/syscalls_ac.s
+build build/x86_64/assembled_gen.h: run build/x86_64/assembler src/x86_64/_init.s src/x86_64/atexit.s src/x86_64/c11_thread.s src/x86_64/fatal.s src/x86_64/glibc_2_6.s src/x86_64/glibc_2_7.s src/x86_64/glibc_2_15.s src/x86_64/glibc_2_16.s src/x86_64/glibc_2_18.s src/x86_64/glibc_2_25.s src/x86_64/glibc_2_26.s src/x86_64/glibc_2_30.s src/x86_64/glibc_2_31.s src/x86_64/glibc_2_34.s src/x86_64/glibc_2_36.s src/x86_64/glibc_2_38.s src/x86_64/posix_spawn.s src/x86_64/qsort.s src/x86_64/stdbit.s src/x86_64/syscalls.s src/x86_64/syscalls_ac.s
 build build/x86_64/assembler: link build/x86_64/assembler.o build/tokenise.o build/sht.o build/uuht.o build/common.o
 build build/x86_64/assembler.o: cc src/x86_64/assembler.c | build/x86_64/assembler_gen.h
 build build/x86_64/assembler_gen.h: run build/x86_64/build_assembler src/x86_64/insn_encoding.txt
