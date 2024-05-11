@@ -78,7 +78,7 @@ static void erwNNE_(shdr_fixup_section_symbols)(erw_state_t* erw) {
       Elf_uNN off = Elf_bswapuNN(itr->sh_offset);
       Elf_uNN sz = Elf_bswapuNN(itr->sh_size);
       if (off < erw->f_size) {
-        if ((erw->f_size - off) > sz) {
+        if ((erw->f_size - off) < sz) {
           sz = erw->f_size - off;
         }
         struct ElfNN_(Sym)* sym = (struct ElfNN_(Sym)*)(erw->f + off);
