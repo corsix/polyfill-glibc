@@ -1070,12 +1070,48 @@ static bool erwNNE_(relocs_expand_relr)(erw_state_t* erw) {
 }
 
 static void erwNNE_(relocs_flush)(erw_state_t* erw) {
-  reloc_editor_t* editor = erw->relocs;
-  for (; editor < erw->relocs + MAX_RELOC_EDITORS; ++editor) {
-    if (!editor->base) break;
-    if (!(editor->flags & RELOC_EDIT_FLAG_DIRTY)) continue;
+  // Prior to version 2.23 (in particular commit fa19d5c48a), glibc's dynamic
+  // loader assumed that the payloads of DT_REL/DT_RELA (as appropriate for the
+  // architecture in question) and DT_JMPREL were contiguous in memory, with
+  // DT_JMPREL coming immediately after DT_REL/DT_RELA, with this assumption
+  // being relied upon if LD_BIND_NOW (or an equivalent DT_FLAG) was set.
+  // Accordingly, if we need to move any of DT_REL/DT_RELA/DT_JMPREL, then we
+  // move all of them, and we allocate new virtual memory for DT_JMPREL after
+  // allocating new virtual memory for DT_REL/DT_RELA.
+  reloc_editor_t* visit_order[MAX_RELOC_EDITORS];
+  uint32_t num_to_visit = 0;
+  uint32_t num_to_force_move = 0;
+  bool any_moved = false;
+  for (int pass = 0; pass < 3; ++pass) {
+    for (reloc_editor_t* editor = erw->relocs; editor < erw->relocs + MAX_RELOC_EDITORS; ++editor) {
+      if (!editor->base) break;
+      switch (editor->dt) {
+      case DT_REL:
+      case DT_RELA:
+        if (pass != 0) continue;
+        break;
+      case DT_JMPREL:
+        if (pass != 1) continue;
+        break;
+      default:
+        if (pass != 2) continue;
+        break;
+      }
+      if ((editor->flags & RELOC_EDIT_FLAG_DIRTY) && editor->capacity) {
+        any_moved = true;
+      }
+      visit_order[num_to_visit++] = editor;
+    }
+    if (pass == 1 && any_moved) {
+      num_to_force_move = num_to_visit;
+    }
+  }
+
+  for (uint32_t i = 0; i < num_to_visit; ++i) {
+    reloc_editor_t* editor = visit_order[i];
+    if (!(editor->flags & RELOC_EDIT_FLAG_DIRTY) && i >= num_to_force_move) continue;
     size_t nb = editor->count * (size_t)editor->entry_size;
-    if (editor->capacity) {
+    if (editor->capacity || i < num_to_force_move) {
       const char* section = NULL;
       uint64_t v = erw_alloc(erw, erw_alloc_category_v_r, sizeof(Elf_uNN), nb);
       switch (editor->dt) {
@@ -1088,7 +1124,9 @@ static void erwNNE_(relocs_flush)(erw_state_t* erw) {
         uint64_t f = v + v2f_map_lookup(&erw->v2f, v)->v2f;
         void* dst = (void*)(erw->f + f);
         memcpy(dst, editor->base, nb);
-        free(editor->base);
+        if (editor->capacity) {
+          free(editor->base);
+        }
         editor->base = dst;
         editor->capacity = 0;
         if (section) {
@@ -1686,10 +1724,11 @@ got_v:
   uint32_t* buckets = (uint32_t*)(bloom + n_bloom--);
   uint32_t i, count = erw->dsyms.count;
   uint32_t* bucket_counts = calloc(n_bucket, sizeof(uint32_t));
+  uint32_t num_local = 0;
   for (i = 0; i < count; ++i) {
     uint32_t flags = erw->dsyms.info[i].flags;
+    struct ElfNN_(Sym)* sym = (struct ElfNN_(Sym)*)erw->dsyms.base + i;
     if (!(flags & SYM_INFO_LOCAL) && (flags & SYM_INFO_EXPORTABLE) && (flags & SYM_INFO_IN_GNU_HASH)) {
-      struct ElfNN_(Sym)* sym = (struct ElfNN_(Sym)*)erw->dsyms.base + i;
       uint32_t hash = erw_dynstr_decode_gnu_hash(erw, Elf_bswapu32(sym->st_name));
       uint32_t bloom_idx = (hash / (sizeof(Elf_uNN) * CHAR_BIT)) & n_bloom;
       Elf_uNN bloom_word = Elf_bswapuNN(bloom[bloom_idx]);
@@ -1698,6 +1737,8 @@ got_v:
       bloom_word |= ((Elf_uNN)1u << ((hash >> Elf_bswapu32(meta[3])) & (sizeof(Elf_uNN) * CHAR_BIT - 1)));
       bucket_counts[bucket] += 1;
       bloom[bloom_idx] = Elf_bswapuNN(bloom_word);
+    } else if ((sym->st_info >> 4) == STB_LOCAL) {
+      ++num_local;
     }
   }
   uint32_t total = count - n_sym_in_hash;
@@ -1718,16 +1759,19 @@ got_v:
     FATAL("Inconsistent logic between rebuild_gnu_hash and sym_info_hash_count");
   }
   uint32_t* remap = malloc(count * sizeof(uint32_t));
-  total = 0;
+  total = num_local;
+  num_local = 0;
   for (i = 0; i < count; ++i) {
     uint32_t flags = erw->dsyms.info[i].flags;
+    struct ElfNN_(Sym)* sym = (struct ElfNN_(Sym)*)erw->dsyms.base + i;
     if (!(flags & SYM_INFO_LOCAL) && (flags & SYM_INFO_EXPORTABLE) && (flags & SYM_INFO_IN_GNU_HASH)) {
-      struct ElfNN_(Sym)* sym = (struct ElfNN_(Sym)*)erw->dsyms.base + i;
       uint32_t hash = erw_dynstr_decode_gnu_hash(erw, Elf_bswapu32(sym->st_name));
       uint32_t bucket = hash % n_bucket;
       uint32_t j = bucket_counts[bucket]++;
       chains[j] = Elf_bswapu32(hash &~ (uint32_t)1);
       remap[i] = j;
+    } else if ((sym->st_info >> 4) == STB_LOCAL) {
+      remap[i] = num_local++;
     } else {
       remap[i] = total++;
     }
@@ -1743,13 +1787,51 @@ got_v:
   free(remap);
 }
 
+static void erwNNE_(dsyms_move_locals_first)(erw_state_t* erw) {
+  uint32_t count = erw->dsyms.count;
+  struct ElfNN_(Sym)* syms = erw->dsyms.base;
+  uint32_t num_local = 0;
+  bool need_move = false;
+  for (uint32_t i = 0; i < count; ++i) {
+    if ((syms[i].st_info >> 4) == STB_LOCAL) {
+      if (num_local != i) need_move = true;
+      ++num_local;
+    }
+  }
+  if (!need_move) return;
+  uint32_t* remap = malloc(count * sizeof(uint32_t));
+  uint32_t not_local = num_local;
+  num_local = 0;
+  for (uint32_t i = 0; i < count; ++i) {
+    remap[i] = ((syms[i].st_info >> 4) == STB_LOCAL) ? num_local++ : not_local++;
+  }
+  erwNNE_(relocs_remap)(erw, remap);
+  erwNN_(dsyms_remap)(erw, remap);
+  free(remap);
+}
+
+static void erwNNE_(dsyms_fixup_sh_info)(erw_state_t* erw, struct ElfNN_(Shdr)* shdr) {
+  uint32_t count = erw->dsyms.count;
+  struct ElfNN_(Sym)* syms = erw->dsyms.base;
+  uint32_t n_local = Elf_bswapu32(shdr->sh_info);
+  while (n_local < count && (syms[n_local].st_info >> 4) == STB_LOCAL) {
+    ++n_local;
+  }
+  shdr->sh_info = Elf_bswapu32(n_local);
+}
+
 static void erwNNE_(dsyms_flush)(erw_state_t* erw) {
+  bool done_reorder = false;
   if (erw->dsyms.want_gnu_hash) {
     if (!erw->dsyms.original_had_gnu_hash || (erw->modified & ERW_MODIFIED_HASH_TABLES)) {
       erwNNE_(rebuild_gnu_hash)(erw); // NB: Can re-order symbols.
+      done_reorder = true;
     }
   } else if (erw->dsyms.original_had_gnu_hash) {
     erwNN_(dhdrs_remove)(erw, DT_GNU_HASH);
+  }
+  if (!done_reorder) {
+    erwNNE_(dsyms_move_locals_first)(erw);
   }
   if (erw->dsyms.want_hash) {
     if (!erw->dsyms.original_had_hash || (erw->modified & ERW_MODIFIED_HASH_TABLES)) {
@@ -1765,10 +1847,14 @@ static void erwNNE_(dsyms_flush)(erw_state_t* erw) {
     return;
   }
   if (!erw->dsyms.capacity) {
-    // All edits already done in-place; only thing that might need
-    // doing is erasing the version table.
+    // All edits already done in-place; only things that might need
+    // doing are erasing the version table and fixing up sh_info.
     if (!erw->dsyms.versions) {
       erwNN_(dhdrs_remove)(erw, DT_VERSYM);
+    }
+    struct ElfNN_(Shdr)* shdr = erwNNE_(shdr_find)(erw, ".dynsym");
+    if (shdr) {
+      erwNNE_(dsyms_fixup_sh_info)(erw, shdr);
     }
     return;
   }
@@ -1804,6 +1890,7 @@ static void erwNNE_(dsyms_flush)(erw_state_t* erw) {
       shdr->sh_offset = Elf_bswapuNN(f1);
       shdr->sh_size = Elf_bswapuNN(nb1);
       shdr->sh_addralign = Elf_bswapuNN(sizeof(Elf_uNN));
+      erwNNE_(dsyms_fixup_sh_info)(erw, shdr);
     }
     if (nb2) {
       shdr = erwNNE_(shdr_find)(erw, ".gnu.version");

@@ -74,13 +74,15 @@ static void erwNNE_(renamer_apply_to)(erw_state_t* erw, renamer_t* self) {
             }
           } else {
             infos[i].flags |= SYM_INFO_WANT_POLYFILL | SYM_INFO_LOCAL;
-            // Change the symbol visibility to hidden; this causes both eager
-            // and lazy lookups to return st_value rather than performing a
-            // lookup. The more obvious approach of changing the binding to
-            // STB_LOCAL doesn't work for lazy lookups, and would also violate
-            // the ELF spec requirement of all local symbols having indices
-            // < dynsym's sh_info and all non-local symbols having indices
-            // >= dynsym's sh_info.
+            // We want to make the symbol local, but we don't want to have to
+            // rewrite the relocations against it. This requires changing its
+            // binding to STB_LOCAL, and its visibility to STV_HIDDEN.
+            // Changing the visibility is required for lazy relocations, as
+            // glibc's logic there checks visibility but not binding.
+            // Changing the binding is required for eager relocations, as prior
+            // to version 2.24 (in particular commit b6084a958f), glibc's logic
+            // there checks binding but not visibility.
+            syms[i].st_info = (syms[i].st_info & 0xf) | (STB_LOCAL << 4);
             syms[i].st_other = (syms[i].st_other & ~3) | STV_HIDDEN;
             // Remove the version suffix from the symbol, as it is no longer
             // required.
