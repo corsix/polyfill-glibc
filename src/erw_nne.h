@@ -1787,7 +1787,7 @@ got_v:
   free(remap);
 }
 
-static void erwNNE_(dsyms_move_locals_first)(erw_state_t* erw) {
+static bool erwNNE_(dsyms_move_locals_first)(erw_state_t* erw) {
   uint32_t count = erw->dsyms.count;
   struct ElfNN_(Sym)* syms = erw->dsyms.base;
   uint32_t num_local = 0;
@@ -1798,7 +1798,7 @@ static void erwNNE_(dsyms_move_locals_first)(erw_state_t* erw) {
       ++num_local;
     }
   }
-  if (!need_move) return;
+  if (!need_move) return false;
   uint32_t* remap = malloc(count * sizeof(uint32_t));
   uint32_t not_local = num_local;
   num_local = 0;
@@ -1808,6 +1808,7 @@ static void erwNNE_(dsyms_move_locals_first)(erw_state_t* erw) {
   erwNNE_(relocs_remap)(erw, remap);
   erwNN_(dsyms_remap)(erw, remap);
   free(remap);
+  return true;
 }
 
 static void erwNNE_(dsyms_fixup_sh_info)(erw_state_t* erw, struct ElfNN_(Shdr)* shdr) {
@@ -1825,13 +1826,21 @@ static void erwNNE_(dsyms_flush)(erw_state_t* erw) {
   if (erw->dsyms.want_gnu_hash) {
     if (!erw->dsyms.original_had_gnu_hash || (erw->modified & ERW_MODIFIED_HASH_TABLES)) {
       erwNNE_(rebuild_gnu_hash)(erw); // NB: Can re-order symbols.
+      erw->modified |= ERW_MODIFIED_HASH_TABLES; // Force rebuild of legacy hash table in case of symbol re-ordering.
       done_reorder = true;
     }
   } else if (erw->dsyms.original_had_gnu_hash) {
     erwNN_(dhdrs_remove)(erw, DT_GNU_HASH);
   }
   if (!done_reorder) {
-    erwNNE_(dsyms_move_locals_first)(erw);
+    if (erwNNE_(dsyms_move_locals_first)(erw)) {
+      if (!(erw->modified & ERW_MODIFIED_HASH_TABLES)) {
+        erw->modified |= ERW_MODIFIED_HASH_TABLES;
+        if (erw->dsyms.want_gnu_hash) {
+          erwNNE_(rebuild_gnu_hash)(erw);
+        }
+      }
+    }
   }
   if (erw->dsyms.want_hash) {
     if (!erw->dsyms.original_had_hash || (erw->modified & ERW_MODIFIED_HASH_TABLES)) {
