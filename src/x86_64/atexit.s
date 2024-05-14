@@ -144,7 +144,7 @@ cmpxchg_was_ok:
 need_initial_node:
   xor eax, eax
 need_new_node:
-  push rax
+  push 0
   push rax
   mov edi, 128 // sizeof(node_t)
   call malloc
@@ -159,7 +159,7 @@ need_new_node:
   mov edi, dword ptr [&__cxa_thread_atexit_impl_2_18_pthread_key]
   call pthread_setspecific
   pop rax
-  pop rdx // Garbage
+  pop rcx
   jmp got_node
 
 err:
