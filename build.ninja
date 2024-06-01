@@ -28,7 +28,15 @@ build build/x86_64/assembler.o: cc src/x86_64/assembler.c | build/x86_64/assembl
 build build/x86_64/assembler_gen.h: run build/x86_64/build_assembler src/x86_64/insn_encoding.txt
 build build/x86_64/build_assembler: link build/x86_64/build_assembler.o build/tokenise.o build/sht.o
 build build/x86_64/build_assembler.o: cc src/x86_64/build_assembler.c
+build build/x86_64/relative_interp_link: link build/x86_64/relative_interp_link.o build/uuht.o build/common.o
+build build/x86_64/relative_interp_link.o: cc src/x86_64/relative_interp_link.c | build/x86_64/relative_interp_trampoline.h
+build build/x86_64/relative_interp_payload.h: run build/x86_64/relative_interp_link build/x86_64/relative_interp_runtime.o
+build build/x86_64/relative_interp_runtime.o: cc src/x86_64/relative_interp_runtime.c
+  cc_opt = -ffreestanding -fpic -O2 -funwind-tables -fasynchronous-unwind-tables -fno-omit-frame-pointer -fcf-protection=branch -momit-leaf-frame-pointer
+build build/x86_64/relative_interp_trampoline.h: run build/x86_64/assembler src/x86_64/relative_interp_trampoline.s
 build build/x86_64/renames.h: run build/parse_renames src/x86_64/renames.txt
+build build/x86_64/set_relative_interp: link build/x86_64/set_relative_interp.o build/common.o
+build build/x86_64/set_relative_interp.o: cc src/x86_64/set_relative_interp.c | build/x86_64/relative_interp_payload.h
 build build/polyfiller.o: cc src/polyfiller.c
 build build/main.o: cc src/main.c
 build build/renamer.o: cc src/renamer.c | build/x86_64/renames.h

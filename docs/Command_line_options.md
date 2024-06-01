@@ -195,6 +195,8 @@ The `--remove-needed` flag has no effect if the ELF file doesn't depend on the n
 
 A dynamically linked ELF file specifies the absolute path of the dynamic loader that it expects to use. The `--print-interpreter` flag will print this path. The `--set-interpreter` flag takes a path as an argument.
 
+To use `$ORIGIN` with `--set-interpreter`, see [Relative interpreter](Relative_interpreter.md).
+
 ## --page-size
 
 ELF files do not specify the page size of the kernel that they expect to run on, but nevertheless it is crucial to know said page size when modifying an ELF file. If that page size is not 4096 bytes, then the `--page-size` flag should be used, which takes as an argument a decimal power of two, for example `--page-size=8192`.
