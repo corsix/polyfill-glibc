@@ -49,6 +49,9 @@ mov r32 i32 (special) :: b8 +r
 mov rm i    (special) :: c7 /0
 mov r64 i64 (special) :: rex.w b8 +r
 
+bswap r32 :: 0f c8 +r
+bswap r64 :: rex.w 0f c8 +r
+
 movups x xm128 :: 0f 10
 movups xm128 x :: 0f 11
 movaps x xm128 :: 0f 28
@@ -89,6 +92,7 @@ jl  m :: 7c rel_jcc
 jle m :: 7e rel_jcc
 jg  m :: 7f rel_jcc
 
+cmovb  r rm (no_8) :: 0f 42
 cmovz  r rm (no_8) :: 0f 44
 cmovnz r rm (no_8) :: 0f 45
 cmova  r rm (no_8) :: 0f 47
@@ -111,6 +115,8 @@ add rm r :: 01
 add rm i8 (no_8) :: 83 /0
 add r_eax i :: 05
 add rm i :: 81 /0
+
+inc rm :: ff /0
 
 or r rm :: 0b
 or rm r :: 09
@@ -145,6 +151,8 @@ sub rm r :: 29
 sub rm i8 (no_8) :: 83 /5
 sub r_eax i :: 2d
 sub rm i :: 81 /5
+
+dec rm :: ff /1
 
 xor r rm (special) :: 33
 xor rm r :: 31
@@ -225,6 +233,7 @@ mul rm              :: f7 /4
 div rm              :: f7 /6
 bt  rm r  (no_8) :: 0f a3
 bt  rm i8 (no_8) :: 0f ba /4
+bts rm r  (no_8) :: 0f ab
 bts rm i8 (no_8) :: 0f ba /5
 btr rm r  (no_8) :: 0f b3
 btr rm i8 (no_8) :: 0f ba /6
