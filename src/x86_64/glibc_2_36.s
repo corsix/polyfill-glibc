@@ -1,43 +1,28 @@
 public function arc4random_uniform {
-  // Lemire's nearly division-free algorithm.
+  // https://dotat.at/@/2022-04-20-really-divisionless.html
   endbr64
   push.cfi rbp
   mov.cfi rbp, rsp
   push.cfi rbx
-  cmp edi, 1
   mov ebx, edi
-  adc ebx, 0 // Remap 0 to 1.
   push.cfi r12
+  push.cfi r13
   call arc4random
-  // Check for easy cases.
-  lea edx, [ebx - 1]
-  test edx, ebx
-  jz is_pow2
-  mul ebx
-  cmp eax, ebx
-  jae is_edx
-  // Save the mul result somewhere.
-  mov ecx, eax
-  mov edi, edx
-  // r12d = -ebx % ebx.
-  mov eax, ebx
-  neg eax
-  xor edx, edx
-  div ebx
-  mov r12d, edx
-  // Original mul result might be good after all.
-  cmp ecx, edx
-  mov edx, edi
-  jae is_edx
-retry:
+  mul ebx // edx:eax = eax * ebx
+  mov r12d, edx // save high part, either it or it plus one will be our result
+loop:
+  not eax
+  cmp ebx, eax
+  jbe done
+  mov r13d, eax
   call arc4random
-  mul ebx
-  cmp eax, r12d
-  jb retry
-is_edx:
-  mov eax, edx
-is_pow2:
-  and eax, edx
+  mul ebx // edx:eax = eax * ebx
+  cmp r13d, edx
+  jz loop
+  adc r12d, 0 // add one if edx > r13d
+done:
+  pop.cfi r13
+  mov eax, r12d
   pop.cfi r12
   pop.cfi rbx
   pop.cfi rbp
