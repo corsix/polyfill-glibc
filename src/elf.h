@@ -40,16 +40,18 @@ struct Elf64_Ehdr {
 #define ET_EXEC 2
 #define ET_DYN  3
 
-#define EM_SPARC   2
-#define EM_386     3
-#define EM_ARM     40
-#define EM_SPARCV9 43
-#define EM_IA_64   50
-#define EM_X86_64  62
-#define EM_AARCH64 183
-#define EM_TILEPRO 188
-#define EM_TILEGX  191
-#define EM_ALPHA   0x9026
+#define EM_SPARC         2
+#define EM_386           3
+#define EM_MIPS          8
+#define EM_MIPS_RS3_LE  10
+#define EM_ARM          40
+#define EM_SPARCV9      43
+#define EM_IA_64        50
+#define EM_X86_64       62
+#define EM_AARCH64     183
+#define EM_TILEPRO     188
+#define EM_TILEGX      191
+#define EM_ALPHA       0x9026
 
 struct Elf32_Sym {
   uint32_t st_name;
@@ -103,6 +105,10 @@ struct Elf64_Rela {
 #define R_386_TLS_TPOFF32  37
 #define R_386_TLS_DESC     41
 #define R_386_IRELATIVE    42
+
+#define R_MIPS_NONE      0
+#define R_MIPS_JUMP_SLOT 127
+#define R_MIPS_COPY      126
 
 #define R_ARM_NONE         0
 #define R_ARM_TLS_DESC     13
@@ -199,50 +205,54 @@ struct Elf64_Dyn {
   } d_un;
 };
 
-#define DT_NULL           0
-#define DT_NEEDED         1
-#define DT_PLTRELSZ       2
-#define DT_HASH           4
-#define DT_STRTAB         5
-#define DT_SYMTAB         6
-#define DT_RELA           7
-#define DT_RELASZ         8
-#define DT_RELAENT        9
-#define DT_STRSZ          10
-#define DT_INIT           12
-#define DT_FINI           13
-#define DT_SONAME         14
-#define DT_RPATH          15
-#define DT_SYMBOLIC       16
-#define DT_REL            17
-#define DT_RELSZ          18
-#define DT_RELENT         19
-#define DT_PLTREL         20
-#define DT_DEBUG          21
-#define DT_TEXTREL        22
-#define DT_JMPREL         23
-#define DT_BIND_NOW       24
-#define DT_RUNPATH        29
-#define DT_FLAGS          30
-#define DT_RELRSZ         35
-#define DT_RELR           36
-#define DT_RELRENT        37
-#define DT_GNU_CONFLICTSZ 0x6ffffdf6
-#define DT_GNU_LIBLISTSZ  0x6ffffdf7
-#define DT_GNU_HASH       0x6ffffef5
-#define DT_GNU_CONFLICT   0x6ffffef8
-#define DT_GNU_LIBLIST    0x6ffffef9
-#define DT_DEPAUDIT       0x6ffffefb
-#define DT_AUDIT          0x6ffffefc
-#define DT_VERSYM         0x6ffffff0
-#define DT_FLAGS_1        0x6ffffffb
-#define DT_VERDEF         0x6ffffffc
-#define DT_VERDEFNUM      0x6ffffffd
-#define DT_VERNEED        0x6ffffffe
-#define DT_VERNEEDNUM     0x6fffffff
-#define DT_X86_64_PLTENT  0x70000003
-#define DT_AUXILIARY      0x7ffffffd
-#define DT_FILTER         0x7fffffff
+#define DT_NULL             0
+#define DT_NEEDED           1
+#define DT_PLTRELSZ         2
+#define DT_PLTGOT           3
+#define DT_HASH             4
+#define DT_STRTAB           5
+#define DT_SYMTAB           6
+#define DT_RELA             7
+#define DT_RELASZ           8
+#define DT_RELAENT          9
+#define DT_STRSZ            10
+#define DT_INIT             12
+#define DT_FINI             13
+#define DT_SONAME           14
+#define DT_RPATH            15
+#define DT_SYMBOLIC         16
+#define DT_REL              17
+#define DT_RELSZ            18
+#define DT_RELENT           19
+#define DT_PLTREL           20
+#define DT_DEBUG            21
+#define DT_TEXTREL          22
+#define DT_JMPREL           23
+#define DT_BIND_NOW         24
+#define DT_RUNPATH          29
+#define DT_FLAGS            30
+#define DT_RELRSZ           35
+#define DT_RELR             36
+#define DT_RELRENT          37
+#define DT_GNU_CONFLICTSZ   0x6ffffdf6
+#define DT_GNU_LIBLISTSZ    0x6ffffdf7
+#define DT_GNU_HASH         0x6ffffef5
+#define DT_GNU_CONFLICT     0x6ffffef8
+#define DT_GNU_LIBLIST      0x6ffffef9
+#define DT_DEPAUDIT         0x6ffffefb
+#define DT_AUDIT            0x6ffffefc
+#define DT_VERSYM           0x6ffffff0
+#define DT_FLAGS_1          0x6ffffffb
+#define DT_VERDEF           0x6ffffffc
+#define DT_VERDEFNUM        0x6ffffffd
+#define DT_VERNEED          0x6ffffffe
+#define DT_VERNEEDNUM       0x6fffffff
+#define DT_X86_64_PLTENT    0x70000003
+#define DT_MIPS_LOCAL_GOTNO 0x7000000a
+#define DT_MIPS_SYMTABNO    0x70000011
+#define DT_MIPS_GOTSYM      0x70000013
+#define DT_AUXILIARY        0x7ffffffd
+#define DT_FILTER           0x7fffffff
 
 #define DF_SYMBOLIC 0x00000002
 #define DF_TEXTREL  0x00000004
@@ -311,8 +321,9 @@ struct Elf64_Shdr {
   uint64_t sh_entsize;   // Narrower in 32
 };
 
-#define SHN_UNDEF 0
-#define SHN_ABS   0xfff1
+#define SHN_UNDEF  0
+#define SHN_ABS    0xfff1
+#define SHN_COMMON 0xfff2
 
 #define SHT_PROGBITS    1
 #define SHT_SYMTAB      2
@@ -347,3 +358,5 @@ struct Elf64_Shdr {
 
 #define STV_INTERNAL 1
 #define STV_HIDDEN   2
+
+#define STO_MIPS_PLT 8

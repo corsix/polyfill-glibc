@@ -1,7 +1,7 @@
 #include "reloc_kind.h"
 #include "elf.h"
 
-enum reloc_kind reloc_kind_classifier_386(uint32_t type) {
+static enum reloc_kind reloc_kind_classifier_386(uint32_t type) {
   switch (type & 0xff) {
   case R_386_NONE:
     return reloc_kind_noop;
@@ -23,7 +23,20 @@ enum reloc_kind reloc_kind_classifier_386(uint32_t type) {
   }
 }
 
-enum reloc_kind reloc_kind_classifier_arm(uint32_t type) {
+static enum reloc_kind reloc_kind_classifier_mips(uint32_t type) {
+  switch (type & 0xff) {
+  case R_MIPS_NONE:
+    return reloc_kind_noop;
+  case R_MIPS_JUMP_SLOT:
+    return reloc_kind_class_plt;
+  case R_MIPS_COPY:
+    return reloc_kind_class_copy;
+  default:
+    return reloc_kind_regular;
+  }
+}
+
+static enum reloc_kind reloc_kind_classifier_arm(uint32_t type) {
   switch (type & 0xff) {
   case R_ARM_NONE:
     return reloc_kind_noop;
@@ -44,7 +57,7 @@ enum reloc_kind reloc_kind_classifier_arm(uint32_t type) {
   }
 }
 
-enum reloc_kind reloc_kind_classifier_x86_64(uint32_t type) {
+static enum reloc_kind reloc_kind_classifier_x86_64(uint32_t type) {
   switch (type) {
   case R_X86_64_NONE:
     return reloc_kind_noop;
@@ -66,7 +79,7 @@ enum reloc_kind reloc_kind_classifier_x86_64(uint32_t type) {
   }
 }
 
-enum reloc_kind reloc_kind_classifier_aarch64(uint32_t type) {
+static enum reloc_kind reloc_kind_classifier_aarch64(uint32_t type) {
   switch (type) {
   case R_AARCH64_NONE:
     return reloc_kind_noop;
@@ -87,7 +100,7 @@ enum reloc_kind reloc_kind_classifier_aarch64(uint32_t type) {
   }
 }
 
-enum reloc_kind reloc_kind_classifier_fallback(uint32_t type) {
+static enum reloc_kind reloc_kind_classifier_fallback(uint32_t type) {
   (void)type;
   return reloc_kind_regular;
 }
@@ -95,6 +108,7 @@ enum reloc_kind reloc_kind_classifier_fallback(uint32_t type) {
 reloc_kind_classifier reloc_kind_classifier_for_machine(uint16_t machine) {
   switch (machine) {
   case EM_386: return reloc_kind_classifier_386;
+  case EM_MIPS: case EM_MIPS_RS3_LE: return reloc_kind_classifier_mips;
   case EM_ARM: return reloc_kind_classifier_arm;
   case EM_X86_64: return reloc_kind_classifier_x86_64;
   case EM_AARCH64: return reloc_kind_classifier_aarch64;

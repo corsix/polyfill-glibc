@@ -1271,6 +1271,7 @@ static void erwNNE_(gather_sym_info_from_dsym_table)(erw_state_t* erw) {
   uint32_t count = erw->dsyms.count;
   struct ElfNN_(Sym)* syms = erw->dsyms.base;
   uint32_t i;
+  uint8_t undef_other = (erw->machine == EM_MIPS || erw->machine == EM_MIPS_RS3_LE) ? 0 : STO_MIPS_PLT;
   for (i = 0; i < count; ++i) {
     struct ElfNN_(Sym)* sym = syms + i;
     uint8_t stt = sym->st_info & 0xf;
@@ -1282,13 +1283,59 @@ static void erwNNE_(gather_sym_info_from_dsym_table)(erw_state_t* erw) {
     } else if ((1 << stt) & ((1 << STT_NOTYPE) | (1 << STT_OBJECT) | (1 << STT_FUNC) | (1 << STT_COMMON) | (1 << STT_TLS) | (1 << STT_GNU_IFUNC))) {
       if (bind == STB_GLOBAL || bind == STB_WEAK || bind == STB_GNU_UNIQUE) {
         if (sym->st_value != 0 || sym->st_shndx == Elf_bswapu16(SHN_ABS) || stt == STT_TLS) {
-          extra_flags |= SYM_INFO_EXPORTABLE;
-          if (sym->st_shndx != SHN_UNDEF)
-            extra_flags |= SYM_INFO_PLT_EXPORTABLE;
+          if (sym->st_shndx == SHN_UNDEF) {
+            if ((sym->st_other | undef_other) & STO_MIPS_PLT) {
+              extra_flags |= SYM_INFO_EXPORTABLE;
+            }
+          } else {
+            extra_flags |= SYM_INFO_EXPORTABLE | SYM_INFO_PLT_EXPORTABLE;
+          }
         }
       }
     }
     sym_info[i].flags |= extra_flags;
+  }
+}
+
+static void erwNNE_(gather_sym_info_from_mips_got)(erw_state_t* erw) {
+  struct ElfNN_(Dyn)* itr = erw->dhdrs.base;
+  struct ElfNN_(Dyn)* end = itr + erw->dhdrs.count;
+  Elf_uNN gotaddr = 0;
+  Elf_uNN local_gotno = 0;
+  Elf_uNN gotsym = 0;
+  Elf_uNN symtabno = erw->dsyms.count;
+  for (; itr != end; ++itr) {
+    switch (Elf_bswapuNN(itr->d_tag)) {
+    case DT_PLTGOT: gotaddr = Elf_bswapuNN(itr->d_un.d_ptr); break;
+    case DT_MIPS_LOCAL_GOTNO: local_gotno = Elf_bswapuNN(itr->d_un.d_val); break;
+    case DT_MIPS_SYMTABNO: symtabno = Elf_bswapuNN(itr->d_un.d_val); break;
+    case DT_MIPS_GOTSYM: gotsym = Elf_bswapuNN(itr->d_un.d_val); break;
+    }
+  }
+  gotaddr += local_gotno * sizeof(Elf_uNN);
+
+  Elf_uNN gtmp;
+  sym_info_t* sym_info = erw->dsyms.info;
+  struct ElfNN_(Sym)* syms = erw->dsyms.base;
+  for (; gotsym < symtabno; ++gotsym, gotaddr += sizeof(Elf_uNN)) {
+    struct ElfNN_(Sym)* sym = syms + gotsym;
+    uint8_t stt = sym->st_info & 0xf;
+    uint32_t shndx = Elf_bswapu16(sym->st_shndx);
+    uint32_t extra_flags = 0;
+    if (shndx == SHN_UNDEF) {
+      if (stt == STT_FUNC && sym->st_value && !(sym->st_other & STO_MIPS_PLT)) {
+        extra_flags |= SYM_INFO_RELOC_MAYBE_EAGER | SYM_INFO_RELOC_PLT;
+      } else {
+        extra_flags |= SYM_INFO_RELOC_EAGER | SYM_INFO_RELOC_REGULAR;
+      }
+    } else if (shndx == SHN_COMMON) {
+      extra_flags |= SYM_INFO_RELOC_EAGER | SYM_INFO_RELOC_REGULAR;
+    } else if (stt == STT_FUNC && (materialise_v_range_to(erw, gotaddr, sizeof(gtmp), (char*)&gtmp), printf("XXX %d %d\n", (int)gtmp, (int)sym->st_value), gtmp != sym->st_value)) {
+      extra_flags |= SYM_INFO_RELOC_MAYBE_EAGER | SYM_INFO_RELOC_PLT;
+    } else if (stt != STT_SECTION) {
+      extra_flags |= SYM_INFO_RELOC_EAGER | SYM_INFO_RELOC_REGULAR;
+    }
+    sym_info[gotsym].flags |= extra_flags;
   }
 }
 
@@ -1369,12 +1416,14 @@ static void erwNNE_(dsyms_init)(erw_state_t* erw) {
   struct ElfNN_(Dyn)* versym = NULL;
   struct ElfNN_(Dyn)* hash = NULL;
   struct ElfNN_(Dyn)* gnu_hash = NULL;
+  struct ElfNN_(Dyn)* mips_symtabno = NULL;
   for (; itr != end; ++itr) {
     switch (Elf_bswapuNN(itr->d_tag)) {
     case DT_SYMTAB: symtab = itr; break;
     case DT_VERSYM: versym = itr; break;
     case DT_HASH: hash = itr; break;
     case DT_GNU_HASH: gnu_hash = itr; break;
+    case DT_MIPS_SYMTABNO: mips_symtabno = itr; break;
     }
   }
   erw->dsyms.original_had_hash = erw->dsyms.want_hash = (hash != NULL);
@@ -1388,6 +1437,10 @@ static void erwNNE_(dsyms_init)(erw_state_t* erw) {
 
   // Infer symbol table size from various sources
   uint32_t nsym = 0;
+  if (mips_symtabno && (erw->machine == EM_MIPS || erw->machine == EM_MIPS_RS3_LE)) {
+    uint32_t n = Elf_bswapuNN(mips_symtabno->d_un.d_val);
+    if (n > nsym) nsym = n;
+  }
   if (hash) {
     uint32_t nchain = materialise_v_u32(erw, Elf_bswapuNN(hash->d_un.d_ptr) + sizeof(uint32_t));
     if (nchain > nsym) nsym = nchain;
@@ -1448,6 +1501,9 @@ static void erwNNE_(dsyms_init)(erw_state_t* erw) {
   if (hash) erwNNE_(gather_sym_info_from_hash)(erw, Elf_bswapuNN(hash->d_un.d_ptr));
   if (gnu_hash) erwNNE_(gather_sym_info_from_gnu_hash)(erw, Elf_bswapuNN(gnu_hash->d_un.d_ptr));
   erwNNE_(gather_sym_info_from_relocs)(erw);
+  if (erw->machine == EM_MIPS || erw->machine == EM_MIPS_RS3_LE) {
+    erwNNE_(gather_sym_info_from_mips_got)(erw);
+  }
 }
 
 static void erwNNE_(dsyms_clear_version)(erw_state_t* erw, sht_t* sym_names) {
