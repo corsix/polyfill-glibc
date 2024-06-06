@@ -1586,7 +1586,7 @@ static uint32_t erwNNE_(dsyms_find_or_add)(erw_state_t* erw, const char* name, u
   return nsym;
 }
 
-static int erwNNE_(dsym_sort_by_name)(const void* lhs, const void* rhs, void* ctx) {
+static int erwNNE_(dsym_sort_by_name) qsort_r_comparator(const void* lhs, const void* rhs, void* ctx) {
   erw_state_t* erw = (erw_state_t*)ctx;
   struct ElfNN_(Sym)* syms = erw->dsyms.base;
   uint32_t lhs_i = *(const uint32_t*)lhs;
@@ -1607,7 +1607,7 @@ static int erwNNE_(dsym_sort_by_name)(const void* lhs, const void* rhs, void* ct
 }
 
 void erwNNE_(dsyms_sort_indices)(erw_state_t* erw, uint32_t* indices, uint32_t count) {
-  qsort_r(indices, count, sizeof(*indices), erwNNE_(dsym_sort_by_name), erw);
+  call_qsort_r(indices, count, sizeof(*indices), erwNNE_(dsym_sort_by_name), erw);
 }
 
 static void erwNNE_(rebuild_elf_hash)(erw_state_t* erw) {

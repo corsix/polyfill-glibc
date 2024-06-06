@@ -64,7 +64,7 @@ static token_t* parse_name(token_t* t, parsed_name_t* dst, tokeniser_t* ctx) {
   return t;
 }
 
-static int compare_ver_u(const void* lhs_, const void* rhs_, void* ctx) {
+static int compare_ver_u qsort_r_comparator(const void* lhs_, const void* rhs_, void* ctx) {
   uint32_t lhs = (uint32_t)*(const uint64_t*)lhs_;
   uint32_t rhs = (uint32_t)*(const uint64_t*)rhs_;
   if (lhs == rhs) return 0;
@@ -136,7 +136,7 @@ int main(int argc, const char** argv) {
       sorted_vers[j++] = (slot >> 32) | ((uint64_t)i << 32);
     }
   }
-  qsort_r(sorted_vers, renames.count, sizeof(*sorted_vers), compare_ver_u, &renames);
+  call_qsort_r(sorted_vers, renames.count, sizeof(*sorted_vers), compare_ver_u, &renames);
   
   outbuf_t outbuf = {0};
   outbuf_emplace(&outbuf, (renames.mask + 1ull) * sizeof(uint64_t));
