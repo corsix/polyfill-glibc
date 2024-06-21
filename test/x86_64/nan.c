@@ -18,7 +18,7 @@ typedef union {
 } u__float80;
 
 typedef union {
-  __float128 f;
+  _Float128 f;
   uint16_t u16[8];
   uint64_t u64[2];
 } u__float128;
@@ -77,6 +77,34 @@ static void test_issignaling(void* lib) {
   }
 }
 
+#ifdef TEST_AARCH64
+static void test_issignalingl(void* lib) {
+  int (*fn)(long double);
+  fn = dlvsym(lib, "__issignalingl", "POLYFILL");
+  if (!fn) {
+    fn = dlsym(lib, "__issignalingl");
+    if (!fn) {
+      FATAL("Could not find __issignalingl");
+    }
+  }
+
+  u__float128 x;
+  x.u64[0] = 0;
+  for (uint64_t s = 0; s <= 1; ++s) {
+    for (int16_t exp = -2; exp <= 2; ++exp) {
+      for (uint64_t m111 = 0; m111 <= 1; ++m111) {
+        x.u64[1] = (s << 63) | ((exp & 0x7fffull) << 48) | (m111 << 47);
+        ASSERT(fn(x.f) == 0);
+        for (uint32_t m = 0; m < 111; ++m) {
+          x.u64[m >> 6] ^= (1ull << (m & 0x3f));
+          ASSERT(fn(x.f) == ((m111 == 0) && (exp == -1)));
+          x.u64[m >> 6] ^= (1ull << (m & 0x3f));
+        }
+      }
+    }
+  }
+}
+#else
 static void test_issignalingl(void* lib) {
   int (*fn)(long double);
   fn = dlvsym(lib, "__issignalingl", "POLYFILL");
@@ -105,9 +133,11 @@ static void test_issignalingl(void* lib) {
     }
   }
 }
+#endif
 
+#ifndef TEST_AARCH64
 static void test_isnanf128(void* lib) {
-  int (*fn)(__float128);
+  int (*fn)(_Float128);
   fn = dlvsym(lib, "__isnanf128", "POLYFILL");
   if (!fn) {
     fn = dlsym(lib, "__isnanf128");
@@ -131,12 +161,15 @@ static void test_isnanf128(void* lib) {
     }
   }
 }
+#endif
 
 int main(int argc, const char** argv) {
   ASSERT(argc >= 2);
   void* lib = dlopen(argv[1], RTLD_LAZY | RTLD_LOCAL);
   if (!lib) FATAL("Could not dlopen %s", argv[1]);
+#ifndef TEST_AARCH64
   test_isnanf128(lib);
+#endif
   test_issignalingf(lib);
   test_issignaling(lib);
   test_issignalingl(lib);

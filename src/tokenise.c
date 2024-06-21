@@ -223,6 +223,7 @@ void tokeniser_run(tokeniser_t* self) {
     SIMPLE_PUNCT('^')
     SIMPLE_PUNCT('%')
     SIMPLE_PUNCT('@')
+    SIMPLE_PUNCT('#')
 #undef SIMPLE_PUNCT
 #define PUNCT_SINGLE_FLAG(c_, possible) \
     case c_: \

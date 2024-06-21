@@ -1,6 +1,6 @@
 ## Limitations of polyfill-glibc
 
-Currently, the `--target-glibc` operation of polyfill-glibc is only implemented for x86_64. If other architectures are of interest to you, open a GitHub issue so that we can gauge interest. Note that lower level operations, for example `--set-rpath`, are implemented for all architectures.
+Currently, the `--target-glibc` operation of polyfill-glibc is only implemented for x86_64 and aarch64. If other architectures are of interest to you, open a GitHub issue so that we can gauge interest. Note that lower level operations, for example `--set-rpath`, are implemented for all architectures.
 
 Polyfills have not yet been written for every glibc function. If you're hitting such a case, open a GitHub issue so that we can gauge interest.
 

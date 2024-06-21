@@ -74,6 +74,26 @@ static void test_getrandom(void* lib, bool good) {
   }
 }
 
+static void test_arc4random(void* lib) {
+  uint32_t (*fn)(void);
+  fn = dlvsym(lib, "arc4random", "POLYFILL");
+  if (!fn) {
+    fn = dlvsym(lib, "arc4random", "GLIBC_2.36");
+    if (!fn) {
+      FATAL("Could not find arc4random");
+    }
+  }
+  uint32_t seen1 = 0;
+  uint32_t seen0 = 0;
+  for (uint32_t i = 0;; ++i) {
+    uint32_t val = fn();
+    seen1 |= val;
+    seen0 |= ~val;
+    if (!~(seen0 & seen1)) break;
+    ASSERT(i < 1000);
+  }
+}
+
 static void test_arc4random_uniform(void* lib) {
   uint32_t (*fn)(uint32_t);
   fn = dlvsym(lib, "arc4random_uniform", "POLYFILL");
@@ -101,10 +121,16 @@ int main(int argc, const char** argv) {
   if (!lib) FATAL("Could not dlopen %s", argv[1]);
   test_getentropy(lib, true);
   test_getrandom(lib, true);
+  test_arc4random(lib);
   test_arc4random_uniform(lib);
+#ifdef TEST_AARCH64
+  set_one_syscall_filter(0x116, ENOSYS); // __NR_getrandom
+#else
   set_one_syscall_filter(318, ENOSYS); // __NR_getrandom
+#endif
   test_getentropy(lib, false);
   test_getrandom(lib, false);
+  test_arc4random(lib);
   test_arc4random_uniform(lib);
   
   FILE* f = argv[2] ? fopen(argv[2], "w") : stdout;

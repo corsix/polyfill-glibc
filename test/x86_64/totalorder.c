@@ -18,7 +18,7 @@ typedef union {
 } u__float80;
 
 typedef union {
-  __float128 f;
+  _Float128 f;
   uint16_t u16[8];
   uint64_t u64[2];
 } u__float128;
@@ -79,6 +79,7 @@ static void test_totalorder_f64ptr(void* lib) {
   }
 }
 
+#ifndef TEST_AARCH64
 static void test_totalorder_f80ptr(void* lib) {
   int (*fn)(long double*, long double*);
   fn = dlvsym(lib, "totalorder_f80ptr", "POLYFILL");
@@ -113,9 +114,10 @@ static void test_totalorder_f80ptr(void* lib) {
     }
   }
 }
+#endif
 
 static void test_totalorder_f128ptr(void* lib) {
-  int (*fn)(__float128*, __float128*);
+  int (*fn)(_Float128*, _Float128*);
   fn = dlvsym(lib, "totalorder_f128ptr", "POLYFILL");
   if (!fn) {
     fn = dlvsym(lib, "totalorderf128", "GLIBC_2.31");
@@ -195,6 +197,7 @@ static void test_totalordermag_f64ptr(void* lib) {
   }
 }
 
+#ifndef TEST_AARCH64
 static void test_totalordermag_f80ptr(void* lib) {
   int (*fn)(long double*, long double*);
   fn = dlvsym(lib, "totalordermag_f80ptr", "POLYFILL");
@@ -224,9 +227,10 @@ static void test_totalordermag_f80ptr(void* lib) {
     }
   }
 }
+#endif
 
 static void test_totalordermag_f128ptr(void* lib) {
-  int (*fn)(__float128*, __float128*);
+  int (*fn)(_Float128*, _Float128*);
   fn = dlvsym(lib, "totalordermag_f128ptr", "POLYFILL");
   if (!fn) {
     fn = dlvsym(lib, "totalordermagf128", "GLIBC_2.31");
@@ -261,11 +265,15 @@ int main(int argc, const char** argv) {
   if (!lib) FATAL("Could not dlopen %s", argv[1]);
   test_totalorder_f32ptr(lib);
   test_totalorder_f64ptr(lib);
+#ifndef TEST_AARCH64
   test_totalorder_f80ptr(lib);
+#endif
   test_totalorder_f128ptr(lib);
   test_totalordermag_f32ptr(lib);
   test_totalordermag_f64ptr(lib);
+#ifndef TEST_AARCH64
   test_totalordermag_f80ptr(lib);
+#endif
   test_totalordermag_f128ptr(lib);
 
   FILE* f = argv[2] ? fopen(argv[2], "w") : stdout;

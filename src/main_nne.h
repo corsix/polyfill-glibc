@@ -61,6 +61,17 @@ static void erwNNE_(print_imported_libs)(erw_state_t* erw) {
   }
 }
 
+void print_eh_frame_hdr_at(erw_state_t* erw, uint64_t vaddr);
+
+static void erwNNE_(action_print_eh_frame)(erw_state_t* erw) {
+  struct ElfNN_(Phdr)* hdr = erw_phdrs_find_first(erw, PT_GNU_EH_FRAME);
+  if (hdr) {
+    print_eh_frame_hdr_at(erw, Elf_bswapuNN(hdr->p_vaddr));
+  } else {
+    printf("No PT_GNU_EH_FRAME present\n");
+  }
+}
+
 static void erwNNE_(action_print_exports)(erw_state_t* erw) {
   {
     if (!erw->dhdrs.base) erw_dhdrs_init(erw);

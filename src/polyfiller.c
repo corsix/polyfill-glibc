@@ -1,6 +1,7 @@
 #include "polyfiller.h"
 #include "elf.h"
 
+extern const polyfiller_fns_t polyfiller_fns_aarch64;
 extern const polyfiller_fns_t polyfiller_fns_x86_64;
 
 void* noop_init(erw_state_t* erw, renamer_t* renamer, enum polyfiller_cfi_mode cfi_mode) {
@@ -39,9 +40,9 @@ const polyfiller_fns_t polyfiller_fns_noop = {
 };
 
 const polyfiller_fns_t* polyfiller_for_machine(uint16_t machine) {
-  if (machine == EM_X86_64) {
-    return &polyfiller_fns_x86_64;
-  } else {
-    return &polyfiller_fns_noop;
+  switch (machine) {
+  case EM_AARCH64: return &polyfiller_fns_aarch64;
+  case EM_X86_64: return &polyfiller_fns_x86_64;
+  default: return &polyfiller_fns_noop;
   }
 }

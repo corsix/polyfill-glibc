@@ -37,7 +37,7 @@ $ ./polyfill-glibc --target-glibc=2.17 /path/to/my-program
 
 If running it _isn't_ this simple, then open a GitHub issue describing why not, and we'll try to improve things.
 
-Note that at present, the `--target-glibc` operation of polyfill-glibc is only implemented for x86_64. If other architectures are of interest to you, open a GitHub issue so that we can gauge demand.
+Note that at present, the `--target-glibc` operation of polyfill-glibc is only implemented for x86_64 and aarch64. If other architectures are of interest to you, open a GitHub issue so that we can gauge demand.
 
 If distributing shared libraries, polyfill-glibc can also be used to inspect dependencies (with the `--print-imports` and `--print-exports` operations), and to modify how shared libraries are loaded (with the `--set-rpath`, `--set-runpath`, and `--set-soname` operations). Consult [the documentation](docs/Command_line_options.md) for a full list of command line options.
 

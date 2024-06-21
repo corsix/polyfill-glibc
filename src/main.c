@@ -235,6 +235,13 @@ static void action_print_interpreter(erw_state_t* erw, cmdline_action_t* act) {
   }
 }
 
+static void action_print_eh_frame(erw_state_t* erw, cmdline_action_t* act) {
+  if (erw->retry) return;
+  act->arg.fn = act->fn;
+  act->fn = action_inert;
+  call_erwNNE_(action_print_eh_frame, erw);
+}
+
 static void action_print_exports(erw_state_t* erw, cmdline_action_t* act) {
   if (erw->retry) return;
   act->arg.fn = act->fn;
@@ -760,6 +767,7 @@ static const cmdline_def_t g_cmdline_actions[] = {
   {"--add-rpath",             action_add_rpath,             parse_arg_string},
   {"--add-runpath",           action_add_runpath,           parse_arg_string},
   {"--clear-symbol-version",  action_clear_symbol_version,  parse_clear_symbol_version},
+  {"--print-eh-frame",        action_print_eh_frame,        NULL},
   {"--print-exports",         action_print_exports,         NULL},
   {"--print-flags",           action_print_flags,           NULL},
   {"--print-imports",         action_print_imports,         NULL},
@@ -839,7 +847,7 @@ static void write_out_to(const uint8_t* data, size_t size, const char* path) {
 static bool init_from_empty(erw_state_t* erw, cmdline_options_t* opt, const char* which) {
   char buf[sizeof(struct Elf64_Ehdr)];
   size_t size;
-  if (strcmp(which, "x86_64") == 0) {
+  if (strcmp(which, "aarch64") == 0 || strcmp(which, "x86_64") == 0) {
     struct Elf64_Ehdr* h = (struct Elf64_Ehdr*)buf;
     memset(h, 0, (size = sizeof(*h)));
     memcpy(&h->e_ident[0], "\177ELF", 4);
@@ -847,7 +855,14 @@ static bool init_from_empty(erw_state_t* erw, cmdline_options_t* opt, const char
     h->e_ident[5] = 1; // Little endian
     h->e_ident[6] = 1;
     *(uint8_t*)&h->e_type = ET_DYN;
-    *(uint8_t*)&h->e_machine = EM_X86_64;
+    if (strcmp(which, "aarch64") == 0) {
+      *(uint8_t*)&h->e_machine = EM_AARCH64;
+      if (opt->guest_page_size == 0) {
+        opt->guest_page_size = 0x10000;
+      }
+    } else {
+      *(uint8_t*)&h->e_machine = EM_X86_64;
+    }
     *(uint8_t*)&h->e_version = 1;
     *(uint8_t*)&h->e_ehsize = sizeof(*h);
     *(uint8_t*)&h->e_phentsize = sizeof(struct Elf64_Phdr);

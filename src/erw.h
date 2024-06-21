@@ -10,6 +10,7 @@ struct sht_t;
 enum erw_alloc_category {
   erw_alloc_category_f,
   erw_alloc_category_v_r,
+  erw_alloc_category_v_r_near_x,
   erw_alloc_category_v_rx,
   erw_alloc_category_v_rw,
   erw_alloc_category_v_rw_zero,

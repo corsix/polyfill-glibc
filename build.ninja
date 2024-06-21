@@ -16,8 +16,19 @@ rule run_polyfill_glibc_txt
 rule run_polyfill_glibc
   command = ./polyfill-glibc --output $out $in $link_opt
 
-build polyfill-glibc: link build/main.o build/renamer.o build/polyfiller.o build/x86_64/polyfiller.o build/erw.o build/v2f.o build/tokenise.o build/sht.o build/uuht.o build/arena.o build/reloc_kind.o build/common.o
+build polyfill-glibc: link build/main.o build/renamer.o build/polyfiller.o build/aarch64/polyfiller.o build/x86_64/polyfiller.o build/print_eh_frame.o build/erw.o build/v2f.o build/tokenise.o build/sht.o build/uuht.o build/arena.o build/reloc_kind.o build/common.o
 default polyfill-glibc
+build build/aarch64/polyfills.so: create_polyfill_so polyfill-glibc
+  arch = aarch64
+  target_glibc = 2.17
+build build/aarch64/polyfiller.o: cc src/aarch64/polyfiller.c | build/aarch64/assembled_gen.h
+build build/aarch64/assembled_gen.h: run build/aarch64/assembler src/aarch64/_init.s src/aarch64/atexit.s src/aarch64/c11_thread.s src/aarch64/fatal.s src/aarch64/glibc_2_18.s src/aarch64/glibc_2_25.s src/aarch64/glibc_2_26.s src/aarch64/glibc_2_30.s src/aarch64/glibc_2_31.s src/aarch64/glibc_2_34.s src/aarch64/glibc_2_36.s src/aarch64/stdbit.s src/aarch64/syscalls.s src/aarch64/syscalls_ac.s
+build build/aarch64/assembler: link build/aarch64/assembler.o build/tokenise.o build/sht.o build/uuht.o build/common.o
+build build/aarch64/assembler.o: cc src/aarch64/assembler.c | build/aarch64/assembler_gen.h
+build build/aarch64/assembler_gen.h: run build/aarch64/build_assembler src/aarch64/insn_encoding.txt
+build build/aarch64/build_assembler: link build/aarch64/build_assembler.o build/tokenise.o build/sht.o build/uuht.o
+build build/aarch64/build_assembler.o: cc src/aarch64/build_assembler.c
+build build/aarch64/renames.h: run build/parse_renames src/aarch64/renames.txt
 build build/x86_64/polyfills.so: create_polyfill_so polyfill-glibc
   arch = x86_64
   target_glibc = 2.3.2
@@ -39,9 +50,10 @@ build build/x86_64/set_relative_interp: link build/x86_64/set_relative_interp.o 
 build build/x86_64/set_relative_interp.o: cc src/x86_64/set_relative_interp.c | build/x86_64/relative_interp_payload.h
 build build/polyfiller.o: cc src/polyfiller.c
 build build/main.o: cc src/main.c
-build build/renamer.o: cc src/renamer.c | build/x86_64/renames.h
+build build/renamer.o: cc src/renamer.c | build/aarch64/renames.h build/x86_64/renames.h
 build build/parse_renames: link build/parse_renames.o build/tokenise.o build/sht.o build/common.o
 build build/parse_renames.o: cc src/parse_renames.c
+build build/print_eh_frame.o: cc src/print_eh_frame.c
 build build/erw.o: cc src/erw.c
 build build/v2f.o: cc src/v2f.c
 build build/tokenise.o: cc src/tokenise.c
@@ -50,6 +62,35 @@ build build/uuht.o: cc src/uuht.c
 build build/arena.o: cc src/arena.c
 build build/reloc_kind.o: cc src/reloc_kind.c
 build build/common.o: cc src/common.c
+
+build build/aarch64/test/arc4random.txt: run build/aarch64/test/arc4random build/aarch64/polyfills.so
+build build/aarch64/test/arc4random: link build/aarch64/test/arc4random.o build/test/syscall_filter.o
+  link_opt = -ldl
+build build/aarch64/test/arc4random.o: cc test/aarch64/arc4random.c
+
+build build/aarch64/test/memfd_pread_pwrite.txt: run build/aarch64/test/memfd_pread_pwrite build/aarch64/polyfills.so
+build build/aarch64/test/memfd_pread_pwrite: link build/aarch64/test/memfd_pread_pwrite.o build/test/syscall_filter.o
+  link_opt = -ldl
+build build/aarch64/test/memfd_pread_pwrite.o: cc test/aarch64/memfd_pread_pwrite.c
+
+build build/aarch64/test/nan.txt: run build/aarch64/test/nan build/aarch64/polyfills.so
+build build/aarch64/test/nan: link build/aarch64/test/nan.o
+  link_opt = -ldl
+build build/aarch64/test/nan.o: cc test/aarch64/nan.c
+
+build build/aarch64/test/stdbit.txt: run build/aarch64/test/stdbit build/aarch64/polyfills.so
+build build/aarch64/test/stdbit: link build/aarch64/test/stdbit.o
+  link_opt = -ldl
+build build/aarch64/test/stdbit.o: cc test/aarch64/stdbit.c
+
+build build/aarch64/test/totalorder.txt: run build/aarch64/test/totalorder build/aarch64/polyfills.so
+build build/aarch64/test/totalorder: link build/aarch64/test/totalorder.o
+  link_opt = -ldl
+build build/aarch64/test/totalorder.o: cc test/aarch64/totalorder.c
+
+build build/aarch64/test/twalk_r.txt: run build/x86_64/test/twalk_r build/aarch64/polyfills.so
+
+build test/aarch64: phony build/aarch64/test/arc4random.txt build/aarch64/test/memfd_pread_pwrite.txt build/aarch64/test/nan.txt build/aarch64/test/stdbit.txt build/aarch64/test/totalorder.txt build/aarch64/test/twalk_r.txt
 
 build build/x86_64/test/arc4random.txt: run build/x86_64/test/arc4random build/x86_64/polyfills.so
 build build/x86_64/test/arc4random: link build/x86_64/test/arc4random.o build/test/syscall_filter.o
@@ -60,6 +101,11 @@ build build/x86_64/test/glibc_2_38.txt: run build/x86_64/test/glibc_2_38 build/x
 build build/x86_64/test/glibc_2_38: link build/x86_64/test/glibc_2_38.o
   link_opt = -ldl
 build build/x86_64/test/glibc_2_38.o: cc test/x86_64/glibc_2_38.c
+
+build build/x86_64/test/memfd_pread_pwrite.txt: run build/x86_64/test/memfd_pread_pwrite build/x86_64/polyfills.so
+build build/x86_64/test/memfd_pread_pwrite: link build/x86_64/test/memfd_pread_pwrite.o build/test/syscall_filter.o
+  link_opt = -ldl
+build build/x86_64/test/memfd_pread_pwrite.o: cc test/x86_64/memfd_pread_pwrite.c
 
 build build/x86_64/test/nan.txt: run build/x86_64/test/nan build/x86_64/polyfills.so
 build build/x86_64/test/nan: link build/x86_64/test/nan.o
@@ -86,7 +132,7 @@ build build/x86_64/test/twalk_r: link build/x86_64/test/twalk_r.o
   link_opt = -ldl
 build build/x86_64/test/twalk_r.o: cc test/x86_64/twalk_r.c
 
-build test/x86_64: phony build/x86_64/test/arc4random.txt build/x86_64/test/glibc_2_38.txt build/x86_64/test/qsort_r.txt build/x86_64/test/stdbit.txt build/x86_64/test/totalorder.txt build/x86_64/test/twalk_r.txt
+build test/x86_64: phony build/x86_64/test/arc4random.txt build/x86_64/test/glibc_2_38.txt build/x86_64/test/qsort_r.txt build/x86_64/test/memfd_pread_pwrite.txt build/x86_64/test/nan.txt build/x86_64/test/stdbit.txt build/x86_64/test/totalorder.txt build/x86_64/test/twalk_r.txt
 
 build build/test/getauxval.txt: run build/test/getauxval_pf build/test/getauxval_imp.txt build/test/getauxval_imp_pf.txt
 build build/test/getauxval_imp_pf.txt: run_polyfill_glibc_txt build/test/getauxval_pf | polyfill-glibc

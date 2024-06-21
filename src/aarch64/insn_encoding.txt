@@ -1,0 +1,159 @@
+// R[dnma] - either W* or X* (all R* must be consistent), toggles bit 31 if X
+// Wd - w0 through w30 or wzr, encoded in bits 0 through 4
+// Wn - w0 through w30 or wzr, encoded in bits 5 through 9
+// Wm - w0 through w30 or wzr, encoded in bits 16 through 20
+// Wa - w0 through w30 or wzr, encoded in bits 10 through 14
+// |sp - sp/wsp instead of wzr/xzr
+// |sa - optional lsl/lsr/asr by i6; shift mode in bits 22 and 23, shift amount in bits 10 through 15
+// |sl - optional lsl/lsr/asr/ror by i6; shift mode in bits 22 and 23, shift amount in bits 10 through 15
+// |xt - optional [us]xt[wx] in bits 13 through 15, shift amount in bits 10 through 12 (shift at most 4). If combined with R*, allows inconsistent width.
+// F[dnma] - floating point scalar [HSD]0-31, encoded in d/n/m/a position, set bits 23 and 22 to ftype
+// |B - [BHSD]0-31, set bits 23 and 22 to lane width
+// V[dnma] - vector register V0-31, encoded in d/n/m/a position
+// |T - .2-16[BHSD] suffix, set bit 30 if 128-bit, set bits 23 and 22 to lane width
+// |TW - .2-8[HSD] suffix, setting 30/23/22, but twice the lane width that 23/22 would normally mean
+// |Tidx_umov - .[BHSD][n] lane, Q:imm5 (bits 16 - 20) encode size and lane (like umov); sets Q, but no longet sets bits 23 and 22
+// |D1 - must be .D[1] lane, no longer sets bits 30/23/22
+// cc - condition code, encoded in bits 12 through 15
+// ccb - condition code, encoded in bits 0 through 3
+// k5 - 5-bit arith immediate in bits 16 through 20, also toggles bit 11, can negate by toggling bit 30
+// k12 - 12-bit arith immediate in bits 10 through 21, optional lsl 12 in bit 22, also toggles bits 25 and 27 and 28, can negate by toggling bit 30
+// k13 - 13-bit logical immediate in bits 10 through 22 (imms, immr, N), also toggles bits 27 and 28
+// k16 - 16-bit immediate in bits 5 through 20
+// k16l - 16-bit immediate in bits 5 through 20, lsl by multiple of 16 in bits 21/22
+// ir - immediate in bits 16 through 21
+// is - immediate in bits 10 through 15
+// ilsl - immediate for lsl
+// ib40 - immediate in bits 19 through 23, and 31 (which is also a size bit for Rd)
+// inzcv - nzcv immediate in bits 0 through 3
+// rel16 - pc-rel jump target in bits 5 through 18
+// rel21 - pc-rel jump target in bits 5 through 23
+// rel28 - pc-rel jump target in bits 0 through 25
+// rel21a - pc-rel adr target in bits 29,30 then 5 through 23
+// rel21ap - pc-page-rel adrp target in bits 29,30 then 5 through 23
+// rel21l - pc-rel load target in bits 5 through 23
+// addr[1248] - address for ldr/str; Xn|sp base, unsigned imm12 in bits 10 through 21, scaled by 1/2/4/8; preindex (with signed imm9 in bits 12 through 20) by toggling 24,11,10; postindex (with signed imm9 in bits 12 through 20) by toggling 24,10; register index (in bits 16 through 20, scale flag in 12, extend mode in 13 through 15) by toggling 24,21,11
+// addrp - address for stp/ldp; Xn|sp base, signed imm7 in bits 15 through 21, scaled by 4 or 8; preindex by toggling bit 23; postindex by toggling 23 and 24
+// addra - Xn|sp base (offset must be zero)
+// jc - for bti, c toggles bit 6, j toggles bit 7
+
+adc Rd Rn Rm          :: 0x1a000000
+add Rd Rn Rm|sa       :: 0x0b000000
+add Rd|sp Rn|sp k12   :: 0x0b000000
+add Rd|sp Rn|sp Rm|xt :: 0x0b200000
+adds Rd Rn Rm|sa      :: 0x2b000000
+adds Rd Rn|sp k12     :: 0x2b000000
+adds Rd Rn|sp Rm|xt   :: 0x2b200000
+adr Xd rel21a         :: 0x10000000
+adrp Xd rel21ap       :: 0x90000000
+and Rd Rn Rm|sl       :: 0x0a000000
+and Rd|sp Rn k13      :: 0x0a000000
+ands Rd Rn k13        :: 0x6a000000
+ands Rd Rn Rm|sl      :: 0x6a000000
+asr Wd Wn ir          :: 0x13007c00 // sbfm
+asr Xd Xn ir          :: 0x9340fc00 // sbfm
+autiasp               :: 0xd50323bf
+autib Xd Xn|sp        :: 0xdac11400
+b rel28               :: 0x14000000
+b ccb rel21           :: 0x54000000
+bic Rd Rn Rm|sl       :: 0x0a200000
+bics Rd Rn Rm|sl      :: 0x6a200000
+bl rel28              :: 0x94000000
+blr Xn                :: 0xd63f0000
+br Xn                 :: 0xd61f0000
+brk                   :: 0xd4200000
+brk k16               :: 0xd4200000
+bti                   :: 0xd503241f
+bti jc                :: 0xd503241f
+cbnz Rd rel21         :: 0x35000000
+cbz Rd rel21          :: 0x34000000
+ccmp Rn k5 inzcv cc   :: 0x7a400000
+clrex                 :: 0xd503305f
+clz Rd Rn             :: 0x5ac01000
+cmn Rn Rm|sa          :: 0x2b00001f // adds
+cmn Rn|sp k12         :: 0x2b00001f // adds
+cmn Rn|sp Rm|xt       :: 0x2b20001f // adds
+cmp Rn Rm|sa          :: 0x6b00001f // subs
+cmp Rn|sp k12         :: 0x6b00001f // subs
+cmp Rn|sp Rm|xt       :: 0x6b20001f // subs
+csel Rd Rn Rm cc      :: 0x1a800000
+csinc Rd Rn Rm cc     :: 0x1a800400
+csinv Rd Rn Rm cc     :: 0x5a800000
+csneg Rd Rn Rm cc     :: 0x5a800400
+eor Rd Rn Rm|sl       :: 0x4a000000
+eor Rd|sp Rn k13      :: 0x4a000000
+ldar Wd addra         :: 0x88dffc00
+ldar Xd addra         :: 0xc8dffc00
+ldaxr Wd addra        :: 0x885ffc00
+ldaxr Xd addra        :: 0xc85ffc00
+ldp Rd Ra addrp       :: 0x29400000
+ldpsw Xd Xa addrp     :: 0x69400000
+ldr Wd rel21l         :: 0x18000000
+ldr Xd rel21l         :: 0x58000000
+ldr Wd addr4          :: 0xb9400000
+ldr Xd addr8          :: 0xf9400000
+ldrb Wd addr1         :: 0x39400000
+ldrh Wd addr2         :: 0x79400000
+ldrsw Xd rel21l       :: 0x98000000
+ldrsw Xd addr4        :: 0xb9800000
+lsl Rd Rn Rm          :: 0x1ac02000 // lslv
+lsl Rd Rn ilsl        :: 0x53000000 // ubfm
+lsr Rd Rn Rm          :: 0x1ac02400 // lsrv
+lsr Wd Wn ir          :: 0x53007c00 // ubfm
+lsr Xd Xn ir          :: 0xd340fc00 // ubfm
+madd Rd Rn Rm Ra      :: 0x1b000000
+mov Rd kmov           :: 0x52800000 // movz
+mov Rd Rm             :: 0x2a0003e0 // orr
+mov Rd|sp k13         :: 0x2a0003e0 // orr
+mov Rd|sp Rn|sp       :: 0x11000000 // add
+movk Rd k16l          :: 0x72800000
+movn Rd k16l          :: 0x12800000
+movz Rd k16l          :: 0x52800000
+mul Rd Rn Rm          :: 0x1b007c00 // madd
+neg Rd Rm|sa          :: 0x4b0003e0 // sub
+paciasp               :: 0xd503233f
+pacib Xd Xn|sp        :: 0xdac10400
+orn Rd Rn Rm|sl       :: 0x2a200000
+orr Rd Rn Rm|sl       :: 0x2a000000
+orr Rd|sp Rn k13      :: 0x2a000000
+rbit Rd Rn            :: 0x5ac00000
+ret                   :: 0xd65f03c0
+ret Xn                :: 0xd65f0000
+sbcs Rd Rn Rm         :: 0x7a000000
+stp Rd Ra addrp       :: 0x29000000
+str Wd addr4          :: 0xb9000000
+str Xd addr8          :: 0xf9000000
+stxr Wm Wd addra      :: 0x88007c00
+stxr Wm Xd addra      :: 0xc8007c00
+sub Rd Rn Rm|sa       :: 0x4b000000
+sub Rd|sp Rn|sp k12   :: 0x4b000000
+sub Rd|sp Rn|sp Rm|xt :: 0x4b200000
+subs Rd Rn Rm|sa      :: 0x6b000000
+subs Rd Rn|sp k12     :: 0x6b000000
+subs Rd Rn|sp Rm|xt   :: 0x6b200000
+svc k16               :: 0xd4000001
+sxtw Xd Wn            :: 0x93407c00 // sbfm
+tbnz Rd ib40 rel16    :: 0x37000000
+tbz Rd ib40 rel16     :: 0x36000000
+tst Rn k13            :: 0x6a00001f // ands
+tst Rn Rm|sl          :: 0x6a00001f // ands
+ubfm Wd Wn ir is      :: 0x53000000
+ubfm Xd Xn ir is      :: 0xd3400000
+udf                   :: 0x00000000
+umull Xd Wn Wm        :: 0x9ba07c00 // umaddl
+umulh Xd Xn Xm        :: 0x9bc07c00
+
+addp Fd|B Vn|T        :: 0x1e31b800 sizes 0x80
+addp Vd|T Vn|T Vm|T   :: 0x0e20bc00 sizes 0xf7
+addv Fd|B Vn|T        :: 0x0e31b800 sizes 0x73
+cnt Vd|T Vn|T         :: 0x0e205800 sizes 0x11
+fmov Fd Fn            :: 0x1e204000 sizes 0x0b
+fmov Fd Wn            :: 0x1e270000 sizes 0x09
+fmov Fd Xn            :: 0x9e270000 sizes 0x0a
+fmov Vd|D1 Xn         :: 0x9eaf0000
+fmov Wd Fn            :: 0x1e260000 sizes 0x09
+fmov Xd Fn            :: 0x9e260000 sizes 0x0a
+fmov Xd Vn|D1         :: 0x9eae0000
+uaddlp Vd|TW Vn|T     :: 0x2e202800 sizes 0x77
+umov Wd Vn|Tidx_umov  :: 0x0e003c00 sizes 0x01
+umov Xd Vn|Tidx_umov  :: 0x0e003c00 sizes 0x10

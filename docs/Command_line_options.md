@@ -20,7 +20,7 @@ Flags that change the effect of other actions: `--output`, `--dry`, `--page-size
 
 Takes as an argument a glibc version, for example `--target-glibc=2.17`. The action identifies all dependencies that the file has on glibc functions and variables newer than the specified version, and employs [various strategies](How_does_polyfill_glibc_work.md) to remove those dependencies.
 
-Note that `--target-glibc` is currently only implemented for x86_64 files. If other architectures are of interest to you, open a GitHub issue so that we can gauge interest.
+Note that `--target-glibc` is currently only implemented for x86_64 files and aarch64 files. If other architectures are of interest to you, open a GitHub issue so that we can gauge interest.
 
 If there are any strong dependencies that `--target-glibc` cannot remove, then it'll fail and report the problematic dependencies, for example:
 
@@ -174,7 +174,7 @@ The `--polyfill-cfi` flag controls whether CFI is provided for statically linked
 
 In some cases, `--target-glibc` and `--rename-dynamic-symbols` can cause additional executable code to be statically linked into the file. For some people, this can be undesirable, and so `--create-polyfill-so` and `--use-polyfill-so` are provided instead, with the effect of putting the additional executable code in a separate shared object and then dynamically linking against that shared object.
 
-If the `--create-polyfill-so` flag is specified, then the behaviour of `--rename-dynamic-symbols` is modified: whenever `polyfill::NAME` is given as the new symbol name (regardless of whether the old symbol name is present), then `NAME@POLYFILL` is added as an _export_ to the file, with the statically linked code as the implementation of that export. The behaviour of `--target-glibc` is similarly modified: any statically linked code that _could_ be used to remove a problematic dependency (regardless of whether the problem is present) is added an _export_ to the file. The `--create-polyfill-so` flag is usually used in combination with the special input filename `empty:x86_64`, which denotes an empty ELF file. Accordingly, an invocation like the following can be used to create a shared object called `polyfills.so` with all the code required to polyfill back to glibc 2.3.2:
+If the `--create-polyfill-so` flag is specified, then the behaviour of `--rename-dynamic-symbols` is modified: whenever `polyfill::NAME` is given as the new symbol name (regardless of whether the old symbol name is present), then `NAME@POLYFILL` is added as an _export_ to the file, with the statically linked code as the implementation of that export. The behaviour of `--target-glibc` is similarly modified: any statically linked code that _could_ be used to remove a problematic dependency (regardless of whether the problem is present) is added an _export_ to the file. The `--create-polyfill-so` flag is usually used in combination with the special input filename `empty:x86_64` or `empty:aarch64`, which denotes an empty ELF file. Accordingly, an invocation like the following can be used to create a shared object called `polyfills.so` with all the code required to polyfill back to glibc 2.3.2:
 ```
 polyfill-glibc empty:x86_64 --add-hash --add-gnu-hash --create-polyfill-so --target-glibc=2.3.2 --output polyfills.so
 ```

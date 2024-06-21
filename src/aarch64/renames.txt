@@ -1,0 +1,1131 @@
+// GLIBC_2.18
+__cxa_thread_atexit_impl@GLIBC_2.18 polyfill::__cxa_thread_atexit_impl_2_18
+// TODO _mcount@GLIBC_2.18
+// TODO pthread_getattr_default_np@GLIBC_2.18
+// TODO pthread_setattr_default_np@GLIBC_2.18
+// libm
+__issignaling@GLIBC_2.18 polyfill::__issignaling
+__issignalingf@GLIBC_2.18 polyfill::__issignalingf
+__issignalingl@GLIBC_2.18 polyfill::__issignalingl
+
+// GLIBC_2.24
+quick_exit@GLIBC_2.24 polyfill::quick_exit_2_24
+// libm
+// TODO nextdown@GLIBC_2.24
+// TODO nextdownf@GLIBC_2.24
+// TODO nextdownl@GLIBC_2.24
+// TODO nextup@GLIBC_2.24
+// TODO nextupf@GLIBC_2.24
+// TODO nextupl@GLIBC_2.24
+
+// GLIBC_2.25
+explicit_bzero@GLIBC_2.25 bzero@GLIBC_2.17
+__explicit_bzero_chk@GLIBC_2.25 polyfill::__explicit_bzero_chk
+getentropy@GLIBC_2.25 polyfill::getentropy
+getrandom@GLIBC_2.25 polyfill::getrandom
+// TODO strfromd@GLIBC_2.25
+// TODO strfromf@GLIBC_2.25
+// TODO strfroml@GLIBC_2.25
+// libm
+// TODO canonicalize@GLIBC_2.25
+// TODO canonicalizef@GLIBC_2.25
+// TODO canonicalizel@GLIBC_2.25
+// TODO fegetmode@GLIBC_2.25
+// TODO fesetexcept@GLIBC_2.25
+// TODO fesetmode@GLIBC_2.25
+// TODO fetestexceptflag@GLIBC_2.25
+// TODO fmaxmag@GLIBC_2.25
+// TODO fmaxmagf@GLIBC_2.25
+// TODO fmaxmagl@GLIBC_2.25
+// TODO fminmag@GLIBC_2.25
+// TODO fminmagf@GLIBC_2.25
+// TODO fminmagl@GLIBC_2.25
+// TODO fromfp@GLIBC_2.25
+// TODO fromfpf@GLIBC_2.25
+// TODO fromfpl@GLIBC_2.25
+// TODO fromfpx@GLIBC_2.25
+// TODO fromfpxf@GLIBC_2.25
+// TODO fromfpxl@GLIBC_2.25
+// TODO getpayload@GLIBC_2.25
+// TODO getpayloadf@GLIBC_2.25
+// TODO getpayloadl@GLIBC_2.25
+// TODO __iseqsig@GLIBC_2.25
+// TODO __iseqsigf@GLIBC_2.25
+// TODO __iseqsigl@GLIBC_2.25
+// TODO llogb@GLIBC_2.25
+// TODO llogbf@GLIBC_2.25
+// TODO llogbl@GLIBC_2.25
+// TODO roundeven@GLIBC_2.25
+// TODO roundevenf@GLIBC_2.25
+// TODO roundevenl@GLIBC_2.25
+// TODO setpayload@GLIBC_2.25
+// TODO setpayloadf@GLIBC_2.25
+// TODO setpayloadl@GLIBC_2.25
+// TODO setpayloadsig@GLIBC_2.25
+// TODO setpayloadsigf@GLIBC_2.25
+// TODO setpayloadsigl@GLIBC_2.25
+// TODO totalorder@GLIBC_2.25
+// TODO totalorderf@GLIBC_2.25
+// TODO totalorderl@GLIBC_2.25
+// TODO totalordermag@GLIBC_2.25
+// TODO totalordermagf@GLIBC_2.25
+// TODO totalordermagl@GLIBC_2.25
+// TODO ufromfp@GLIBC_2.25
+// TODO ufromfpf@GLIBC_2.25
+// TODO ufromfpl@GLIBC_2.25
+// TODO ufromfpx@GLIBC_2.25
+// TODO ufromfpxf@GLIBC_2.25
+// TODO ufromfpxl@GLIBC_2.25
+
+// GLIBC_2.26
+preadv2@GLIBC_2.26 polyfill::preadv2_2_26
+preadv64v2@GLIBC_2.26 polyfill::preadv2_2_26
+pwritev2@GLIBC_2.26 polyfill::pwritev2_2_26
+pwritev64v2@GLIBC_2.26 polyfill::pwritev2_2_26
+reallocarray@GLIBC_2.26 polyfill::reallocarray
+
+// GLIBC_2.27
+copy_file_range@GLIBC_2.27 polyfill::copy_file_range_2_27
+// TODO glob@GLIBC_2.27
+// TODO glob64@GLIBC_2.27
+memfd_create@GLIBC_2.27 polyfill::memfd_create
+mlock2@GLIBC_2.27 polyfill::mlock2
+pkey_alloc@GLIBC_2.27 polyfill::pkey_alloc
+pkey_free@GLIBC_2.27 polyfill::pkey_free
+pkey_get@GLIBC_2.27 polyfill::syscall_ENOSYS
+pkey_mprotect@GLIBC_2.27 polyfill::pkey_mprotect
+pkey_set@GLIBC_2.27 polyfill::syscall_ENOSYS
+strfromf128@GLIBC_2.27 strfroml@GLIBC_2.25
+strfromf32@GLIBC_2.27 strfromf@GLIBC_2.25
+strfromf32x@GLIBC_2.27 strfromd@GLIBC_2.25
+strfromf64@GLIBC_2.27 strfromd@GLIBC_2.25
+strfromf64x@GLIBC_2.27 strfroml@GLIBC_2.25
+strtof128@GLIBC_2.27 strtold@GLIBC_2.17
+strtof128_l@GLIBC_2.27 strtold_l@GLIBC_2.17
+strtof32@GLIBC_2.27 strtof@GLIBC_2.17
+strtof32_l@GLIBC_2.27 strtof_l@GLIBC_2.17
+strtof32x@GLIBC_2.27 strtod@GLIBC_2.17
+strtof32x_l@GLIBC_2.27 strtod_l@GLIBC_2.17
+strtof64@GLIBC_2.27 strtod@GLIBC_2.17
+strtof64_l@GLIBC_2.27 strtod_l@GLIBC_2.17
+strtof64x@GLIBC_2.27 strtold@GLIBC_2.17
+strtof64x_l@GLIBC_2.27 strtold_l@GLIBC_2.17
+wcstof128@GLIBC_2.27 wcstold@GLIBC_2.17
+wcstof128_l@GLIBC_2.27 wcstold_l@GLIBC_2.17
+wcstof32@GLIBC_2.27 wcstof@GLIBC_2.17
+wcstof32_l@GLIBC_2.27 wcstof_l@GLIBC_2.17
+wcstof32x@GLIBC_2.27 wcstod@GLIBC_2.17
+wcstof32x_l@GLIBC_2.27 wcstod_l@GLIBC_2.17
+wcstof64@GLIBC_2.27 wcstod@GLIBC_2.17
+wcstof64_l@GLIBC_2.27 wcstod_l@GLIBC_2.17
+wcstof64x@GLIBC_2.27 wcstold@GLIBC_2.17
+wcstof64x_l@GLIBC_2.27 wcstold_l@GLIBC_2.17
+// libm
+acosf128@GLIBC_2.27 acosl@GLIBC_2.17
+acosf32@GLIBC_2.27 acosf@GLIBC_2.17
+acosf32x@GLIBC_2.27 acos@GLIBC_2.17
+acosf64@GLIBC_2.27 acos@GLIBC_2.17
+acosf64x@GLIBC_2.27 acosl@GLIBC_2.17
+acoshf128@GLIBC_2.27 acoshl@GLIBC_2.17
+acoshf32@GLIBC_2.27 acoshf@GLIBC_2.17
+acoshf32x@GLIBC_2.27 acosh@GLIBC_2.17
+acoshf64@GLIBC_2.27 acosh@GLIBC_2.17
+acoshf64x@GLIBC_2.27 acoshl@GLIBC_2.17
+asinf128@GLIBC_2.27 asinl@GLIBC_2.17
+asinf32@GLIBC_2.27 asinf@GLIBC_2.17
+asinf32x@GLIBC_2.27 asin@GLIBC_2.17
+asinf64@GLIBC_2.27 asin@GLIBC_2.17
+asinf64x@GLIBC_2.27 asinl@GLIBC_2.17
+asinhf128@GLIBC_2.27 asinhl@GLIBC_2.17
+asinhf32@GLIBC_2.27 asinhf@GLIBC_2.17
+asinhf32x@GLIBC_2.27 asinh@GLIBC_2.17
+asinhf64@GLIBC_2.27 asinh@GLIBC_2.17
+asinhf64x@GLIBC_2.27 asinhl@GLIBC_2.17
+atan2f128@GLIBC_2.27 atan2l@GLIBC_2.17
+atan2f32@GLIBC_2.27 atan2f@GLIBC_2.17
+atan2f32x@GLIBC_2.27 atan2@GLIBC_2.17
+atan2f64@GLIBC_2.27 atan2@GLIBC_2.17
+atan2f64x@GLIBC_2.27 atan2l@GLIBC_2.17
+atanf128@GLIBC_2.27 atanl@GLIBC_2.17
+atanf32@GLIBC_2.27 atanf@GLIBC_2.17
+atanf32x@GLIBC_2.27 atan@GLIBC_2.17
+atanf64@GLIBC_2.27 atan@GLIBC_2.17
+atanf64x@GLIBC_2.27 atanl@GLIBC_2.17
+atanhf128@GLIBC_2.27 atanhl@GLIBC_2.17
+atanhf32@GLIBC_2.27 atanhf@GLIBC_2.17
+atanhf32x@GLIBC_2.27 atanh@GLIBC_2.17
+atanhf64@GLIBC_2.27 atanh@GLIBC_2.17
+atanhf64x@GLIBC_2.27 atanhl@GLIBC_2.17
+cabsf128@GLIBC_2.27 cabsl@GLIBC_2.17
+cabsf32@GLIBC_2.27 cabsf@GLIBC_2.17
+cabsf32x@GLIBC_2.27 cabs@GLIBC_2.17
+cabsf64@GLIBC_2.27 cabs@GLIBC_2.17
+cabsf64x@GLIBC_2.27 cabsl@GLIBC_2.17
+cacosf128@GLIBC_2.27 cacosl@GLIBC_2.17
+cacosf32@GLIBC_2.27 cacosf@GLIBC_2.17
+cacosf32x@GLIBC_2.27 cacos@GLIBC_2.17
+cacosf64@GLIBC_2.27 cacos@GLIBC_2.17
+cacosf64x@GLIBC_2.27 cacosl@GLIBC_2.17
+cacoshf128@GLIBC_2.27 cacoshl@GLIBC_2.17
+cacoshf32@GLIBC_2.27 cacoshf@GLIBC_2.17
+cacoshf32x@GLIBC_2.27 cacosh@GLIBC_2.17
+cacoshf64@GLIBC_2.27 cacosh@GLIBC_2.17
+cacoshf64x@GLIBC_2.27 cacoshl@GLIBC_2.17
+canonicalizef128@GLIBC_2.27 canonicalizel@GLIBC_2.25
+canonicalizef32@GLIBC_2.27 canonicalizef@GLIBC_2.25
+canonicalizef32x@GLIBC_2.27 canonicalize@GLIBC_2.25
+canonicalizef64@GLIBC_2.27 canonicalize@GLIBC_2.25
+canonicalizef64x@GLIBC_2.27 canonicalizel@GLIBC_2.25
+cargf128@GLIBC_2.27 cargl@GLIBC_2.17
+cargf32@GLIBC_2.27 cargf@GLIBC_2.17
+cargf32x@GLIBC_2.27 carg@GLIBC_2.17
+cargf64@GLIBC_2.27 carg@GLIBC_2.17
+cargf64x@GLIBC_2.27 cargl@GLIBC_2.17
+casinf128@GLIBC_2.27 casinl@GLIBC_2.17
+casinf32@GLIBC_2.27 casinf@GLIBC_2.17
+casinf32x@GLIBC_2.27 casin@GLIBC_2.17
+casinf64@GLIBC_2.27 casin@GLIBC_2.17
+casinf64x@GLIBC_2.27 casinl@GLIBC_2.17
+casinhf128@GLIBC_2.27 casinhl@GLIBC_2.17
+casinhf32@GLIBC_2.27 casinhf@GLIBC_2.17
+casinhf32x@GLIBC_2.27 casinh@GLIBC_2.17
+casinhf64@GLIBC_2.27 casinh@GLIBC_2.17
+casinhf64x@GLIBC_2.27 casinhl@GLIBC_2.17
+catanf128@GLIBC_2.27 catanl@GLIBC_2.17
+catanf32@GLIBC_2.27 catanf@GLIBC_2.17
+catanf32x@GLIBC_2.27 catan@GLIBC_2.17
+catanf64@GLIBC_2.27 catan@GLIBC_2.17
+catanf64x@GLIBC_2.27 catanl@GLIBC_2.17
+catanhf128@GLIBC_2.27 catanhl@GLIBC_2.17
+catanhf32@GLIBC_2.27 catanhf@GLIBC_2.17
+catanhf32x@GLIBC_2.27 catanh@GLIBC_2.17
+catanhf64@GLIBC_2.27 catanh@GLIBC_2.17
+catanhf64x@GLIBC_2.27 catanhl@GLIBC_2.17
+cbrtf128@GLIBC_2.27 cbrtl@GLIBC_2.17
+cbrtf32@GLIBC_2.27 cbrtf@GLIBC_2.17
+cbrtf32x@GLIBC_2.27 cbrt@GLIBC_2.17
+cbrtf64@GLIBC_2.27 cbrt@GLIBC_2.17
+cbrtf64x@GLIBC_2.27 cbrtl@GLIBC_2.17
+ccosf128@GLIBC_2.27 ccosl@GLIBC_2.17
+ccosf32@GLIBC_2.27 ccosf@GLIBC_2.17
+ccosf32x@GLIBC_2.27 ccos@GLIBC_2.17
+ccosf64@GLIBC_2.27 ccos@GLIBC_2.17
+ccosf64x@GLIBC_2.27 ccosl@GLIBC_2.17
+ccoshf128@GLIBC_2.27 ccoshl@GLIBC_2.17
+ccoshf32@GLIBC_2.27 ccoshf@GLIBC_2.17
+ccoshf32x@GLIBC_2.27 ccosh@GLIBC_2.17
+ccoshf64@GLIBC_2.27 ccosh@GLIBC_2.17
+ccoshf64x@GLIBC_2.27 ccoshl@GLIBC_2.17
+ceilf128@GLIBC_2.27 ceill@GLIBC_2.17
+ceilf32@GLIBC_2.27 ceilf@GLIBC_2.17
+ceilf32x@GLIBC_2.27 ceil@GLIBC_2.17
+ceilf64@GLIBC_2.27 ceil@GLIBC_2.17
+ceilf64x@GLIBC_2.27 ceill@GLIBC_2.17
+cexpf128@GLIBC_2.27 cexpl@GLIBC_2.17
+cexpf32@GLIBC_2.27 cexpf@GLIBC_2.17
+cexpf32x@GLIBC_2.27 cexp@GLIBC_2.17
+cexpf64@GLIBC_2.27 cexp@GLIBC_2.17
+cexpf64x@GLIBC_2.27 cexpl@GLIBC_2.17
+cimagf128@GLIBC_2.27 cimagl@GLIBC_2.17
+cimagf32@GLIBC_2.27 cimagf@GLIBC_2.17
+cimagf32x@GLIBC_2.27 cimag@GLIBC_2.17
+cimagf64@GLIBC_2.27 cimag@GLIBC_2.17
+cimagf64x@GLIBC_2.27 cimagl@GLIBC_2.17
+clog10f128@GLIBC_2.27 clog10l@GLIBC_2.17
+clog10f32@GLIBC_2.27 clog10f@GLIBC_2.17
+clog10f32x@GLIBC_2.27 clog10@GLIBC_2.17
+clog10f64@GLIBC_2.27 clog10@GLIBC_2.17
+clog10f64x@GLIBC_2.27 clog10l@GLIBC_2.17
+clogf128@GLIBC_2.27 clogl@GLIBC_2.17
+clogf32@GLIBC_2.27 clogf@GLIBC_2.17
+clogf32x@GLIBC_2.27 clog@GLIBC_2.17
+clogf64@GLIBC_2.27 clog@GLIBC_2.17
+clogf64x@GLIBC_2.27 clogl@GLIBC_2.17
+conjf128@GLIBC_2.27 conjl@GLIBC_2.17
+conjf32@GLIBC_2.27 conjf@GLIBC_2.17
+conjf32x@GLIBC_2.27 conj@GLIBC_2.17
+conjf64@GLIBC_2.27 conj@GLIBC_2.17
+conjf64x@GLIBC_2.27 conjl@GLIBC_2.17
+copysignf128@GLIBC_2.27 copysignl@GLIBC_2.17
+copysignf32@GLIBC_2.27 copysignf@GLIBC_2.17
+copysignf32x@GLIBC_2.27 copysign@GLIBC_2.17
+copysignf64@GLIBC_2.27 copysign@GLIBC_2.17
+copysignf64x@GLIBC_2.27 copysignl@GLIBC_2.17
+cosf128@GLIBC_2.27 cosl@GLIBC_2.17
+cosf32@GLIBC_2.27 cosf@GLIBC_2.17
+cosf32x@GLIBC_2.27 cos@GLIBC_2.17
+cosf64@GLIBC_2.27 cos@GLIBC_2.17
+cosf64x@GLIBC_2.27 cosl@GLIBC_2.17
+coshf128@GLIBC_2.27 coshl@GLIBC_2.17
+coshf32@GLIBC_2.27 coshf@GLIBC_2.17
+coshf32x@GLIBC_2.27 cosh@GLIBC_2.17
+coshf64@GLIBC_2.27 cosh@GLIBC_2.17
+coshf64x@GLIBC_2.27 coshl@GLIBC_2.17
+cpowf128@GLIBC_2.27 cpowl@GLIBC_2.17
+cpowf32@GLIBC_2.27 cpowf@GLIBC_2.17
+cpowf32x@GLIBC_2.27 cpow@GLIBC_2.17
+cpowf64@GLIBC_2.27 cpow@GLIBC_2.17
+cpowf64x@GLIBC_2.27 cpowl@GLIBC_2.17
+cprojf128@GLIBC_2.27 cprojl@GLIBC_2.17
+cprojf32@GLIBC_2.27 cprojf@GLIBC_2.17
+cprojf32x@GLIBC_2.27 cproj@GLIBC_2.17
+cprojf64@GLIBC_2.27 cproj@GLIBC_2.17
+cprojf64x@GLIBC_2.27 cprojl@GLIBC_2.17
+crealf128@GLIBC_2.27 creall@GLIBC_2.17
+crealf32@GLIBC_2.27 crealf@GLIBC_2.17
+crealf32x@GLIBC_2.27 creal@GLIBC_2.17
+crealf64@GLIBC_2.27 creal@GLIBC_2.17
+crealf64x@GLIBC_2.27 creall@GLIBC_2.17
+csinf128@GLIBC_2.27 csinl@GLIBC_2.17
+csinf32@GLIBC_2.27 csinf@GLIBC_2.17
+csinf32x@GLIBC_2.27 csin@GLIBC_2.17
+csinf64@GLIBC_2.27 csin@GLIBC_2.17
+csinf64x@GLIBC_2.27 csinl@GLIBC_2.17
+csinhf128@GLIBC_2.27 csinhl@GLIBC_2.17
+csinhf32@GLIBC_2.27 csinhf@GLIBC_2.17
+csinhf32x@GLIBC_2.27 csinh@GLIBC_2.17
+csinhf64@GLIBC_2.27 csinh@GLIBC_2.17
+csinhf64x@GLIBC_2.27 csinhl@GLIBC_2.17
+csqrtf128@GLIBC_2.27 csqrtl@GLIBC_2.17
+csqrtf32@GLIBC_2.27 csqrtf@GLIBC_2.17
+csqrtf32x@GLIBC_2.27 csqrt@GLIBC_2.17
+csqrtf64@GLIBC_2.27 csqrt@GLIBC_2.17
+csqrtf64x@GLIBC_2.27 csqrtl@GLIBC_2.17
+ctanf128@GLIBC_2.27 ctanl@GLIBC_2.17
+ctanf32@GLIBC_2.27 ctanf@GLIBC_2.17
+ctanf32x@GLIBC_2.27 ctan@GLIBC_2.17
+ctanf64@GLIBC_2.27 ctan@GLIBC_2.17
+ctanf64x@GLIBC_2.27 ctanl@GLIBC_2.17
+ctanhf128@GLIBC_2.27 ctanhl@GLIBC_2.17
+ctanhf32@GLIBC_2.27 ctanhf@GLIBC_2.17
+ctanhf32x@GLIBC_2.27 ctanh@GLIBC_2.17
+ctanhf64@GLIBC_2.27 ctanh@GLIBC_2.17
+ctanhf64x@GLIBC_2.27 ctanhl@GLIBC_2.17
+erfcf128@GLIBC_2.27 erfcl@GLIBC_2.17
+erfcf32@GLIBC_2.27 erfcf@GLIBC_2.17
+erfcf32x@GLIBC_2.27 erfc@GLIBC_2.17
+erfcf64@GLIBC_2.27 erfc@GLIBC_2.17
+erfcf64x@GLIBC_2.27 erfcl@GLIBC_2.17
+erff128@GLIBC_2.27 erfl@GLIBC_2.17
+erff32@GLIBC_2.27 erff@GLIBC_2.17
+erff32x@GLIBC_2.27 erf@GLIBC_2.17
+erff64@GLIBC_2.27 erf@GLIBC_2.17
+erff64x@GLIBC_2.27 erfl@GLIBC_2.17
+exp10f128@GLIBC_2.27 exp10l@GLIBC_2.17
+exp10f32@GLIBC_2.27 exp10f@GLIBC_2.17
+exp10f32x@GLIBC_2.27 exp10@GLIBC_2.17
+exp10f64@GLIBC_2.27 exp10@GLIBC_2.17
+exp10f64x@GLIBC_2.27 exp10l@GLIBC_2.17
+exp2f@GLIBC_2.27 exp2f
+exp2f128@GLIBC_2.27 exp2l@GLIBC_2.17
+exp2f32@GLIBC_2.27 exp2f@GLIBC_2.27
+exp2f32x@GLIBC_2.27 exp2@GLIBC_2.17
+exp2f64@GLIBC_2.27 exp2@GLIBC_2.17
+exp2f64x@GLIBC_2.27 exp2l@GLIBC_2.17
+expf@GLIBC_2.27 expf
+expf128@GLIBC_2.27 expl@GLIBC_2.17
+expf32@GLIBC_2.27 expf@GLIBC_2.27
+expf32x@GLIBC_2.27 exp@GLIBC_2.17
+expf64@GLIBC_2.27 exp@GLIBC_2.17
+expf64x@GLIBC_2.27 expl@GLIBC_2.17
+expm1f128@GLIBC_2.27 expm1l@GLIBC_2.17
+expm1f32@GLIBC_2.27 expm1f@GLIBC_2.17
+expm1f32x@GLIBC_2.27 expm1@GLIBC_2.17
+expm1f64@GLIBC_2.27 expm1@GLIBC_2.17
+expm1f64x@GLIBC_2.27 expm1l@GLIBC_2.17
+fabsf128@GLIBC_2.27 fabsl@GLIBC_2.17
+fabsf32@GLIBC_2.27 fabsf@GLIBC_2.17
+fabsf32x@GLIBC_2.27 fabs@GLIBC_2.17
+fabsf64@GLIBC_2.27 fabs@GLIBC_2.17
+fabsf64x@GLIBC_2.27 fabsl@GLIBC_2.17
+fdimf128@GLIBC_2.27 fdiml@GLIBC_2.17
+fdimf32@GLIBC_2.27 fdimf@GLIBC_2.17
+fdimf32x@GLIBC_2.27 fdim@GLIBC_2.17
+fdimf64@GLIBC_2.27 fdim@GLIBC_2.17
+fdimf64x@GLIBC_2.27 fdiml@GLIBC_2.17
+floorf128@GLIBC_2.27 floorl@GLIBC_2.17
+floorf32@GLIBC_2.27 floorf@GLIBC_2.17
+floorf32x@GLIBC_2.27 floor@GLIBC_2.17
+floorf64@GLIBC_2.27 floor@GLIBC_2.17
+floorf64x@GLIBC_2.27 floorl@GLIBC_2.17
+fmaf128@GLIBC_2.27 fmal@GLIBC_2.17
+fmaf32@GLIBC_2.27 fmaf@GLIBC_2.17
+fmaf32x@GLIBC_2.27 fma@GLIBC_2.17
+fmaf64@GLIBC_2.27 fma@GLIBC_2.17
+fmaf64x@GLIBC_2.27 fmal@GLIBC_2.17
+fmaxf128@GLIBC_2.27 fmaxl@GLIBC_2.17
+fmaxf32@GLIBC_2.27 fmaxf@GLIBC_2.17
+fmaxf32x@GLIBC_2.27 fmax@GLIBC_2.17
+fmaxf64@GLIBC_2.27 fmax@GLIBC_2.17
+fmaxf64x@GLIBC_2.27 fmaxl@GLIBC_2.17
+fmaxmagf128@GLIBC_2.27 fmaxmagl@GLIBC_2.25
+fmaxmagf32@GLIBC_2.27 fmaxmagf@GLIBC_2.25
+fmaxmagf32x@GLIBC_2.27 fmaxmag@GLIBC_2.25
+fmaxmagf64@GLIBC_2.27 fmaxmag@GLIBC_2.25
+fmaxmagf64x@GLIBC_2.27 fmaxmagl@GLIBC_2.25
+fminf128@GLIBC_2.27 fminl@GLIBC_2.17
+fminf32@GLIBC_2.27 fminf@GLIBC_2.17
+fminf32x@GLIBC_2.27 fmin@GLIBC_2.17
+fminf64@GLIBC_2.27 fmin@GLIBC_2.17
+fminf64x@GLIBC_2.27 fminl@GLIBC_2.17
+fminmagf128@GLIBC_2.27 fminmagl@GLIBC_2.25
+fminmagf32@GLIBC_2.27 fminmagf@GLIBC_2.25
+fminmagf32x@GLIBC_2.27 fminmag@GLIBC_2.25
+fminmagf64@GLIBC_2.27 fminmag@GLIBC_2.25
+fminmagf64x@GLIBC_2.27 fminmagl@GLIBC_2.25
+fmodf128@GLIBC_2.27 fmodl@GLIBC_2.17
+fmodf32@GLIBC_2.27 fmodf@GLIBC_2.17
+fmodf32x@GLIBC_2.27 fmod@GLIBC_2.17
+fmodf64@GLIBC_2.27 fmod@GLIBC_2.17
+fmodf64x@GLIBC_2.27 fmodl@GLIBC_2.17
+frexpf128@GLIBC_2.27 frexpl@GLIBC_2.17
+frexpf32@GLIBC_2.27 frexpf@GLIBC_2.17
+frexpf32x@GLIBC_2.27 frexp@GLIBC_2.17
+frexpf64@GLIBC_2.27 frexp@GLIBC_2.17
+frexpf64x@GLIBC_2.27 frexpl@GLIBC_2.17
+fromfpf128@GLIBC_2.27 fromfpl@GLIBC_2.25
+fromfpf32@GLIBC_2.27 fromfpf@GLIBC_2.25
+fromfpf32x@GLIBC_2.27 fromfp@GLIBC_2.25
+fromfpf64@GLIBC_2.27 fromfp@GLIBC_2.25
+fromfpf64x@GLIBC_2.27 fromfpl@GLIBC_2.25
+fromfpxf128@GLIBC_2.27 fromfpxl@GLIBC_2.25
+fromfpxf32@GLIBC_2.27 fromfpxf@GLIBC_2.25
+fromfpxf32x@GLIBC_2.27 fromfpx@GLIBC_2.25
+fromfpxf64@GLIBC_2.27 fromfpx@GLIBC_2.25
+fromfpxf64x@GLIBC_2.27 fromfpxl@GLIBC_2.25
+getpayloadf128@GLIBC_2.27 getpayloadl@GLIBC_2.25
+getpayloadf32@GLIBC_2.27 getpayloadf@GLIBC_2.25
+getpayloadf32x@GLIBC_2.27 getpayload@GLIBC_2.25
+getpayloadf64@GLIBC_2.27 getpayload@GLIBC_2.25
+getpayloadf64x@GLIBC_2.27 getpayloadl@GLIBC_2.25
+hypotf128@GLIBC_2.27 hypotl@GLIBC_2.17
+hypotf32@GLIBC_2.27 hypotf@GLIBC_2.17
+hypotf32x@GLIBC_2.27 hypot@GLIBC_2.17
+hypotf64@GLIBC_2.27 hypot@GLIBC_2.17
+hypotf64x@GLIBC_2.27 hypotl@GLIBC_2.17
+ilogbf128@GLIBC_2.27 ilogbl@GLIBC_2.17
+ilogbf32@GLIBC_2.27 ilogbf@GLIBC_2.17
+ilogbf32x@GLIBC_2.27 ilogb@GLIBC_2.17
+ilogbf64@GLIBC_2.27 ilogb@GLIBC_2.17
+ilogbf64x@GLIBC_2.27 ilogbl@GLIBC_2.17
+j0f128@GLIBC_2.27 j0l@GLIBC_2.17
+j0f32@GLIBC_2.27 j0f@GLIBC_2.17
+j0f32x@GLIBC_2.27 j0@GLIBC_2.17
+j0f64@GLIBC_2.27 j0@GLIBC_2.17
+j0f64x@GLIBC_2.27 j0l@GLIBC_2.17
+j1f128@GLIBC_2.27 j1l@GLIBC_2.17
+j1f32@GLIBC_2.27 j1f@GLIBC_2.17
+j1f32x@GLIBC_2.27 j1@GLIBC_2.17
+j1f64@GLIBC_2.27 j1@GLIBC_2.17
+j1f64x@GLIBC_2.27 j1l@GLIBC_2.17
+jnf128@GLIBC_2.27 jnl@GLIBC_2.17
+jnf32@GLIBC_2.27 jnf@GLIBC_2.17
+jnf32x@GLIBC_2.27 jn@GLIBC_2.17
+jnf64@GLIBC_2.27 jn@GLIBC_2.17
+jnf64x@GLIBC_2.27 jnl@GLIBC_2.17
+ldexpf128@GLIBC_2.27 ldexpl@GLIBC_2.17
+ldexpf32@GLIBC_2.27 ldexpf@GLIBC_2.17
+ldexpf32x@GLIBC_2.27 ldexp@GLIBC_2.17
+ldexpf64@GLIBC_2.27 ldexp@GLIBC_2.17
+ldexpf64x@GLIBC_2.27 ldexpl@GLIBC_2.17
+lgammaf128@GLIBC_2.27 lgammal@GLIBC_2.23
+lgammaf128_r@GLIBC_2.27 lgammal_r@GLIBC_2.17
+lgammaf32@GLIBC_2.27 lgammaf@GLIBC_2.23
+lgammaf32_r@GLIBC_2.27 lgammaf_r@GLIBC_2.17
+lgammaf32x@GLIBC_2.27 lgamma@GLIBC_2.23
+lgammaf32x_r@GLIBC_2.27 lgamma_r@GLIBC_2.17
+lgammaf64@GLIBC_2.27 lgamma@GLIBC_2.23
+lgammaf64_r@GLIBC_2.27 lgamma_r@GLIBC_2.17
+lgammaf64x@GLIBC_2.27 lgammal@GLIBC_2.23
+lgammaf64x_r@GLIBC_2.27 lgammal_r@GLIBC_2.17
+llogbf128@GLIBC_2.27 llogbl@GLIBC_2.25
+llogbf32@GLIBC_2.27 llogbf@GLIBC_2.25
+llogbf32x@GLIBC_2.27 llogb@GLIBC_2.25
+llogbf64@GLIBC_2.27 llogb@GLIBC_2.25
+llogbf64x@GLIBC_2.27 llogbl@GLIBC_2.25
+llrintf128@GLIBC_2.27 llrintl@GLIBC_2.17
+llrintf32@GLIBC_2.27 llrintf@GLIBC_2.17
+llrintf32x@GLIBC_2.27 llrint@GLIBC_2.17
+llrintf64@GLIBC_2.27 llrint@GLIBC_2.17
+llrintf64x@GLIBC_2.27 llrintl@GLIBC_2.17
+llroundf128@GLIBC_2.27 llroundl@GLIBC_2.17
+llroundf32@GLIBC_2.27 llroundf@GLIBC_2.17
+llroundf32x@GLIBC_2.27 llround@GLIBC_2.17
+llroundf64@GLIBC_2.27 llround@GLIBC_2.17
+llroundf64x@GLIBC_2.27 llroundl@GLIBC_2.17
+log10f128@GLIBC_2.27 log10l@GLIBC_2.17
+log10f32@GLIBC_2.27 log10f@GLIBC_2.17
+log10f32x@GLIBC_2.27 log10@GLIBC_2.17
+log10f64@GLIBC_2.27 log10@GLIBC_2.17
+log10f64x@GLIBC_2.27 log10l@GLIBC_2.17
+log1pf128@GLIBC_2.27 log1pl@GLIBC_2.17
+log1pf32@GLIBC_2.27 log1pf@GLIBC_2.17
+log1pf32x@GLIBC_2.27 log1p@GLIBC_2.17
+log1pf64@GLIBC_2.27 log1p@GLIBC_2.17
+log1pf64x@GLIBC_2.27 log1pl@GLIBC_2.17
+log2f@GLIBC_2.27 log2f
+log2f128@GLIBC_2.27 log2l@GLIBC_2.17
+log2f32@GLIBC_2.27 log2f@GLIBC_2.27
+log2f32x@GLIBC_2.27 log2@GLIBC_2.17
+log2f64@GLIBC_2.27 log2@GLIBC_2.17
+log2f64x@GLIBC_2.27 log2l@GLIBC_2.17
+logbf128@GLIBC_2.27 logbl@GLIBC_2.17
+logbf32@GLIBC_2.27 logbf@GLIBC_2.17
+logbf32x@GLIBC_2.27 logb@GLIBC_2.17
+logbf64@GLIBC_2.27 logb@GLIBC_2.17
+logbf64x@GLIBC_2.27 logbl@GLIBC_2.17
+logf@GLIBC_2.27 logf
+logf128@GLIBC_2.27 logl@GLIBC_2.17
+logf32@GLIBC_2.27 logf@GLIBC_2.27
+logf32x@GLIBC_2.27 log@GLIBC_2.17
+logf64@GLIBC_2.27 log@GLIBC_2.17
+logf64x@GLIBC_2.27 logl@GLIBC_2.17
+lrintf128@GLIBC_2.27 lrintl@GLIBC_2.17
+lrintf32@GLIBC_2.27 lrintf@GLIBC_2.17
+lrintf32x@GLIBC_2.27 lrint@GLIBC_2.17
+lrintf64@GLIBC_2.27 lrint@GLIBC_2.17
+lrintf64x@GLIBC_2.27 lrintl@GLIBC_2.17
+lroundf128@GLIBC_2.27 lroundl@GLIBC_2.17
+lroundf32@GLIBC_2.27 lroundf@GLIBC_2.17
+lroundf32x@GLIBC_2.27 lround@GLIBC_2.17
+lroundf64@GLIBC_2.27 lround@GLIBC_2.17
+lroundf64x@GLIBC_2.27 lroundl@GLIBC_2.17
+modff128@GLIBC_2.27 modfl@GLIBC_2.17
+modff32@GLIBC_2.27 modff@GLIBC_2.17
+modff32x@GLIBC_2.27 modf@GLIBC_2.17
+modff64@GLIBC_2.27 modf@GLIBC_2.17
+modff64x@GLIBC_2.27 modfl@GLIBC_2.17
+nanf128@GLIBC_2.27 nanl@GLIBC_2.17
+nanf32@GLIBC_2.27 nanf@GLIBC_2.17
+nanf32x@GLIBC_2.27 nan@GLIBC_2.17
+nanf64@GLIBC_2.27 nan@GLIBC_2.17
+nanf64x@GLIBC_2.27 nanl@GLIBC_2.17
+nearbyintf128@GLIBC_2.27 nearbyintl@GLIBC_2.17
+nearbyintf32@GLIBC_2.27 nearbyintf@GLIBC_2.17
+nearbyintf32x@GLIBC_2.27 nearbyint@GLIBC_2.17
+nearbyintf64@GLIBC_2.27 nearbyint@GLIBC_2.17
+nearbyintf64x@GLIBC_2.27 nearbyintl@GLIBC_2.17
+nextafterf128@GLIBC_2.27 nextafterl@GLIBC_2.17
+nextafterf32@GLIBC_2.27 nextafterf@GLIBC_2.17
+nextafterf32x@GLIBC_2.27 nextafter@GLIBC_2.17
+nextafterf64@GLIBC_2.27 nextafter@GLIBC_2.17
+nextafterf64x@GLIBC_2.27 nextafterl@GLIBC_2.17
+nextdownf128@GLIBC_2.27 nextdownl@GLIBC_2.24
+nextdownf32@GLIBC_2.27 nextdownf@GLIBC_2.24
+nextdownf32x@GLIBC_2.27 nextdown@GLIBC_2.24
+nextdownf64@GLIBC_2.27 nextdown@GLIBC_2.24
+nextdownf64x@GLIBC_2.27 nextdownl@GLIBC_2.24
+nextupf128@GLIBC_2.27 nextupl@GLIBC_2.24
+nextupf32@GLIBC_2.27 nextupf@GLIBC_2.24
+nextupf32x@GLIBC_2.27 nextup@GLIBC_2.24
+nextupf64@GLIBC_2.27 nextup@GLIBC_2.24
+nextupf64x@GLIBC_2.27 nextupl@GLIBC_2.24
+powf@GLIBC_2.27 __powf_finite@GLIBC_2.17
+powf128@GLIBC_2.27 powl@GLIBC_2.17
+powf32@GLIBC_2.27 __powf_finite@GLIBC_2.17
+powf32x@GLIBC_2.27 __pow_finite@GLIBC_2.17
+powf64@GLIBC_2.27 __pow_finite@GLIBC_2.17
+powf64x@GLIBC_2.27 powl@GLIBC_2.17
+remainderf128@GLIBC_2.27 remainderl@GLIBC_2.17
+remainderf32@GLIBC_2.27 remainderf@GLIBC_2.17
+remainderf32x@GLIBC_2.27 remainder@GLIBC_2.17
+remainderf64@GLIBC_2.27 remainder@GLIBC_2.17
+remainderf64x@GLIBC_2.27 remainderl@GLIBC_2.17
+remquof128@GLIBC_2.27 remquol@GLIBC_2.17
+remquof32@GLIBC_2.27 remquof@GLIBC_2.17
+remquof32x@GLIBC_2.27 remquo@GLIBC_2.17
+remquof64@GLIBC_2.27 remquo@GLIBC_2.17
+remquof64x@GLIBC_2.27 remquol@GLIBC_2.17
+rintf128@GLIBC_2.27 rintl@GLIBC_2.17
+rintf32@GLIBC_2.27 rintf@GLIBC_2.17
+rintf32x@GLIBC_2.27 rint@GLIBC_2.17
+rintf64@GLIBC_2.27 rint@GLIBC_2.17
+rintf64x@GLIBC_2.27 rintl@GLIBC_2.17
+roundevenf128@GLIBC_2.27 roundevenl@GLIBC_2.25
+roundevenf32@GLIBC_2.27 roundevenf@GLIBC_2.25
+roundevenf32x@GLIBC_2.27 roundeven@GLIBC_2.25
+roundevenf64@GLIBC_2.27 roundeven@GLIBC_2.25
+roundevenf64x@GLIBC_2.27 roundevenl@GLIBC_2.25
+roundf128@GLIBC_2.27 roundl@GLIBC_2.17
+roundf32@GLIBC_2.27 roundf@GLIBC_2.17
+roundf32x@GLIBC_2.27 round@GLIBC_2.17
+roundf64@GLIBC_2.27 round@GLIBC_2.17
+roundf64x@GLIBC_2.27 roundl@GLIBC_2.17
+scalblnf128@GLIBC_2.27 scalblnl@GLIBC_2.17
+scalblnf32@GLIBC_2.27 scalblnf@GLIBC_2.17
+scalblnf32x@GLIBC_2.27 scalbln@GLIBC_2.17
+scalblnf64@GLIBC_2.27 scalbln@GLIBC_2.17
+scalblnf64x@GLIBC_2.27 scalblnl@GLIBC_2.17
+scalbnf128@GLIBC_2.27 scalbnl@GLIBC_2.17
+scalbnf32@GLIBC_2.27 scalbnf@GLIBC_2.17
+scalbnf32x@GLIBC_2.27 scalbn@GLIBC_2.17
+scalbnf64@GLIBC_2.27 scalbn@GLIBC_2.17
+scalbnf64x@GLIBC_2.27 scalbnl@GLIBC_2.17
+setpayloadf128@GLIBC_2.27 setpayloadl@GLIBC_2.25
+setpayloadf32@GLIBC_2.27 setpayloadf@GLIBC_2.25
+setpayloadf32x@GLIBC_2.27 setpayload@GLIBC_2.25
+setpayloadf64@GLIBC_2.27 setpayload@GLIBC_2.25
+setpayloadf64x@GLIBC_2.27 setpayloadl@GLIBC_2.25
+setpayloadsigf128@GLIBC_2.27 setpayloadsigl@GLIBC_2.25
+setpayloadsigf32@GLIBC_2.27 setpayloadsigf@GLIBC_2.25
+setpayloadsigf32x@GLIBC_2.27 setpayloadsig@GLIBC_2.25
+setpayloadsigf64@GLIBC_2.27 setpayloadsig@GLIBC_2.25
+setpayloadsigf64x@GLIBC_2.27 setpayloadsigl@GLIBC_2.25
+sincosf128@GLIBC_2.27 sincosl@GLIBC_2.17
+sincosf32@GLIBC_2.27 sincosf@GLIBC_2.17
+sincosf32x@GLIBC_2.27 sincos@GLIBC_2.17
+sincosf64@GLIBC_2.27 sincos@GLIBC_2.17
+sincosf64x@GLIBC_2.27 sincosl@GLIBC_2.17
+sinf128@GLIBC_2.27 sinl@GLIBC_2.17
+sinf32@GLIBC_2.27 sinf@GLIBC_2.17
+sinf32x@GLIBC_2.27 sin@GLIBC_2.17
+sinf64@GLIBC_2.27 sin@GLIBC_2.17
+sinf64x@GLIBC_2.27 sinl@GLIBC_2.17
+sinhf128@GLIBC_2.27 sinhl@GLIBC_2.17
+sinhf32@GLIBC_2.27 sinhf@GLIBC_2.17
+sinhf32x@GLIBC_2.27 sinh@GLIBC_2.17
+sinhf64@GLIBC_2.27 sinh@GLIBC_2.17
+sinhf64x@GLIBC_2.27 sinhl@GLIBC_2.17
+sqrtf128@GLIBC_2.27 sqrtl@GLIBC_2.17
+sqrtf32@GLIBC_2.27 sqrtf@GLIBC_2.17
+sqrtf32x@GLIBC_2.27 sqrt@GLIBC_2.17
+sqrtf64@GLIBC_2.27 sqrt@GLIBC_2.17
+sqrtf64x@GLIBC_2.27 sqrtl@GLIBC_2.17
+tanf128@GLIBC_2.27 tanl@GLIBC_2.17
+tanf32@GLIBC_2.27 tanf@GLIBC_2.17
+tanf32x@GLIBC_2.27 tan@GLIBC_2.17
+tanf64@GLIBC_2.27 tan@GLIBC_2.17
+tanf64x@GLIBC_2.27 tanl@GLIBC_2.17
+tanhf128@GLIBC_2.27 tanhl@GLIBC_2.17
+tanhf32@GLIBC_2.27 tanhf@GLIBC_2.17
+tanhf32x@GLIBC_2.27 tanh@GLIBC_2.17
+tanhf64@GLIBC_2.27 tanh@GLIBC_2.17
+tanhf64x@GLIBC_2.27 tanhl@GLIBC_2.17
+tgammaf128@GLIBC_2.27 tgammal@GLIBC_2.17
+tgammaf32@GLIBC_2.27 tgammaf@GLIBC_2.17
+tgammaf32x@GLIBC_2.27 tgamma@GLIBC_2.17
+tgammaf64@GLIBC_2.27 tgamma@GLIBC_2.17
+tgammaf64x@GLIBC_2.27 tgammal@GLIBC_2.17
+totalorderf128@GLIBC_2.27 totalorderl@GLIBC_2.25
+totalorderf32@GLIBC_2.27 totalorderf@GLIBC_2.25
+totalorderf32x@GLIBC_2.27 totalorder@GLIBC_2.25
+totalorderf64@GLIBC_2.27 totalorder@GLIBC_2.25
+totalorderf64x@GLIBC_2.27 totalorderl@GLIBC_2.25
+totalordermagf128@GLIBC_2.27 totalordermagl@GLIBC_2.25
+totalordermagf32@GLIBC_2.27 totalordermagf@GLIBC_2.25
+totalordermagf32x@GLIBC_2.27 totalordermag@GLIBC_2.25
+totalordermagf64@GLIBC_2.27 totalordermag@GLIBC_2.25
+totalordermagf64x@GLIBC_2.27 totalordermagl@GLIBC_2.25
+truncf128@GLIBC_2.27 truncl@GLIBC_2.17
+truncf32@GLIBC_2.27 truncf@GLIBC_2.17
+truncf32x@GLIBC_2.27 trunc@GLIBC_2.17
+truncf64@GLIBC_2.27 trunc@GLIBC_2.17
+truncf64x@GLIBC_2.27 truncl@GLIBC_2.17
+ufromfpf128@GLIBC_2.27 ufromfpl@GLIBC_2.25
+ufromfpf32@GLIBC_2.27 ufromfpf@GLIBC_2.25
+ufromfpf32x@GLIBC_2.27 ufromfp@GLIBC_2.25
+ufromfpf64@GLIBC_2.27 ufromfp@GLIBC_2.25
+ufromfpf64x@GLIBC_2.27 ufromfpl@GLIBC_2.25
+ufromfpxf128@GLIBC_2.27 ufromfpxl@GLIBC_2.25
+ufromfpxf32@GLIBC_2.27 ufromfpxf@GLIBC_2.25
+ufromfpxf32x@GLIBC_2.27 ufromfpx@GLIBC_2.25
+ufromfpxf64@GLIBC_2.27 ufromfpx@GLIBC_2.25
+ufromfpxf64x@GLIBC_2.27 ufromfpxl@GLIBC_2.25
+y0f128@GLIBC_2.27 y0l@GLIBC_2.17
+y0f32@GLIBC_2.27 y0f@GLIBC_2.17
+y0f32x@GLIBC_2.27 y0@GLIBC_2.17
+y0f64@GLIBC_2.27 y0@GLIBC_2.17
+y0f64x@GLIBC_2.27 y0l@GLIBC_2.17
+y1f128@GLIBC_2.27 y1l@GLIBC_2.17
+y1f32@GLIBC_2.27 y1f@GLIBC_2.17
+y1f32x@GLIBC_2.27 y1@GLIBC_2.17
+y1f64@GLIBC_2.27 y1@GLIBC_2.17
+y1f64x@GLIBC_2.27 y1l@GLIBC_2.17
+ynf128@GLIBC_2.27 ynl@GLIBC_2.17
+ynf32@GLIBC_2.27 ynf@GLIBC_2.17
+ynf32x@GLIBC_2.27 yn@GLIBC_2.17
+ynf64@GLIBC_2.27 yn@GLIBC_2.17
+ynf64x@GLIBC_2.27 ynl@GLIBC_2.17
+
+// GLIBC_2.28
+call_once@GLIBC_2.28 pthread_once@GLIBC_2.17
+cnd_broadcast@GLIBC_2.28 polyfill::cnd_broadcast
+cnd_destroy@GLIBC_2.28 pthread_cond_destroy@GLIBC_2.17
+cnd_init@GLIBC_2.28 polyfill::cnd_init
+cnd_signal@GLIBC_2.28 polyfill::cnd_signal
+cnd_timedwait@GLIBC_2.28 polyfill::cnd_timedwait
+cnd_wait@GLIBC_2.28 polyfill::cnd_wait
+mtx_destroy@GLIBC_2.28 pthread_mutex_destroy@GLIBC_2.17
+mtx_init@GLIBC_2.28 polyfill::mtx_init
+mtx_lock@GLIBC_2.28 polyfill::mtx_lock
+mtx_timedlock@GLIBC_2.28 polyfill::mtx_timedlock
+mtx_trylock@GLIBC_2.28 polyfill::mtx_trylock
+mtx_unlock@GLIBC_2.28 polyfill::mtx_unlock
+thrd_create@GLIBC_2.28 polyfill::thrd_create
+thrd_current@GLIBC_2.28 pthread_self@GLIBC_2.17
+thrd_detach@GLIBC_2.28 polyfill::thrd_detach
+thrd_equal@GLIBC_2.28 pthread_equal@GLIBC_2.17
+thrd_exit@GLIBC_2.28 polyfill::thrd_exit
+thrd_join@GLIBC_2.28 polyfill::thrd_join
+thrd_sleep@GLIBC_2.28 polyfill::thrd_sleep
+thrd_yield@GLIBC_2.28 polyfill::thrd_yield
+tss_create@GLIBC_2.28 polyfill::tss_create
+tss_delete@GLIBC_2.28 pthread_key_delete@GLIBC_2.17
+tss_get@GLIBC_2.28 pthread_getspecific@GLIBC_2.17
+tss_set@GLIBC_2.28 polyfill::tss_set
+fcntl64@GLIBC_2.28 polyfill::fcntl64_2_28
+renameat2@GLIBC_2.28 polyfill::renameat2
+// TODO statx@GLIBC_2.28
+// libm
+// TODO daddl@GLIBC_2.28
+// TODO ddivl@GLIBC_2.28
+// TODO dmull@GLIBC_2.28
+// TODO dsubl@GLIBC_2.28
+// TODO f32addf128@GLIBC_2.28
+// TODO f32addf32x@GLIBC_2.28
+// TODO f32addf64@GLIBC_2.28
+// TODO f32addf64x@GLIBC_2.28
+// TODO f32divf128@GLIBC_2.28
+// TODO f32divf32x@GLIBC_2.28
+// TODO f32divf64@GLIBC_2.28
+// TODO f32divf64x@GLIBC_2.28
+// TODO f32mulf128@GLIBC_2.28
+// TODO f32mulf32x@GLIBC_2.28
+// TODO f32mulf64@GLIBC_2.28
+// TODO f32mulf64x@GLIBC_2.28
+// TODO f32subf128@GLIBC_2.28
+// TODO f32subf32x@GLIBC_2.28
+// TODO f32subf64@GLIBC_2.28
+// TODO f32subf64x@GLIBC_2.28
+// TODO f32xaddf128@GLIBC_2.28
+// TODO f32xaddf64@GLIBC_2.28
+// TODO f32xaddf64x@GLIBC_2.28
+// TODO f32xdivf128@GLIBC_2.28
+// TODO f32xdivf64@GLIBC_2.28
+// TODO f32xdivf64x@GLIBC_2.28
+// TODO f32xmulf128@GLIBC_2.28
+// TODO f32xmulf64@GLIBC_2.28
+// TODO f32xmulf64x@GLIBC_2.28
+// TODO f32xsubf128@GLIBC_2.28
+// TODO f32xsubf64@GLIBC_2.28
+// TODO f32xsubf64x@GLIBC_2.28
+// TODO f64addf128@GLIBC_2.28
+// TODO f64addf64x@GLIBC_2.28
+// TODO f64divf128@GLIBC_2.28
+// TODO f64divf64x@GLIBC_2.28
+// TODO f64mulf128@GLIBC_2.28
+// TODO f64mulf64x@GLIBC_2.28
+// TODO f64subf128@GLIBC_2.28
+// TODO f64subf64x@GLIBC_2.28
+// TODO f64xaddf128@GLIBC_2.28
+// TODO f64xdivf128@GLIBC_2.28
+// TODO f64xmulf128@GLIBC_2.28
+// TODO f64xsubf128@GLIBC_2.28
+// TODO fadd@GLIBC_2.28
+// TODO faddl@GLIBC_2.28
+// TODO fdiv@GLIBC_2.28
+// TODO fdivl@GLIBC_2.28
+// TODO fmul@GLIBC_2.28
+// TODO fmull@GLIBC_2.28
+// TODO fsub@GLIBC_2.28
+// TODO fsubl@GLIBC_2.28
+
+// GLIBC_2.29
+// TODO getcpu@GLIBC_2.29
+// TODO posix_spawn_file_actions_addchdir_np@GLIBC_2.29
+// TODO posix_spawn_file_actions_addfchdir_np@GLIBC_2.29
+// libm
+exp@GLIBC_2.29 exp
+exp2@GLIBC_2.29 exp2
+log@GLIBC_2.29 log
+log2@GLIBC_2.29 log2
+pow@GLIBC_2.29 pow
+
+// GLIBC_2.30
+getdents64@GLIBC_2.30 polyfill::getdents64
+gettid@GLIBC_2.30 polyfill::gettid
+tgkill@GLIBC_2.30 polyfill::tgkill
+// TODO pthread_cond_clockwait@GLIBC_2.30
+// TODO pthread_mutex_clocklock@GLIBC_2.30
+// TODO pthread_rwlock_clockrdlock@GLIBC_2.30
+// TODO pthread_rwlock_clockwrlock@GLIBC_2.30
+sem_clockwait@GLIBC_2.30 polyfill::sem_clockwait_2_30
+twalk_r@GLIBC_2.30 polyfill::twalk_r
+
+// GLIBC_2.31
+// TODO pthread_clockjoin_np@GLIBC_2.31
+totalorder@GLIBC_2.31 polyfill::totalorder_f64ptr
+totalorderf@GLIBC_2.31 polyfill::totalorder_f32ptr
+totalorderf128@GLIBC_2.31 polyfill::totalorder_f128ptr
+totalorderf32@GLIBC_2.31 polyfill::totalorder_f32ptr
+totalorderf32x@GLIBC_2.31 polyfill::totalorder_f64ptr
+totalorderf64@GLIBC_2.31 polyfill::totalorder_f64ptr
+totalorderf64x@GLIBC_2.31 polyfill::totalorder_f128ptr
+totalorderl@GLIBC_2.31 polyfill::totalorder_f128ptr
+totalordermag@GLIBC_2.31 polyfill::totalordermag_f64ptr
+totalordermagf@GLIBC_2.31 polyfill::totalordermag_f32ptr
+totalordermagf128@GLIBC_2.31 polyfill::totalordermag_f128ptr
+totalordermagf32@GLIBC_2.31 polyfill::totalordermag_f32ptr
+totalordermagf32x@GLIBC_2.31 polyfill::totalordermag_f64ptr
+totalordermagf64@GLIBC_2.31 polyfill::totalordermag_f64ptr
+totalordermagf64x@GLIBC_2.31 polyfill::totalordermag_f128ptr
+totalordermagl@GLIBC_2.31 polyfill::totalordermag_f128ptr
+
+// GLIBC_2.32
+// TODO __libc_single_threaded@GLIBC_2.32
+// TODO pthread_attr_getsigmask_np@GLIBC_2.32
+// TODO pthread_attr_setsigmask_np@GLIBC_2.32
+pthread_attr_setaffinity_np@GLIBC_2.32 libpthread.so.0::pthread_attr_setaffinity_np@GLIBC_2.17
+pthread_getaffinity_np@GLIBC_2.32 libpthread.so.0::pthread_getaffinity_np@GLIBC_2.17
+pthread_getattr_np@GLIBC_2.32 libpthread.so.0::pthread_getattr_np@GLIBC_2.17
+pthread_sigmask@GLIBC_2.32 libpthread.so.0::pthread_sigmask@GLIBC_2.17
+// TODO sigabbrev_np@GLIBC_2.32
+// TODO sigdescr_np@GLIBC_2.32
+// TODO strerrordesc_np@GLIBC_2.32
+// TODO strerrorname_np@GLIBC_2.32
+// libm
+exp10f@GLIBC_2.32 exp10f
+
+// GLIBC_2.33
+fstat@GLIBC_2.33 polyfill::fstat
+fstat64@GLIBC_2.33 polyfill::fstat
+fstatat@GLIBC_2.33 polyfill::fstatat
+fstatat64@GLIBC_2.33 polyfill::fstatat
+lstat@GLIBC_2.33 polyfill::lstat
+lstat64@GLIBC_2.33 polyfill::lstat
+stat@GLIBC_2.33 polyfill::stat
+stat64@GLIBC_2.33 polyfill::stat
+mknod@GLIBC_2.33 polyfill::mknod
+mknodat@GLIBC_2.33 polyfill::mknodat
+// TODO mallinfo2@GLIBC_2.33
+
+// GLIBC_2.34
+pthread_kill@GLIBC_2.34 polyfill::pthread_kill_2_34
+__libc_start_main@GLIBC_2.34 polyfill::__libc_start_main_2_34
+// TODO _Fork@GLIBC_2.34
+close_range@GLIBC_2.34 polyfill::close_range
+// TODO closefrom@GLIBC_2.34
+execveat@GLIBC_2.34 polyfill::execveat
+// TODO posix_spawn_file_actions_addclosefrom_np@GLIBC_2.34
+timespec_getres@GLIBC_2.34 polyfill::timespec_getres
+aio_cancel@GLIBC_2.34 librt.so.1::aio_cancel@GLIBC_2.17
+aio_cancel64@GLIBC_2.34 librt.so.1::aio_cancel64@GLIBC_2.17
+aio_error@GLIBC_2.34 librt.so.1::aio_error@GLIBC_2.17
+aio_error64@GLIBC_2.34 librt.so.1::aio_error64@GLIBC_2.17
+aio_fsync@GLIBC_2.34 librt.so.1::aio_fsync@GLIBC_2.17
+aio_fsync64@GLIBC_2.34 librt.so.1::aio_fsync64@GLIBC_2.17
+aio_init@GLIBC_2.34 librt.so.1::aio_init@GLIBC_2.17
+aio_read@GLIBC_2.34 librt.so.1::aio_read@GLIBC_2.17
+aio_read64@GLIBC_2.34 librt.so.1::aio_read64@GLIBC_2.17
+aio_return@GLIBC_2.34 librt.so.1::aio_return@GLIBC_2.17
+aio_return64@GLIBC_2.34 librt.so.1::aio_return64@GLIBC_2.17
+aio_suspend@GLIBC_2.34 librt.so.1::aio_suspend@GLIBC_2.17
+aio_suspend64@GLIBC_2.34 librt.so.1::aio_suspend64@GLIBC_2.17
+aio_write@GLIBC_2.34 librt.so.1::aio_write@GLIBC_2.17
+aio_write64@GLIBC_2.34 librt.so.1::aio_write64@GLIBC_2.17
+call_once@GLIBC_2.34 libpthread.so.0::call_once@GLIBC_2.28
+cnd_broadcast@GLIBC_2.34 libpthread.so.0::cnd_broadcast@GLIBC_2.28
+cnd_destroy@GLIBC_2.34 libpthread.so.0::cnd_destroy@GLIBC_2.28
+cnd_init@GLIBC_2.34 libpthread.so.0::cnd_init@GLIBC_2.28
+cnd_signal@GLIBC_2.34 libpthread.so.0::cnd_signal@GLIBC_2.28
+cnd_timedwait@GLIBC_2.34 libpthread.so.0::cnd_timedwait@GLIBC_2.28
+cnd_wait@GLIBC_2.34 libpthread.so.0::cnd_wait@GLIBC_2.28
+dladdr@GLIBC_2.34 libdl.so.2::dladdr@GLIBC_2.17
+dladdr1@GLIBC_2.34 libdl.so.2::dladdr1@GLIBC_2.17
+dlclose@GLIBC_2.34 libdl.so.2::dlclose@GLIBC_2.17
+dlerror@GLIBC_2.34 libdl.so.2::dlerror@GLIBC_2.17
+dlinfo@GLIBC_2.34 libdl.so.2::dlinfo@GLIBC_2.17
+dlmopen@GLIBC_2.34 libdl.so.2::dlmopen@GLIBC_2.17
+dlopen@GLIBC_2.34 libdl.so.2::dlopen@GLIBC_2.17
+dlsym@GLIBC_2.34 libdl.so.2::dlsym@GLIBC_2.17
+dlvsym@GLIBC_2.34 libdl.so.2::dlvsym@GLIBC_2.17
+dn_comp@GLIBC_2.34 libresolv.so.2::__dn_comp@GLIBC_2.17
+dn_expand@GLIBC_2.34 libresolv.so.2::__dn_expand@GLIBC_2.17
+dn_skipname@GLIBC_2.34 libresolv.so.2::__dn_skipname@GLIBC_2.17
+forkpty@GLIBC_2.34 libutil.so.1::forkpty@GLIBC_2.17
+gai_cancel@GLIBC_2.34 libanl.so.1::gai_cancel@GLIBC_2.17
+gai_error@GLIBC_2.34 libanl.so.1::gai_error@GLIBC_2.17
+gai_suspend@GLIBC_2.34 libanl.so.1::gai_suspend@GLIBC_2.17
+getaddrinfo_a@GLIBC_2.34 libanl.so.1::getaddrinfo_a@GLIBC_2.17
+lio_listio@GLIBC_2.34 librt.so.1::lio_listio@GLIBC_2.17
+lio_listio64@GLIBC_2.34 librt.so.1::lio_listio64@GLIBC_2.17
+login@GLIBC_2.34 libutil.so.1::login@GLIBC_2.17
+login_tty@GLIBC_2.34 libutil.so.1::login_tty@GLIBC_2.17
+logout@GLIBC_2.34 libutil.so.1::logout@GLIBC_2.17
+logwtmp@GLIBC_2.34 libutil.so.1::logwtmp@GLIBC_2.17
+mq_close@GLIBC_2.34 librt.so.1::mq_close@GLIBC_2.17
+mq_getattr@GLIBC_2.34 librt.so.1::mq_getattr@GLIBC_2.17
+mq_notify@GLIBC_2.34 librt.so.1::mq_notify@GLIBC_2.17
+mq_open@GLIBC_2.34 librt.so.1::mq_open@GLIBC_2.17
+__mq_open_2@GLIBC_2.34 librt.so.1::__mq_open_2@GLIBC_2.17
+mq_receive@GLIBC_2.34 librt.so.1::mq_receive@GLIBC_2.17
+mq_send@GLIBC_2.34 librt.so.1::mq_send@GLIBC_2.17
+mq_setattr@GLIBC_2.34 librt.so.1::mq_setattr@GLIBC_2.17
+mq_timedreceive@GLIBC_2.34 librt.so.1::mq_timedreceive@GLIBC_2.17
+mq_timedsend@GLIBC_2.34 librt.so.1::mq_timedsend@GLIBC_2.17
+mq_unlink@GLIBC_2.34 librt.so.1::mq_unlink@GLIBC_2.17
+mtx_destroy@GLIBC_2.34 libpthread.so.0::mtx_destroy@GLIBC_2.28
+mtx_init@GLIBC_2.34 libpthread.so.0::mtx_init@GLIBC_2.28
+mtx_lock@GLIBC_2.34 libpthread.so.0::mtx_lock@GLIBC_2.28
+mtx_timedlock@GLIBC_2.34 libpthread.so.0::mtx_timedlock@GLIBC_2.28
+mtx_trylock@GLIBC_2.34 libpthread.so.0::mtx_trylock@GLIBC_2.28
+mtx_unlock@GLIBC_2.34 libpthread.so.0::mtx_unlock@GLIBC_2.28
+ns_name_compress@GLIBC_2.34 libresolv.so.2::ns_name_compress@GLIBC_2.17
+ns_name_ntop@GLIBC_2.34 libresolv.so.2::ns_name_ntop@GLIBC_2.17
+ns_name_pack@GLIBC_2.34 libresolv.so.2::ns_name_pack@GLIBC_2.17
+ns_name_pton@GLIBC_2.34 libresolv.so.2::ns_name_pton@GLIBC_2.17
+ns_name_skip@GLIBC_2.34 libresolv.so.2::ns_name_skip@GLIBC_2.17
+ns_name_uncompress@GLIBC_2.34 libresolv.so.2::ns_name_uncompress@GLIBC_2.17
+ns_name_unpack@GLIBC_2.34 libresolv.so.2::ns_name_unpack@GLIBC_2.17
+openpty@GLIBC_2.34 libutil.so.1::openpty@GLIBC_2.17
+pthread_attr_getaffinity_np@GLIBC_2.34 libpthread.so.0::pthread_attr_getaffinity_np@GLIBC_2.17
+pthread_attr_getguardsize@GLIBC_2.34 libpthread.so.0::pthread_attr_getguardsize@GLIBC_2.17
+pthread_attr_getstack@GLIBC_2.34 libpthread.so.0::pthread_attr_getstack@GLIBC_2.17
+pthread_attr_getstackaddr@GLIBC_2.34 libpthread.so.0::pthread_attr_getstackaddr@GLIBC_2.17
+pthread_attr_getstacksize@GLIBC_2.34 libpthread.so.0::pthread_attr_getstacksize@GLIBC_2.17
+pthread_attr_setguardsize@GLIBC_2.34 libpthread.so.0::pthread_attr_setguardsize@GLIBC_2.17
+pthread_attr_setstack@GLIBC_2.34 libpthread.so.0::pthread_attr_setstack@GLIBC_2.17
+pthread_attr_setstackaddr@GLIBC_2.34 libpthread.so.0::pthread_attr_setstackaddr@GLIBC_2.17
+pthread_attr_setstacksize@GLIBC_2.34 libpthread.so.0::pthread_attr_setstacksize@GLIBC_2.17
+pthread_barrier_destroy@GLIBC_2.34 libpthread.so.0::pthread_barrier_destroy@GLIBC_2.17
+pthread_barrier_init@GLIBC_2.34 libpthread.so.0::pthread_barrier_init@GLIBC_2.17
+pthread_barrier_wait@GLIBC_2.34 libpthread.so.0::pthread_barrier_wait@GLIBC_2.17
+pthread_barrierattr_destroy@GLIBC_2.34 libpthread.so.0::pthread_barrierattr_destroy@GLIBC_2.17
+pthread_barrierattr_getpshared@GLIBC_2.34 libpthread.so.0::pthread_barrierattr_getpshared@GLIBC_2.17
+pthread_barrierattr_init@GLIBC_2.34 libpthread.so.0::pthread_barrierattr_init@GLIBC_2.17
+pthread_barrierattr_setpshared@GLIBC_2.34 libpthread.so.0::pthread_barrierattr_setpshared@GLIBC_2.17
+pthread_cancel@GLIBC_2.34 libpthread.so.0::pthread_cancel@GLIBC_2.17
+_pthread_cleanup_pop@GLIBC_2.34 libpthread.so.0::_pthread_cleanup_pop@GLIBC_2.17
+_pthread_cleanup_push@GLIBC_2.34 libpthread.so.0::_pthread_cleanup_push@GLIBC_2.17
+__pthread_cleanup_routine@GLIBC_2.34 libpthread.so.0::__pthread_cleanup_routine@GLIBC_2.17
+pthread_clockjoin_np@GLIBC_2.34 libpthread.so.0::pthread_clockjoin_np@GLIBC_2.31
+pthread_cond_clockwait@GLIBC_2.34 libpthread.so.0::pthread_cond_clockwait@GLIBC_2.30
+pthread_condattr_getclock@GLIBC_2.34 libpthread.so.0::pthread_condattr_getclock@GLIBC_2.17
+pthread_condattr_getpshared@GLIBC_2.34 libpthread.so.0::pthread_condattr_getpshared@GLIBC_2.17
+pthread_condattr_setclock@GLIBC_2.34 libpthread.so.0::pthread_condattr_setclock@GLIBC_2.17
+pthread_condattr_setpshared@GLIBC_2.34 libpthread.so.0::pthread_condattr_setpshared@GLIBC_2.17
+pthread_create@GLIBC_2.34 libpthread.so.0::pthread_create@GLIBC_2.17
+pthread_detach@GLIBC_2.34 libpthread.so.0::pthread_detach@GLIBC_2.17
+pthread_getattr_default_np@GLIBC_2.34 libpthread.so.0::pthread_getattr_default_np@GLIBC_2.18
+pthread_getconcurrency@GLIBC_2.34 libpthread.so.0::pthread_getconcurrency@GLIBC_2.17
+pthread_getcpuclockid@GLIBC_2.34 libpthread.so.0::pthread_getcpuclockid@GLIBC_2.17
+pthread_getname_np@GLIBC_2.34 libpthread.so.0::pthread_getname_np@GLIBC_2.17
+pthread_getspecific@GLIBC_2.34 libpthread.so.0::pthread_getspecific@GLIBC_2.17
+pthread_join@GLIBC_2.34 libpthread.so.0::pthread_join@GLIBC_2.17
+__pthread_key_create@GLIBC_2.34 libpthread.so.0::__pthread_key_create@GLIBC_2.17
+pthread_key_create@GLIBC_2.34 libpthread.so.0::pthread_key_create@GLIBC_2.17
+pthread_key_delete@GLIBC_2.34 libpthread.so.0::pthread_key_delete@GLIBC_2.17
+pthread_mutex_clocklock@GLIBC_2.34 libpthread.so.0::pthread_mutex_clocklock@GLIBC_2.30
+pthread_mutex_consistent@GLIBC_2.34 libpthread.so.0::pthread_mutex_consistent@GLIBC_2.17
+pthread_mutex_getprioceiling@GLIBC_2.34 libpthread.so.0::pthread_mutex_getprioceiling@GLIBC_2.17
+pthread_mutex_setprioceiling@GLIBC_2.34 libpthread.so.0::pthread_mutex_setprioceiling@GLIBC_2.17
+pthread_mutex_timedlock@GLIBC_2.34 libpthread.so.0::pthread_mutex_timedlock@GLIBC_2.17
+pthread_mutex_trylock@GLIBC_2.34 libpthread.so.0::pthread_mutex_trylock@GLIBC_2.17
+pthread_mutexattr_destroy@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_destroy@GLIBC_2.17
+pthread_mutexattr_getprioceiling@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_getprioceiling@GLIBC_2.17
+pthread_mutexattr_getprotocol@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_getprotocol@GLIBC_2.17
+pthread_mutexattr_getpshared@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_getpshared@GLIBC_2.17
+pthread_mutexattr_getrobust@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_getrobust@GLIBC_2.17
+pthread_mutexattr_gettype@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_gettype@GLIBC_2.17
+pthread_mutexattr_init@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_init@GLIBC_2.17
+pthread_mutexattr_setprioceiling@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_setprioceiling@GLIBC_2.17
+pthread_mutexattr_setprotocol@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_setprotocol@GLIBC_2.17
+pthread_mutexattr_setpshared@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_setpshared@GLIBC_2.17
+pthread_mutexattr_setrobust@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_setrobust@GLIBC_2.17
+pthread_mutexattr_settype@GLIBC_2.34 libpthread.so.0::pthread_mutexattr_settype@GLIBC_2.17
+pthread_once@GLIBC_2.34 libpthread.so.0::pthread_once@GLIBC_2.17
+__pthread_register_cancel@GLIBC_2.34 libpthread.so.0::__pthread_register_cancel@GLIBC_2.17
+__pthread_register_cancel_defer@GLIBC_2.34 libpthread.so.0::__pthread_register_cancel_defer@GLIBC_2.17
+pthread_rwlock_clockrdlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_clockrdlock@GLIBC_2.30
+pthread_rwlock_clockwrlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_clockwrlock@GLIBC_2.30
+pthread_rwlock_destroy@GLIBC_2.34 libpthread.so.0::pthread_rwlock_destroy@GLIBC_2.17
+pthread_rwlock_init@GLIBC_2.34 libpthread.so.0::pthread_rwlock_init@GLIBC_2.17
+pthread_rwlock_rdlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_rdlock@GLIBC_2.17
+pthread_rwlock_timedrdlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_timedrdlock@GLIBC_2.17
+pthread_rwlock_timedwrlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_timedwrlock@GLIBC_2.17
+pthread_rwlock_tryrdlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_tryrdlock@GLIBC_2.17
+pthread_rwlock_trywrlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_trywrlock@GLIBC_2.17
+pthread_rwlock_unlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_unlock@GLIBC_2.17
+pthread_rwlock_wrlock@GLIBC_2.34 libpthread.so.0::pthread_rwlock_wrlock@GLIBC_2.17
+pthread_rwlockattr_destroy@GLIBC_2.34 libpthread.so.0::pthread_rwlockattr_destroy@GLIBC_2.17
+pthread_rwlockattr_getkind_np@GLIBC_2.34 libpthread.so.0::pthread_rwlockattr_getkind_np@GLIBC_2.17
+pthread_rwlockattr_getpshared@GLIBC_2.34 libpthread.so.0::pthread_rwlockattr_getpshared@GLIBC_2.17
+pthread_rwlockattr_init@GLIBC_2.34 libpthread.so.0::pthread_rwlockattr_init@GLIBC_2.17
+pthread_rwlockattr_setkind_np@GLIBC_2.34 libpthread.so.0::pthread_rwlockattr_setkind_np@GLIBC_2.17
+pthread_rwlockattr_setpshared@GLIBC_2.34 libpthread.so.0::pthread_rwlockattr_setpshared@GLIBC_2.17
+pthread_setaffinity_np@GLIBC_2.34 libpthread.so.0::pthread_setaffinity_np@GLIBC_2.17
+pthread_setattr_default_np@GLIBC_2.34 libpthread.so.0::pthread_setattr_default_np@GLIBC_2.18
+pthread_setconcurrency@GLIBC_2.34 libpthread.so.0::pthread_setconcurrency@GLIBC_2.17
+pthread_setname_np@GLIBC_2.34 libpthread.so.0::pthread_setname_np@GLIBC_2.17
+pthread_setschedprio@GLIBC_2.34 libpthread.so.0::pthread_setschedprio@GLIBC_2.17
+pthread_setspecific@GLIBC_2.34 libpthread.so.0::pthread_setspecific@GLIBC_2.17
+pthread_sigqueue@GLIBC_2.34 libpthread.so.0::pthread_sigqueue@GLIBC_2.17
+pthread_spin_destroy@GLIBC_2.34 libpthread.so.0::pthread_spin_destroy@GLIBC_2.17
+pthread_spin_init@GLIBC_2.34 libpthread.so.0::pthread_spin_init@GLIBC_2.17
+pthread_spin_lock@GLIBC_2.34 libpthread.so.0::pthread_spin_lock@GLIBC_2.17
+pthread_spin_trylock@GLIBC_2.34 libpthread.so.0::pthread_spin_trylock@GLIBC_2.17
+pthread_spin_unlock@GLIBC_2.34 libpthread.so.0::pthread_spin_unlock@GLIBC_2.17
+pthread_testcancel@GLIBC_2.34 libpthread.so.0::pthread_testcancel@GLIBC_2.17
+pthread_timedjoin_np@GLIBC_2.34 libpthread.so.0::pthread_timedjoin_np@GLIBC_2.17
+pthread_tryjoin_np@GLIBC_2.34 libpthread.so.0::pthread_tryjoin_np@GLIBC_2.17
+__pthread_unregister_cancel@GLIBC_2.34 libpthread.so.0::__pthread_unregister_cancel@GLIBC_2.17
+__pthread_unregister_cancel_restore@GLIBC_2.34 libpthread.so.0::__pthread_unregister_cancel_restore@GLIBC_2.17
+__pthread_unwind_next@GLIBC_2.34 libpthread.so.0::__pthread_unwind_next@GLIBC_2.17
+res_dnok@GLIBC_2.34 libresolv.so.2::__res_dnok@GLIBC_2.17
+res_hnok@GLIBC_2.34 libresolv.so.2::__res_hnok@GLIBC_2.17
+res_mailok@GLIBC_2.34 libresolv.so.2::__res_mailok@GLIBC_2.17
+res_mkquery@GLIBC_2.34 libresolv.so.2::__res_mkquery@GLIBC_2.17
+res_nmkquery@GLIBC_2.34 libresolv.so.2::__res_nmkquery@GLIBC_2.17
+res_nquery@GLIBC_2.34 libresolv.so.2::__res_nquery@GLIBC_2.17
+res_nquerydomain@GLIBC_2.34 libresolv.so.2::__res_nquerydomain@GLIBC_2.17
+res_nsearch@GLIBC_2.34 libresolv.so.2::__res_nsearch@GLIBC_2.17
+res_nsend@GLIBC_2.34 libresolv.so.2::__res_nsend@GLIBC_2.17
+res_ownok@GLIBC_2.34 libresolv.so.2::__res_ownok@GLIBC_2.17
+res_query@GLIBC_2.34 libresolv.so.2::__res_query@GLIBC_2.17
+res_querydomain@GLIBC_2.34 libresolv.so.2::__res_querydomain@GLIBC_2.17
+res_search@GLIBC_2.34 libresolv.so.2::__res_search@GLIBC_2.17
+res_send@GLIBC_2.34 libresolv.so.2::__res_send@GLIBC_2.17
+sem_clockwait@GLIBC_2.34 libpthread.so.0::sem_clockwait@GLIBC_2.30
+sem_close@GLIBC_2.34 libpthread.so.0::sem_close@GLIBC_2.17
+sem_destroy@GLIBC_2.34 libpthread.so.0::sem_destroy@GLIBC_2.17
+sem_getvalue@GLIBC_2.34 libpthread.so.0::sem_getvalue@GLIBC_2.17
+sem_init@GLIBC_2.34 libpthread.so.0::sem_init@GLIBC_2.17
+sem_open@GLIBC_2.34 libpthread.so.0::sem_open@GLIBC_2.17
+sem_post@GLIBC_2.34 libpthread.so.0::sem_post@GLIBC_2.17
+sem_timedwait@GLIBC_2.34 libpthread.so.0::sem_timedwait@GLIBC_2.17
+sem_trywait@GLIBC_2.34 libpthread.so.0::sem_trywait@GLIBC_2.17
+sem_unlink@GLIBC_2.34 libpthread.so.0::sem_unlink@GLIBC_2.17
+sem_wait@GLIBC_2.34 libpthread.so.0::sem_wait@GLIBC_2.17
+shm_open@GLIBC_2.34 librt.so.1::shm_open@GLIBC_2.17
+shm_unlink@GLIBC_2.34 librt.so.1::shm_unlink@GLIBC_2.17
+thrd_create@GLIBC_2.34 libpthread.so.0::thrd_create@GLIBC_2.28
+thrd_detach@GLIBC_2.34 libpthread.so.0::thrd_detach@GLIBC_2.28
+thrd_exit@GLIBC_2.34 libpthread.so.0::thrd_exit@GLIBC_2.28
+thrd_join@GLIBC_2.34 libpthread.so.0::thrd_join@GLIBC_2.28
+timer_create@GLIBC_2.34 librt.so.1::timer_create@GLIBC_2.17
+timer_delete@GLIBC_2.34 librt.so.1::timer_delete@GLIBC_2.17
+timer_getoverrun@GLIBC_2.34 librt.so.1::timer_getoverrun@GLIBC_2.17
+timer_gettime@GLIBC_2.34 librt.so.1::timer_gettime@GLIBC_2.17
+timer_settime@GLIBC_2.34 librt.so.1::timer_settime@GLIBC_2.17
+tss_create@GLIBC_2.34 libpthread.so.0::tss_create@GLIBC_2.28
+tss_delete@GLIBC_2.34 libpthread.so.0::tss_delete@GLIBC_2.28
+tss_get@GLIBC_2.34 libpthread.so.0::tss_get@GLIBC_2.28
+tss_set@GLIBC_2.34 libpthread.so.0::tss_set@GLIBC_2.28
+
+// GLIBC_2.35
+// TODO _dl_find_object@GLIBC_2.35
+epoll_pwait2@GLIBC_2.35 polyfill::epoll_pwait2_2_35
+__memcmpeq@GLIBC_2.35 bcmp@GLIBC_2.17
+// TODO posix_spawn_file_actions_addtcsetpgrp_np@GLIBC_2.35
+// ld-linux-aarch64.so.1
+// TODO __rseq_flags@GLIBC_2.35
+// TODO __rseq_offset@GLIBC_2.35
+// TODO __rseq_size@GLIBC_2.35
+// libm
+// TODO
+hypot@GLIBC_2.35 hypot
+hypotf@GLIBC_2.35 hypotf
+
+// GLIBC_2.36
+arc4random@GLIBC_2.36 polyfill::arc4random
+arc4random_buf@GLIBC_2.36 polyfill::arc4random_buf
+arc4random_uniform@GLIBC_2.36 polyfill::arc4random_uniform
+// TODO c8rtomb@GLIBC_2.36
+// TODO mbrtoc8@GLIBC_2.36
+fsconfig@GLIBC_2.36 polyfill::fsconfig
+fsmount@GLIBC_2.36 polyfill::fsmount
+fsopen@GLIBC_2.36 polyfill::fsopen
+fspick@GLIBC_2.36 polyfill::fspick
+mount_setattr@GLIBC_2.36 polyfill::mount_setattr
+move_mount@GLIBC_2.36 polyfill::move_mount
+open_tree@GLIBC_2.36 polyfill::open_tree
+pidfd_getfd@GLIBC_2.36 polyfill::pidfd_getfd
+pidfd_open@GLIBC_2.36 polyfill::pidfd_open
+pidfd_send_signal@GLIBC_2.36 polyfill::pidfd_send_signal
+process_madvise@GLIBC_2.36 polyfill::process_madvise
+process_mrelease@GLIBC_2.36 polyfill::process_mrelease
+
+// GLIBC_2.38
+// TODO
+// libm
+fmod@GLIBC_2.38 fmod
+fmodf@GLIBC_2.38 fmodf
+
+// GLIBC_2.39
+// TODO pidfd_getpid@GLIBC_2.39
+// TODO pidfd_spawn@GLIBC_2.39
+// TODO pidfd_spawnp@GLIBC_2.39
+// TODO posix_spawnattr_getcgroup_np@GLIBC_2.39
+// TODO posix_spawnattr_setcgroup_np@GLIBC_2.39
+stdc_bit_ceil_uc@GLIBC_2.39 polyfill::stdc_bit_ceil_uc
+stdc_bit_ceil_ui@GLIBC_2.39 polyfill::stdc_bit_ceil_ui
+stdc_bit_ceil_ul@GLIBC_2.39 polyfill::stdc_bit_ceil_ul
+stdc_bit_ceil_ull@GLIBC_2.39 polyfill::stdc_bit_ceil_ul
+stdc_bit_ceil_us@GLIBC_2.39 polyfill::stdc_bit_ceil_us
+stdc_bit_floor_uc@GLIBC_2.39 polyfill::stdc_bit_floor_uc
+stdc_bit_floor_ui@GLIBC_2.39 polyfill::stdc_bit_floor_ui
+stdc_bit_floor_ul@GLIBC_2.39 polyfill::stdc_bit_floor_ul
+stdc_bit_floor_ull@GLIBC_2.39 polyfill::stdc_bit_floor_ul
+stdc_bit_floor_us@GLIBC_2.39 polyfill::stdc_bit_floor_us
+stdc_bit_width_uc@GLIBC_2.39 polyfill::stdc_bit_width_uc
+stdc_bit_width_ui@GLIBC_2.39 polyfill::stdc_bit_width_ui
+stdc_bit_width_ul@GLIBC_2.39 polyfill::stdc_bit_width_ul
+stdc_bit_width_ull@GLIBC_2.39 polyfill::stdc_bit_width_ul
+stdc_bit_width_us@GLIBC_2.39 polyfill::stdc_bit_width_us
+stdc_count_ones_uc@GLIBC_2.39 polyfill::stdc_count_ones_uc
+stdc_count_ones_ui@GLIBC_2.39 polyfill::stdc_count_ones_ui
+stdc_count_ones_ul@GLIBC_2.39 polyfill::stdc_count_ones_ul
+stdc_count_ones_ull@GLIBC_2.39 polyfill::stdc_count_ones_ul
+stdc_count_ones_us@GLIBC_2.39 polyfill::stdc_count_ones_us
+stdc_count_zeros_uc@GLIBC_2.39 polyfill::stdc_count_zeros_uc
+stdc_count_zeros_ui@GLIBC_2.39 polyfill::stdc_count_zeros_ui
+stdc_count_zeros_ul@GLIBC_2.39 polyfill::stdc_count_zeros_ul
+stdc_count_zeros_ull@GLIBC_2.39 polyfill::stdc_count_zeros_ul
+stdc_count_zeros_us@GLIBC_2.39 polyfill::stdc_count_zeros_us
+stdc_first_leading_one_uc@GLIBC_2.39 polyfill::stdc_first_leading_one_uc
+stdc_first_leading_one_ui@GLIBC_2.39 polyfill::stdc_first_leading_one_ui
+stdc_first_leading_one_ul@GLIBC_2.39 polyfill::stdc_first_leading_one_ul
+stdc_first_leading_one_ull@GLIBC_2.39 polyfill::stdc_first_leading_one_ul
+stdc_first_leading_one_us@GLIBC_2.39 polyfill::stdc_first_leading_one_us
+stdc_first_leading_zero_uc@GLIBC_2.39 polyfill::stdc_first_leading_zero_uc
+stdc_first_leading_zero_ui@GLIBC_2.39 polyfill::stdc_first_leading_zero_ui
+stdc_first_leading_zero_ul@GLIBC_2.39 polyfill::stdc_first_leading_zero_ul
+stdc_first_leading_zero_ull@GLIBC_2.39 polyfill::stdc_first_leading_zero_ul
+stdc_first_leading_zero_us@GLIBC_2.39 polyfill::stdc_first_leading_zero_us
+stdc_first_trailing_one_uc@GLIBC_2.39 polyfill::stdc_first_trailing_one_uc
+stdc_first_trailing_one_ui@GLIBC_2.39 polyfill::stdc_first_trailing_one_ui
+stdc_first_trailing_one_ul@GLIBC_2.39 polyfill::stdc_first_trailing_one_ul
+stdc_first_trailing_one_ull@GLIBC_2.39 polyfill::stdc_first_trailing_one_ul
+stdc_first_trailing_one_us@GLIBC_2.39 polyfill::stdc_first_trailing_one_us
+stdc_first_trailing_zero_uc@GLIBC_2.39 polyfill::stdc_first_trailing_zero_uc
+stdc_first_trailing_zero_ui@GLIBC_2.39 polyfill::stdc_first_trailing_zero_ui
+stdc_first_trailing_zero_ul@GLIBC_2.39 polyfill::stdc_first_trailing_zero_ul
+stdc_first_trailing_zero_ull@GLIBC_2.39 polyfill::stdc_first_trailing_zero_ul
+stdc_first_trailing_zero_us@GLIBC_2.39 polyfill::stdc_first_trailing_zero_us
+stdc_has_single_bit_uc@GLIBC_2.39 polyfill::stdc_has_single_bit_uc
+stdc_has_single_bit_ui@GLIBC_2.39 polyfill::stdc_has_single_bit_ui
+stdc_has_single_bit_ul@GLIBC_2.39 polyfill::stdc_has_single_bit_ul
+stdc_has_single_bit_ull@GLIBC_2.39 polyfill::stdc_has_single_bit_ul
+stdc_has_single_bit_us@GLIBC_2.39 polyfill::stdc_has_single_bit_us
+stdc_leading_ones_uc@GLIBC_2.39 polyfill::stdc_leading_ones_uc
+stdc_leading_ones_ui@GLIBC_2.39 polyfill::stdc_leading_ones_ui
+stdc_leading_ones_ul@GLIBC_2.39 polyfill::stdc_leading_ones_ul
+stdc_leading_ones_ull@GLIBC_2.39 polyfill::stdc_leading_ones_ul
+stdc_leading_ones_us@GLIBC_2.39 polyfill::stdc_leading_ones_us
+stdc_leading_zeros_uc@GLIBC_2.39 polyfill::stdc_leading_zeros_uc
+stdc_leading_zeros_ui@GLIBC_2.39 polyfill::stdc_leading_zeros_ui
+stdc_leading_zeros_ul@GLIBC_2.39 polyfill::stdc_leading_zeros_ul
+stdc_leading_zeros_ull@GLIBC_2.39 polyfill::stdc_leading_zeros_ul
+stdc_leading_zeros_us@GLIBC_2.39 polyfill::stdc_leading_zeros_us
+stdc_trailing_ones_uc@GLIBC_2.39 polyfill::stdc_trailing_ones_uc
+stdc_trailing_ones_ui@GLIBC_2.39 polyfill::stdc_trailing_ones_ui
+stdc_trailing_ones_ul@GLIBC_2.39 polyfill::stdc_trailing_ones_ul
+stdc_trailing_ones_ull@GLIBC_2.39 polyfill::stdc_trailing_ones_ul
+stdc_trailing_ones_us@GLIBC_2.39 polyfill::stdc_trailing_ones_us
+stdc_trailing_zeros_uc@GLIBC_2.39 polyfill::stdc_trailing_zeros_uc
+stdc_trailing_zeros_ui@GLIBC_2.39 polyfill::stdc_trailing_zeros_ui
+stdc_trailing_zeros_ul@GLIBC_2.39 polyfill::stdc_trailing_zeros_ul
+stdc_trailing_zeros_ull@GLIBC_2.39 polyfill::stdc_trailing_zeros_ul
+stdc_trailing_zeros_us@GLIBC_2.39 polyfill::stdc_trailing_zeros_us
+// libm
+exp10@GLIBC_2.39 exp10

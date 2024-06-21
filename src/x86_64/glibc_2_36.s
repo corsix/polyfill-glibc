@@ -109,16 +109,14 @@ try_read_no_add:
   jg try_read
   cmp eax, -4 // EINTR
   jz try_read_no_add
-  jmp hard_fail
+hard_fail:
+  lea rdi, arc4random_buf_fail_msg
+  jmp libc_fatal
 done_read:
   mov eax, 3 // __NR_close
   syscall
 done:
   ret
-
-hard_fail:
-  lea rdi, arc4random_buf_fail_msg
-  jmp libc_fatal
 
   // Open /dev/random, poll it for readability, close it.
 do_init:

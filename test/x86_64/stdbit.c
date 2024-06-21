@@ -13,7 +13,14 @@ static void test_bit_ceil_uc(void* lib) {
   unsigned int res = 1;
   for (unsigned int i = 0; i <= 255; ++i) {
     if (i > res) res <<= 1;
+    // The spec leaves the overflow behaviour undefined; glibc on x86_64
+    // returns a u32 with the true result, whereas glibc on aarch64 returns
+    // zero.
+#ifdef TEST_AARCH64
+    ASSERT(fn(i) == (res & 0xff));
+#else
     ASSERT(fn(i) == res);
+#endif
   }
 }
 
@@ -36,7 +43,14 @@ static void test_bit_ceil_us(void* lib) {
       unsigned int i = (1u << e) + j;
       if (i != (unsigned short)i) continue;
       if (i > res) res <<= 1;
+      // The spec leaves the overflow behaviour undefined; glibc on x86_64
+      // returns a u32 with the true result, whereas glibc on aarch64 returns
+      // zero.
+#ifdef TEST_AARCH64
+      ASSERT(fn(i) == (res & 0xffff));
+#else
       ASSERT(fn(i) == res);
+#endif
     }
   }
 }
@@ -59,6 +73,7 @@ static void test_bit_ceil_ui(void* lib) {
     for (int j = -2; j <= 2; ++j) {
       unsigned int i = (1u << e) + j;
       if (i > res) res <<= 1;
+      // The spec leaves the overflow behaviour undefined; glibc returns zero.
       ASSERT(fn(i) == res);
     }
   }
@@ -82,6 +97,7 @@ static void test_bit_ceil_ul(void* lib) {
     for (int j = -2; j <= 2; ++j) {
       unsigned long i = (1ull << e) + j;
       if (i > res) res <<= 1;
+      // The spec leaves the overflow behaviour undefined; glibc returns zero.
       ASSERT(fn(i) == res);
     }
   }
@@ -321,6 +337,9 @@ static void test_invpopcnt(void* lib, const char* name, int width) {
 }
 
 static bool force_slow_popcnt(void* lib) {
+#ifdef TEST_AARCH64
+  (void)lib;
+#else
   uint8_t* impl = dlvsym(lib, "stdc_count_ones_ul", "POLYFILL");
   if (impl) {
     // Search for a movzx instruction with a rip-rel operand.
@@ -334,6 +353,7 @@ static bool force_slow_popcnt(void* lib) {
       return true;
     }
   }
+#endif
   return false;
 }
 
@@ -552,6 +572,44 @@ static void test_first_trailing_one_us(void* lib) {
     }
   }
 }
+
+#ifdef TEST_AARCH64
+static void test_first_trailing_one_ui(void* lib) {
+  int (*fn)(unsigned int);
+  fn = dlvsym(lib, "stdc_first_trailing_one_ui", "POLYFILL");
+  if (!fn) {
+    fn = dlvsym(lib, "stdc_first_trailing_one_ui", "GLIBC_2.39");
+    if (!fn) {
+      FATAL("Could not find stdc_first_trailing_one_ui");
+    }
+  }
+  ASSERT(fn(0) == 0);
+  for (int a = 0; a <= 31; ++a) {
+    ASSERT(fn(1u << a) == a + 1);
+    for (int b = 0; b < a; ++b) {
+      ASSERT(fn((1u << a) | (1u << b)) == b + 1);
+    }
+  }
+}
+
+static void test_first_trailing_one_ul(void* lib) {
+  int (*fn)(unsigned long);
+  fn = dlvsym(lib, "stdc_first_trailing_one_ul", "POLYFILL");
+  if (!fn) {
+    fn = dlvsym(lib, "stdc_first_trailing_one_ul", "GLIBC_2.39");
+    if (!fn) {
+      FATAL("Could not find stdc_first_trailing_one_ul");
+    }
+  }
+  ASSERT(fn(0) == 0);
+  for (int a = 0; a <= 63; ++a) {
+    ASSERT(fn(1ull << a) == a + 1);
+    for (int b = 0; b < a; ++b) {
+      ASSERT(fn((1ull << a) | (1ull << b)) == b + 1);
+    }
+  }
+}
+#endif
 
 static void test_first_trailing_zero_uc(void* lib) {
   int (*fn)(unsigned char);
@@ -1042,6 +1100,10 @@ int main(int argc, const char** argv) {
   test_first_leading_zero_ul(lib);
   test_first_trailing_one_uc(lib);
   test_first_trailing_one_us(lib);
+#ifdef TEST_AARCH64
+  test_first_trailing_one_ui(lib);
+  test_first_trailing_one_ul(lib);
+#endif
   test_first_trailing_zero_uc(lib);
   test_first_trailing_zero_us(lib);
   test_first_trailing_zero_ui(lib);

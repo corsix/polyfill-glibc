@@ -143,6 +143,7 @@ struct Elf64_Rela {
 #define R_AARCH64_P32_TLSDESC    187
 #define R_AARCH64_P32_IRELATIVE  188
 #define R_AARCH64_COPY           1024
+#define R_AARCH64_GLOB_DAT       1025
 #define R_AARCH64_JUMP_SLOT      1026
 #define R_AARCH64_RELATIVE       1027
 #define R_AARCH64_TLS_DTPMOD     1028

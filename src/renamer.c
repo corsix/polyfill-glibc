@@ -5,6 +5,7 @@
 #include "erw.h"
 #include "common.h"
 #include "polyfiller.h"
+#include "../build/aarch64/renames.h"
 #include "../build/x86_64/renames.h"
 
 typedef struct u32_array_t {
@@ -115,6 +116,10 @@ static void target_ver_registry_bind_to(target_ver_registry_t* rr, erw_state_t* 
   const uint64_t* table;
   uint32_t mask;
   switch (erw->machine) {
+  case EM_AARCH64:
+    table = (const uint64_t*)src_aarch64_renames_txt_data;
+    mask = src_aarch64_renames_txt_mask;
+    break;
   case EM_X86_64:
     table = (const uint64_t*)src_x86_64_renames_txt_data;
     mask = src_x86_64_renames_txt_mask;
@@ -541,12 +546,20 @@ static void target_ver_registry_confirm(target_ver_registry_t* rr, renamer_t* re
     }
     fprintf(stderr, " due to missing knowledge about how to handle:\n");
     call_erwNNE_(print_bad_syms, erw, bad_syms.base, bad_syms.count);
-    if (machine == EM_X86_64) {
+    switch (machine) {
+    case EM_AARCH64:
+      if (version_str_less(target_ver, "2.17")) {
+        fprintf(stderr, "Note that 2.17 is the minimum version of glibc on aarch64; specifying a --target-glibc below this will always fail.\n");
+      }
+      break;
+    case EM_X86_64:
       if (version_str_less(target_ver, "2.2.5")) {
         fprintf(stderr, "Note that 2.2.5 is the minimum version of glibc on x86_64; specifying a --target-glibc below this will always fail.\n");
       }
-    } else {
+      break;
+    default:
       fprintf(stderr, "Note that --target-glibc is currently only supported for x86_64 files.\n");
+      break;
     }
     fflush(stderr);
     exit(EXIT_FAILURE);

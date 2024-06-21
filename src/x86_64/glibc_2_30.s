@@ -11,7 +11,6 @@ public function twalk_r {
   mov rbx, rsi // Save callback function pointer.
   mov r12, rdx // Save callback argument.
   call recurse
-  cfi_remember_state
   pop.cfi r12
   pop.cfi rbx
   pop.cfi rbp
@@ -19,7 +18,6 @@ outer_tail:
   ret
 
 recurse:
-  cfi_restore_state
   mov rsi, qword ptr [rdi + 8]
   and rsi, -2
   mov rdx, r12 // For either leaf call or preorder call.

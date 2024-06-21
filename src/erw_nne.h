@@ -2424,8 +2424,10 @@ static void erwNNE_(retry)(erw_state_t* erw) {
       if (Elf_bswapu32(itr->p_type) != PT_LOAD) continue;
       Elf_uNN itr_f = Elf_bswapuNN(itr->p_offset) + Elf_bswapuNN(itr->p_filesz);
       Elf_uNN itr_v = Elf_bswapuNN(itr->p_vaddr) + Elf_bswapuNN(itr->p_memsz);
+      Elf_uNN itr_a = Elf_bswapuNN(itr->p_align);
       if (f < itr_f) f = itr_f;
       if (v < itr_v) v = itr_v;
+      if (itr_a > page_size && itr_a <= 0x10000 && !(itr_a & (itr_a - 1))) page_size = itr_a;
     }
   }
   f = (f + page_size - 1) &- page_size;
