@@ -23,6 +23,7 @@ As a concession to ease to implementation, polyfill-glibc needs to be able to ma
 |`epoll_pwait2`|See [asynchronous cancellation](Asynchronous_cancellation.md).|
 |`fcntl64`|See [asynchronous cancellation](Asynchronous_cancellation.md).|
 |`getrandom`|See [asynchronous cancellation](Asynchronous_cancellation.md).|
+|`__isoc23_fscanf`, `__isoc23_fwscanf`, `__isoc23_scanf`, `__isoc23_sscanf`, `__isoc23_swscanf`, `__isoc23_vfscanf`, `__isoc23_vfwscanf`, `__isoc23_vscanf`, `__isoc23_vsscanf`, `__isoc23_vswscanf`, `__isoc23_vwscanf`, `__isoc23_wscanf`|These functions are polyfilled to their C99 equivalent. The sole consequence of this is that the `%i` format will no longer recognise binary numbers starting with `0b` or `0B`.|
 |`open_by_handle_at`|See [asynchronous cancellation](Asynchronous_cancellation.md).|
 |`pidfd_spawn`, `pidfd_spawnp`|Some glibc versions of these functions contain a bug that leaks an fd in some failure scenarios (see [BZ#31695](https://sourceware.org/bugzilla/show_bug.cgi?id=31695)). The polyfill implementation does not have this bug.|
 |`posix_spawn_file_actions_addchdir_np`|If the polyfill implementation is used, then `posix_spawn_file_actions_destroy` will also be replaced with a polyfill implementation, even if the `--target-glibc` version would not otherwise require this.|

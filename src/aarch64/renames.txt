@@ -1046,7 +1046,19 @@ process_madvise@GLIBC_2.36 polyfill::process_madvise
 process_mrelease@GLIBC_2.36 polyfill::process_mrelease
 
 // GLIBC_2.38
-// TODO
+__isoc23_fscanf@GLIBC_2.38 __isoc99_fscanf@GLIBC_2.17
+__isoc23_fwscanf@GLIBC_2.38 __isoc99_fwscanf@GLIBC_2.17
+__isoc23_scanf@GLIBC_2.38 __isoc99_scanf@GLIBC_2.17
+__isoc23_sscanf@GLIBC_2.38 __isoc99_sscanf@GLIBC_2.17
+__isoc23_swscanf@GLIBC_2.38 __isoc99_swscanf@GLIBC_2.17
+__isoc23_vfscanf@GLIBC_2.38 __isoc99_vfscanf@GLIBC_2.17
+__isoc23_vfwscanf@GLIBC_2.38 __isoc99_vfwscanf@GLIBC_2.17
+__isoc23_vscanf@GLIBC_2.38 __isoc99_vscanf@GLIBC_2.17
+__isoc23_vsscanf@GLIBC_2.38 __isoc99_vsscanf@GLIBC_2.17
+__isoc23_vswscanf@GLIBC_2.38 __isoc99_vswscanf@GLIBC_2.17
+__isoc23_vwscanf@GLIBC_2.38 __isoc99_vwscanf@GLIBC_2.17
+__isoc23_wscanf@GLIBC_2.38 __isoc99_wscanf@GLIBC_2.17
+// TODO etc
 // libm
 fmod@GLIBC_2.38 fmod
 fmodf@GLIBC_2.38 fmodf
