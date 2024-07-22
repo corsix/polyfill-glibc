@@ -22,7 +22,7 @@ build build/aarch64/polyfills.so: create_polyfill_so polyfill-glibc
   arch = aarch64
   target_glibc = 2.17
 build build/aarch64/polyfiller.o: cc src/aarch64/polyfiller.c | build/aarch64/assembled_gen.h
-build build/aarch64/assembled_gen.h: run build/aarch64/assembler src/aarch64/_init.s src/aarch64/atexit.s src/aarch64/c11_thread.s src/aarch64/fatal.s src/aarch64/glibc_2_18.s src/aarch64/glibc_2_25.s src/aarch64/glibc_2_26.s src/aarch64/glibc_2_30.s src/aarch64/glibc_2_31.s src/aarch64/glibc_2_34.s src/aarch64/glibc_2_36.s src/aarch64/stdbit.s src/aarch64/syscalls.s src/aarch64/syscalls_ac.s
+build build/aarch64/assembled_gen.h: run build/aarch64/assembler src/aarch64/_init.s src/aarch64/atexit.s src/aarch64/c11_thread.s src/aarch64/fatal.s src/aarch64/glibc_2_18.s src/aarch64/glibc_2_25.s src/aarch64/glibc_2_26.s src/aarch64/glibc_2_30.s src/aarch64/glibc_2_31.s src/aarch64/glibc_2_34.s src/aarch64/glibc_2_36.s src/aarch64/glibc_2_38.s src/aarch64/stdbit.s src/aarch64/syscalls.s src/aarch64/syscalls_ac.s
 build build/aarch64/assembler: link build/aarch64/assembler.o build/tokenise.o build/sht.o build/uuht.o build/common.o
 build build/aarch64/assembler.o: cc src/aarch64/assembler.c | build/aarch64/assembler_gen.h
 build build/aarch64/assembler_gen.h: run build/aarch64/build_assembler src/aarch64/insn_encoding.txt
@@ -68,6 +68,11 @@ build build/aarch64/test/arc4random: link build/aarch64/test/arc4random.o build/
   link_opt = -ldl
 build build/aarch64/test/arc4random.o: cc test/aarch64/arc4random.c
 
+build build/aarch64/test/glibc_2_38.txt: run build/aarch64/test/glibc_2_38 build/aarch64/polyfills.so
+build build/aarch64/test/glibc_2_38: link build/aarch64/test/glibc_2_38.o
+  link_opt = -ldl
+build build/aarch64/test/glibc_2_38.o: cc test/aarch64/glibc_2_38.c
+
 build build/aarch64/test/memfd_pread_pwrite.txt: run build/aarch64/test/memfd_pread_pwrite build/aarch64/polyfills.so
 build build/aarch64/test/memfd_pread_pwrite: link build/aarch64/test/memfd_pread_pwrite.o build/test/syscall_filter.o
   link_opt = -ldl
@@ -90,7 +95,7 @@ build build/aarch64/test/totalorder.o: cc test/aarch64/totalorder.c
 
 build build/aarch64/test/twalk_r.txt: run build/x86_64/test/twalk_r build/aarch64/polyfills.so
 
-build test/aarch64: phony build/aarch64/test/arc4random.txt build/aarch64/test/memfd_pread_pwrite.txt build/aarch64/test/nan.txt build/aarch64/test/stdbit.txt build/aarch64/test/totalorder.txt build/aarch64/test/twalk_r.txt
+build test/aarch64: phony build/aarch64/test/arc4random.txt build/aarch64/test/glibc_2_38.txt build/aarch64/test/memfd_pread_pwrite.txt build/aarch64/test/nan.txt build/aarch64/test/stdbit.txt build/aarch64/test/totalorder.txt build/aarch64/test/twalk_r.txt
 
 build build/x86_64/test/arc4random.txt: run build/x86_64/test/arc4random build/x86_64/polyfills.so
 build build/x86_64/test/arc4random: link build/x86_64/test/arc4random.o build/test/syscall_filter.o

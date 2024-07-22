@@ -158,6 +158,9 @@ static void erwNNE_(renamer_apply_to)(erw_state_t* erw, renamer_t* self) {
     }
   }
 
+  // Check target version again, in case polyfills added new externs.
+  renamer_confirm_target_version(self);
+
   // Handle lib dependencies
   if (self->ensured_libs.count) {
     struct ElfNN_(Dyn)* itr = erw->dhdrs.base;

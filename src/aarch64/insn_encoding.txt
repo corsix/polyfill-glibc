@@ -123,6 +123,7 @@ sbcs Rd Rn Rm         :: 0x7a000000
 stp Rd Ra addrp       :: 0x29000000
 str Wd addr4          :: 0xb9000000
 str Xd addr8          :: 0xf9000000
+strb Wd addr1         :: 0x39000000
 stxr Wm Wd addra      :: 0x88007c00
 stxr Wm Xd addra      :: 0xc8007c00
 sub Rd Rn Rm|sa       :: 0x4b000000

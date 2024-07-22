@@ -191,12 +191,14 @@ ret     :: c3
 leave   :: c9
 int3    :: cc
 movsb   :: a4
+movsd   :: a5
 movsq   :: rex.w a5
 stosb   :: aa
 stosq   :: rex.w ab
 lodsb   :: ac
 lodsq   :: rex.w ad
 scasb   :: ae
+scasd   :: af
 scasq   :: rex.w af
 lock    :: f0
 repne   :: f2

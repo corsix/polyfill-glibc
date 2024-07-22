@@ -1058,6 +1058,14 @@ __isoc23_vsscanf@GLIBC_2.38 __isoc99_vsscanf@GLIBC_2.17
 __isoc23_vswscanf@GLIBC_2.38 __isoc99_vswscanf@GLIBC_2.17
 __isoc23_vwscanf@GLIBC_2.38 __isoc99_vwscanf@GLIBC_2.17
 __isoc23_wscanf@GLIBC_2.38 __isoc99_wscanf@GLIBC_2.17
+strlcat@GLIBC_2.38 polyfill::strlcat
+__strlcat_chk@GLIBC_2.38 polyfill::__strlcat_chk
+strlcpy@GLIBC_2.38 polyfill::strlcpy
+__strlcpy_chk@GLIBC_2.38 polyfill::__strlcpy_chk
+wcslcat@GLIBC_2.38 polyfill::wcslcat
+__wcslcat_chk@GLIBC_2.38 polyfill::__wcslcat_chk
+wcslcpy@GLIBC_2.38 polyfill::wcslcpy
+__wcslcpy_chk@GLIBC_2.38 polyfill::__wcslcpy_chk
 // TODO etc
 // libm
 fmod@GLIBC_2.38 fmod

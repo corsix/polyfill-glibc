@@ -1414,14 +1414,14 @@ __isoc23_wcstoull@GLIBC_2.38 polyfill::__isoc23_wcstoul
 // TODO __isoc23_wcstoull_l@GLIBC_2.38
 __isoc23_wcstoumax@GLIBC_2.38 polyfill::__isoc23_wcstoul
 __isoc23_wscanf@GLIBC_2.38 __isoc99_wscanf@GLIBC_2.7
-// TODO strlcat@GLIBC_2.38
-// TODO __strlcat_chk@GLIBC_2.38
-// TODO strlcpy@GLIBC_2.38
-// TODO __strlcpy_chk@GLIBC_2.38
-// TODO wcslcat@GLIBC_2.38
-// TODO __wcslcat_chk@GLIBC_2.38
-// TODO wcslcpy@GLIBC_2.38
-// TODO __wcslcpy_chk@GLIBC_2.38
+strlcat@GLIBC_2.38 polyfill::strlcat
+__strlcat_chk@GLIBC_2.38 polyfill::__strlcat_chk
+strlcpy@GLIBC_2.38 polyfill::strlcpy
+__strlcpy_chk@GLIBC_2.38 polyfill::__strlcpy_chk
+wcslcat@GLIBC_2.38 polyfill::wcslcat
+__wcslcat_chk@GLIBC_2.38 polyfill::__wcslcat_chk
+wcslcpy@GLIBC_2.38 polyfill::wcslcpy
+__wcslcpy_chk@GLIBC_2.38 polyfill::__wcslcpy_chk
 // libm
 fmod@GLIBC_2.38 fmod
 fmodf@GLIBC_2.38 fmodf

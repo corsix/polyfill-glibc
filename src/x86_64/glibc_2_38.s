@@ -313,3 +313,158 @@ not_b:
   pop.cfi rbp
   ret
 }
+
+public function __strlcat_chk {
+  endbr64
+  cmp rcx, rdx
+  jae strlcat
+  jmp __chk_fail_extern
+}
+
+public function strlcat {
+  endbr64
+
+  // r8 = strlen(src)
+  xor eax, eax
+  mov r9, rdi
+  mov rdi, rsi
+  lea rcx, [rax - 1]
+  lea r8, [rax - 2]
+  repne rex_w scasb // byte ptr [rdi], rcx, al
+  sub r8, rcx
+
+  // rax = strnlen(dst, size)
+  test rdx, rdx
+  jz done
+  mov rcx, rdx
+  mov rdi, r9
+  repne rex_w scasb // byte ptr [rdi], rcx, al
+  lea rax, [rdi - 1]
+  cmovnz rax, rdi
+  sub rax, r9
+
+  // memcpy(dst + rax, src, min(size - rax - 1, r8)), then append '\0'
+  sub rdx, rax
+  jbe done
+  lea rcx, [rdx - 1]
+  cmp rcx, r8
+  cmova rcx, r8
+  sub rdi, 1
+  rep rex_w movsb // byte ptr [rdi], byte ptr [rsi], rcx
+  mov byte ptr [rdi], cl
+
+done:
+  add rax, r8
+  ret
+}
+
+public function __strlcpy_chk {
+  endbr64
+  cmp rcx, rdx
+  jae strlcpy
+  jmp __chk_fail_extern
+}
+
+public function strlcpy {
+  endbr64
+
+  // rax = strlen(src)
+  xor eax, eax
+  mov r8, rdi
+  mov rdi, rsi
+  lea rcx, [rax - 1]
+  repne rex_w scasb // byte ptr [rdi], rcx, al
+  sub rax, 2
+  sub rax, rcx
+
+  // memcpy(dst, src, min(strlen(src), size - 1)), then append '\0'
+  sub rdx, 1
+  jb done
+  cmp rax, rdx
+  mov rdi, r8
+  cmovb rdx, rax
+  mov rcx, rdx
+  rep rex_w movsb // byte ptr [rdi], byte ptr [rsi], rcx
+  mov byte ptr [rdi], cl
+
+done:
+  ret
+}
+
+public function __wcslcat_chk {
+  endbr64
+  cmp rcx, rdx
+  jae wcslcat
+  jmp __chk_fail_extern
+}
+
+public function wcslcat {
+  endbr64
+
+  // r8 = wcslen(src)
+  xor eax, eax
+  mov r9, rdi
+  mov rdi, rsi
+  lea rcx, [rax - 1]
+  lea r8, [rax - 2]
+  repne scasd // dword ptr [rdi], rcx, eax
+  sub r8, rcx
+
+  // rax = wcsnlen(dst, size)
+  test rdx, rdx
+  jz done
+  mov rcx, rdx
+  mov rdi, r9
+  repne scasd // dword ptr [rdi], rcx, eax
+  lea rax, [rdi - 4]
+  cmovnz rax, rdi
+  sub rax, r9
+  shr rax, 2
+
+  // wmemcpy(dst + rax, src, min(size - rax - 1, r8)), then append '\0'
+  sub rdx, rax
+  jbe done
+  lea rcx, [rdx - 1]
+  cmp rcx, r8
+  cmova rcx, r8
+  sub rdi, 4
+  rep movsd // dword ptr [rdi], dword ptr [rsi], rcx
+  mov dword ptr [rdi], ecx
+
+done:
+  add rax, r8
+  ret
+}
+
+public function __wcslcpy_chk {
+  endbr64
+  cmp rcx, rdx
+  jae wcslcpy
+  jmp __chk_fail_extern
+}
+
+public function wcslcpy {
+  endbr64
+
+  // rax = wcslen(src)
+  xor eax, eax
+  mov r8, rdi
+  mov rdi, rsi
+  lea rcx, [rax - 1]
+  repne scasd // dword ptr [rdi], rcx, eax
+  sub rax, 2
+  sub rax, rcx
+
+  // wmemcpy(dst, src, min(wcslen(src), size - 1)), then append '\0'
+  sub rdx, 1
+  jb done
+  cmp rax, rdx
+  mov rdi, r8
+  cmovb rdx, rax
+  mov rcx, rdx
+  rep movsd // dword ptr [rdi], dword ptr [rsi], rcx
+  mov dword ptr [rdi], ecx
+
+done:
+  ret
+}
