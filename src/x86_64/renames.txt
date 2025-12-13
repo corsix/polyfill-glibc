@@ -456,7 +456,10 @@ __issignalingl@GLIBC_2.18 polyfill::__issignalingl
 // TODO
 
 // GLIBC_2.23
-// TODO
+// libm
+lgamma@GLIBC_2.23 lgamma@GLIBC_2.2.5
+lgammaf@GLIBC_2.23 lgammaf@GLIBC_2.2.5
+lgammal@GLIBC_2.23 lgammal@GLIBC_2.2.5
 
 // GLIBC_2.24
 quick_exit@GLIBC_2.24 polyfill::quick_exit_2_24

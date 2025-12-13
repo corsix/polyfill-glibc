@@ -8,6 +8,12 @@ __issignaling@GLIBC_2.18 polyfill::__issignaling
 __issignalingf@GLIBC_2.18 polyfill::__issignalingf
 __issignalingl@GLIBC_2.18 polyfill::__issignalingl
 
+// GLIBC_2.23
+// libm
+lgamma@GLIBC_2.23 lgamma@GLIBC_2.17
+lgammaf@GLIBC_2.23 lgammaf@GLIBC_2.17
+lgammal@GLIBC_2.23 lgammal@GLIBC_2.17
+
 // GLIBC_2.24
 quick_exit@GLIBC_2.24 polyfill::quick_exit_2_24
 // libm
