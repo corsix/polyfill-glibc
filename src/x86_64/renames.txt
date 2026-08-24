@@ -1106,7 +1106,7 @@ totalordermagf64x@GLIBC_2.31 polyfill::totalordermag_f80ptr
 totalordermagl@GLIBC_2.31 polyfill::totalordermag_f80ptr
 
 // GLIBC_2.32
-// TODO __libc_single_threaded@GLIBC_2.32
+__libc_single_threaded@GLIBC_2.32 polyfill::__libc_single_threaded
 // TODO pthread_attr_getsigmask_np@GLIBC_2.32
 // TODO pthread_attr_setsigmask_np@GLIBC_2.32
 pthread_attr_setaffinity_np@GLIBC_2.32 libpthread.so.0::pthread_attr_setaffinity_np@GLIBC_2.3.4
