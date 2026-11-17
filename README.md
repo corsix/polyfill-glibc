@@ -30,16 +30,44 @@ $ cd polyfill-glibc
 $ ninja polyfill-glibc
 ```
 
-Once built, running it is intended to be as simple as passing the oldest version of glibc you want to support, along with the path to the program (or shared library) to modify, as in:
+Once built, pass the oldest glibc version you want the file to target and the path to the program or shared library:
 ```
 $ ./polyfill-glibc --target-glibc=2.17 /path/to/my-program
 ```
 
-If running it _isn't_ this simple, then open a GitHub issue describing why not, and we'll try to improve things.
+By default, the input file is modified in place. Use `--output` to write the result to a separate file. polyfill-glibc changes only the specified ELF file; it does not modify the system's installed glibc.
 
-Note that at present, the `--target-glibc` operation of polyfill-glibc is only implemented for x86_64 and aarch64. If other architectures are of interest to you, open a GitHub issue so that we can gauge demand.
+### Check the system glibc version
 
-If distributing shared libraries, polyfill-glibc can also be used to inspect dependencies (with the `--print-imports` and `--print-exports` operations), and to modify how shared libraries are loaded (with the `--set-rpath`, `--set-runpath`, and `--set-soname` operations). Consult [the documentation](docs/Command_line_options.md) for a full list of command line options.
+Run one of these commands on the destination system:
+
+```
+$ getconf GNU_LIBC_VERSION
+glibc 2.39
+```
+
+Alternatively, run `ldd --version` and read the glibc version from its first line. Check the destination system rather than just the build system, since they may use different glibc versions.
+
+Lowering the target version is only possible when the file's newer glibc dependencies can be handled by known renames or polyfills. If an unsupported strong dependency is found, the tool reports it and stops rather than guaranteeing a working result.
+
+## Supported platforms and glibc versions
+
+The `--target-glibc` operation is implemented for **x86_64** and **aarch64**. Compatibility rules for symbols introduced in glibc **2.40–2.44 are currently partial and x86_64-only**. The highest partially covered release is glibc 2.44; this does not mean every program built against glibc 2.44 can be downported. The 2.40–2.43 rules have been tested by downporting a glibc 2.43-linked executable to glibc 2.39. The glibc 2.44 mappings have not yet been runtime-tested.
+
+See [Limitations](docs/Limitations.md) for the covered and unsupported symbol families.
+
+## Common arguments
+
+| Argument | What it does |
+|---|---|
+| `--target-glibc=VERSION` | Tries to remove dependencies on glibc newer than `VERSION`, using known symbol renames and polyfills. |
+| `--output=FILE` | Writes the modified file to `FILE` instead of changing the input in place. |
+| `--dry` | Checks whether the requested changes can be applied without writing an output file. |
+| `--print-imports`, `--print-exports` | Lists the ELF file's imported or exported symbols. |
+| `--set-rpath=PATH`, `--set-runpath=PATH`, `--set-soname=NAME` | Sets common ELF dynamic-linker metadata. |
+| `-h`, `--help` | Prints usage, examples, available options, and the highest partially covered glibc release. |
+
+For the complete option list and details, see [Command line options](docs/Command_line_options.md).
 
 ## License
 

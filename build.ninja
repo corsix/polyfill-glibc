@@ -9,6 +9,8 @@ rule link
   command = gcc $cc_opt -o $out $in $link_opt
 rule run
   command = $in $out
+rule test_cli_help
+  command = ./polyfill-glibc --set-soname -h > "$out" && ! grep -q '^Usage:' "$out" && ./polyfill-glibc --target-glibc=invalid --help | grep -q '^Usage:' && ./polyfill-glibc -h >/dev/null && printf 'OK\n' > "$out"
 rule create_polyfill_so
   command = ./$in empty:$arch --add-hash --add-gnu-hash --create-polyfill-so --target-glibc=$target_glibc --output $out
 rule run_polyfill_glibc_txt
@@ -33,7 +35,7 @@ build build/x86_64/polyfills.so: create_polyfill_so polyfill-glibc
   arch = x86_64
   target_glibc = 2.3.2
 build build/x86_64/polyfiller.o: cc src/x86_64/polyfiller.c | build/x86_64/assembled_gen.h
-build build/x86_64/assembled_gen.h: run build/x86_64/assembler src/x86_64/_init.s src/x86_64/atexit.s src/x86_64/c11_thread.s src/x86_64/fatal.s src/x86_64/glibc_2_6.s src/x86_64/glibc_2_7.s src/x86_64/glibc_2_15.s src/x86_64/glibc_2_16.s src/x86_64/glibc_2_18.s src/x86_64/glibc_2_25.s src/x86_64/glibc_2_26.s src/x86_64/glibc_2_30.s src/x86_64/glibc_2_31.s src/x86_64/glibc_2_34.s src/x86_64/glibc_2_36.s src/x86_64/glibc_2_38.s src/x86_64/posix_spawn.s src/x86_64/qsort.s src/x86_64/stdbit.s src/x86_64/syscalls.s src/x86_64/syscalls_ac.s
+build build/x86_64/assembled_gen.h: run build/x86_64/assembler src/x86_64/_init.s src/x86_64/atexit.s src/x86_64/c11_thread.s src/x86_64/fatal.s src/x86_64/glibc_2_6.s src/x86_64/glibc_2_7.s src/x86_64/glibc_2_15.s src/x86_64/glibc_2_16.s src/x86_64/glibc_2_18.s src/x86_64/glibc_2_25.s src/x86_64/glibc_2_26.s src/x86_64/glibc_2_30.s src/x86_64/glibc_2_31.s src/x86_64/glibc_2_34.s src/x86_64/glibc_2_36.s src/x86_64/glibc_2_38.s src/x86_64/glibc_2_40.s src/x86_64/posix_spawn.s src/x86_64/qsort.s src/x86_64/stdbit.s src/x86_64/syscalls.s src/x86_64/syscalls_ac.s
 build build/x86_64/assembler: link build/x86_64/assembler.o build/tokenise.o build/sht.o build/uuht.o build/common.o
 build build/x86_64/assembler.o: cc src/x86_64/assembler.c | build/x86_64/assembler_gen.h
 build build/x86_64/assembler_gen.h: run build/x86_64/build_assembler src/x86_64/insn_encoding.txt
@@ -107,6 +109,11 @@ build build/x86_64/test/glibc_2_38: link build/x86_64/test/glibc_2_38.o
   link_opt = -ldl
 build build/x86_64/test/glibc_2_38.o: cc test/x86_64/glibc_2_38.c
 
+build build/x86_64/test/glibc_2_40_44.txt: run build/x86_64/test/glibc_2_40_44 build/x86_64/polyfills.so
+build build/x86_64/test/glibc_2_40_44: link build/x86_64/test/glibc_2_40_44.o
+  link_opt = -ldl -pthread
+build build/x86_64/test/glibc_2_40_44.o: cc test/x86_64/glibc_2_40_44.c
+
 build build/x86_64/test/memfd_pread_pwrite.txt: run build/x86_64/test/memfd_pread_pwrite build/x86_64/polyfills.so
 build build/x86_64/test/memfd_pread_pwrite: link build/x86_64/test/memfd_pread_pwrite.o build/test/syscall_filter.o
   link_opt = -ldl
@@ -137,7 +144,9 @@ build build/x86_64/test/twalk_r: link build/x86_64/test/twalk_r.o
   link_opt = -ldl
 build build/x86_64/test/twalk_r.o: cc test/x86_64/twalk_r.c
 
-build test/x86_64: phony build/x86_64/test/arc4random.txt build/x86_64/test/glibc_2_38.txt build/x86_64/test/qsort_r.txt build/x86_64/test/memfd_pread_pwrite.txt build/x86_64/test/nan.txt build/x86_64/test/stdbit.txt build/x86_64/test/totalorder.txt build/x86_64/test/twalk_r.txt
+build test/x86_64: phony build/x86_64/test/arc4random.txt build/x86_64/test/glibc_2_38.txt build/x86_64/test/glibc_2_40_44.txt build/x86_64/test/qsort_r.txt build/x86_64/test/memfd_pread_pwrite.txt build/x86_64/test/nan.txt build/x86_64/test/stdbit.txt build/x86_64/test/totalorder.txt build/x86_64/test/twalk_r.txt
+
+build build/test/cli_help.txt: test_cli_help polyfill-glibc
 
 build build/test/getauxval.txt: run build/test/getauxval_pf build/test/getauxval_imp.txt build/test/getauxval_imp_pf.txt
 build build/test/getauxval_imp_pf.txt: run_polyfill_glibc_txt build/test/getauxval_pf | polyfill-glibc
@@ -151,4 +160,4 @@ build build/test/getauxval.o: cc test/getauxval.c
 
 build build/test/syscall_filter.o: cc test/syscall_filter.c
 
-build test: phony test/x86_64 build/test/getauxval.txt
+build test: phony test/x86_64 build/test/cli_help.txt build/test/getauxval.txt
