@@ -804,6 +804,32 @@ static const cmdline_mod_t g_cmdline_modifiers[] = {
   {"--use-polyfill-so",       set_use_polyfill_so,          parse_arg_string},
 };
 
+static void print_help(const char* program) {
+  printf("Usage: %s OPTION... FILE...\n\n", program);
+  puts("Inspect or modify ELF executables and shared libraries.");
+  puts("Actions run from left to right for each input file.");
+  puts("Modification actions edit files in-place unless --output is used.");
+  puts("Highest partially covered glibc release: 2.44 (x86_64; coverage is incomplete).");
+  puts("Use FILE '-' to read from standard input, or empty:x86_64 / empty:aarch64 to create an empty ELF.");
+  puts("");
+  puts("Common examples:");
+  printf("  %s --target-glibc=2.39 PROGRAM\n", program);
+  printf("  %s --print-imports PROGRAM\n", program);
+  printf("  %s --target-glibc=2.39 --output=PROGRAM.compat PROGRAM\n", program);
+  puts("");
+  puts("Actions:");
+  for (size_t i = 0; i < sizeof(g_cmdline_actions) / sizeof(*g_cmdline_actions); ++i) {
+    printf("  %s%s\n", g_cmdline_actions[i].syntax, g_cmdline_actions[i].parse_arg ? " VALUE" : "");
+  }
+  puts("");
+  puts("Modifiers:");
+  for (size_t i = 0; i < sizeof(g_cmdline_modifiers) / sizeof(*g_cmdline_modifiers); ++i) {
+    printf("  %s%s\n", g_cmdline_modifiers[i].syntax, g_cmdline_modifiers[i].parse_arg ? " VALUE" : "");
+  }
+  puts("");
+  puts("Options with values accept either --option=VALUE or --option VALUE.");
+}
+
 static void write_out_to(const uint8_t* data, size_t size, const char* path) {
   int fd;
   char* tmp_path = NULL;
@@ -888,6 +914,38 @@ int main(int argc, const char** argv) {
   cmdline_action_t* fn_end = opt.actions + argc;
   char arg_buf[25];
   arg_buf[0] = '-';
+  for (int i = 1; i < argc; ++i) {
+    const char* arg = argv[i];
+    if (strcmp(arg, "-h") == 0 || strcmp(arg, "--help") == 0) {
+      print_help(argv[0]);
+      return 0;
+    }
+    if (arg[0] != '-' || arg[1] == '\0') continue;
+    char* a_out = arg_buf + 1;
+    bool inline_arg = false;
+    for (++arg;;) {
+      char c = *arg++;
+      if (c == '\0') {
+        *a_out = '\0';
+        break;
+      } else if (c == '=') {
+        *a_out = '\0';
+        inline_arg = true;
+        break;
+      } else if (c == '_') {
+        c = '-';
+      } else if ('A' <= c && c <= 'Z') {
+        c = (c - 'A') + 'a';
+      }
+      *a_out++ = c;
+      if (a_out == arg_buf + sizeof(arg_buf)) break;
+    }
+    cmdline_def_t* d = bsearch(arg_buf, g_cmdline_actions, sizeof(g_cmdline_actions) / sizeof(*g_cmdline_actions), sizeof(*g_cmdline_actions), cmdline_def_cmp);
+    if (!d) {
+      d = (cmdline_def_t*)bsearch(arg_buf, g_cmdline_modifiers, sizeof(g_cmdline_modifiers) / sizeof(*g_cmdline_modifiers), sizeof(*g_cmdline_modifiers), cmdline_def_cmp);
+    }
+    if (d && d->parse_arg && !inline_arg) ++i;
+  }
   for (int i = 1; i < argc; ++i) {
     const char* arg = argv[i];
     if (arg[0] != '-' || arg[1] == '\0') { (--fn_end)->arg.s = arg; continue; }

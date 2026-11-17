@@ -6,6 +6,8 @@ polyfill-glibc FLAG... FILENAME...
 ```
 At least one flag and one filename must be specified. Most flags indicate some kind of action (either printing information from a file, or modifying a file). These actions are performed one at a time, from left to right. If multiple filenames are specified, then every action will be performed against every file.
 
+Use `-h` or `--help` to print usage, examples, and the available options. Help can be requested without a filename. It also reports the highest partially covered glibc release; coverage of that release is not complete.
+
 The flagship action is `--target-glibc`.
 
 Files are modified in-place, unless `--output` is used to specify a different output filename.
